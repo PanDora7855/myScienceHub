@@ -1,6 +1,7 @@
-import Login from './pages/Login/Login';
+// import Login from './pages/Login/Login';
+import SettingsAbout from './pages/Settings/SettingsAbout/SettingsAbout';
 
 const App = () => {
-	return <Login />;
+	return <SettingsAbout />;
 };
 export default App;

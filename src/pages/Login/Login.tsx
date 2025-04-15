@@ -4,7 +4,7 @@ import styles from './Login.module.scss';
 const Login = () => {
 	return (
 		<div className={styles['login-page']}>
-			<img src='/loginCard.svg' alt='' width={574} height={534} />
+			<img src='/auth/loginCard.svg' alt='' width={574} height={534} />
 			<div className={styles['right-side']}>
 				<div className={styles['right-side__top']}>
 					<h1>Вход</h1>
@@ -12,11 +12,11 @@ const Login = () => {
 				</div>
 				<form className={styles['sign-in__form']} action='/'>
 					<div className={styles['form-input']}>
-						<img src='/email.svg' alt='email' />
+						<img src='/auth/email.svg' alt='email' />
 						<Input id='email' name='email' placeholder='Почта' />
 					</div>
 					<div className={styles['form-input']}>
-						<img src='/lock.svg' alt='lock' />
+						<img src='/auth/lock.svg' alt='lock' />
 						<Input id='password' name='password' type='password' placeholder='Пароль' />
 					</div>
 					<button className={styles['form-button']} type='submit'>
@@ -26,22 +26,22 @@ const Login = () => {
 				<p className={styles['hr-line']}>Войти другим способом</p>
 				<div className={styles['another-way']}>
 					<a href='#'>
-						<img src='/yandex.svg' alt='' />
+						<img src='/auth/yandex.svg' alt='' />
 					</a>
 					<a href='#'>
-						<img src='/yandex.svg' alt='' />
+						<img src='/auth/yandex.svg' alt='' />
 					</a>
 					<a href='#'>
-						<img src='/yandex.svg' alt='' />
+						<img src='/auth/yandex.svg' alt='' />
 					</a>
 					<a href='#'>
-						<img src='/vk.svg' alt='' />
+						<img src='/auth/vk.svg' alt='' />
 					</a>
 					<a href='#'>
-						<img src='/vk.svg' alt='' />
+						<img src='/auth/vk.svg' alt='' />
 					</a>
 					<a href='#'>
-						<img src='/vk.svg' alt='' />
+						<img src='/auth/vk.svg' alt='' />
 					</a>
 				</div>
 			</div>
