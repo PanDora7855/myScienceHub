@@ -7,10 +7,7 @@ const Tabs = ({ tabs }: ITabs) => {
 		<>
 			<ul className={styles['tabs']}>
 				{tabs.map((t, index) => (
-					<li
-						key={index}
-						className={styles['tab-item']}
-					>
+					<li key={index} className={styles['tab-item']}>
 						<a
 							className={cn(styles['item-link'], {
 								[styles['active']]: t.isActive

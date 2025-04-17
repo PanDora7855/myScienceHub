@@ -12,10 +12,7 @@ const SettingsAbout = () => {
 		//TODO надо сделать отдельный layout т.к. повторяется и в настройках, и в профиле (именно рамки этой)
 		<div className={style['settings']}>
 			<main className={style['main']}>
-				<TopTitle
-					title='Настройки'
-					secondTitle='О себе'
-				/>
+				<TopTitle title='Настройки' secondTitle='О себе' />
 				<Tabs tabs={tabsItems} />
 				<div className={style['main-general']}></div>
 			</main>

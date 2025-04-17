@@ -1,7 +1,8 @@
-// import Login from './pages/Login/Login';
-import SettingsAbout from './pages/Settings/SettingsAbout/SettingsAbout';
+// import SettingsAbout from './pages/Settings/SettingsAbout/SettingsAbout';
+// import BurgerMenu from './components/BurgerMenu/BurgerMenu';
+import Header from './components/Header/Header';
 
 const App = () => {
-	return <SettingsAbout />;
+	return <Header />;
 };
 export default App;
