@@ -1,7 +1,15 @@
+import { useNavigate } from 'react-router';
 import Input from '../../components/Input/Input';
 import styles from './Login.module.scss';
+import { FormEvent } from 'react';
 
 const Login = () => {
+	const navigation = useNavigate();
+	const handleSubmit = (e: FormEvent) => {
+		e.preventDefault();
+		navigation('/main');
+	};
+
 	return (
 		<div className={styles['login-page']}>
 			<img src='/auth/loginCard.svg' alt='' width={574} height={534} />
@@ -10,7 +18,7 @@ const Login = () => {
 					<h1>Вход</h1>
 					<p>How to i get started lorem ipsum dolor at?</p>
 				</div>
-				<form className={styles['sign-in__form']} action='/'>
+				<form className={styles['sign-in__form']} onSubmit={handleSubmit}>
 					<div className={styles['form-input']}>
 						<img src='/auth/email.svg' alt='email' />
 						<Input id='email' name='email' placeholder='Почта' />
