@@ -4,6 +4,8 @@ import cn from 'classnames';
 import { NavLink, useLocation } from 'react-router';
 import { useEffect, useRef, useState } from 'react';
 
+// TODO присутствует маленький баг. При жесткой перезагрузке из за того что шрифты не успевают прогрузиться, линия имеет не правильный оффсет и ширину
+
 const Tabs = ({ tabs }: ITabs) => {
 	const location = useLocation();
 	const tabRefs = useRef<(HTMLLIElement | null)[]>([]);
