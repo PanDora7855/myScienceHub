@@ -3,11 +3,22 @@
 	border-radius: 8px;
 	border: none;
 	font-family: 'Inter';
-	font-weight: bold;
+	font-weight: 600;
 	padding: 12px 24px;
 }
 
 .green {
 	color: white;
 	background-color: #1fac42;
+}
+
+.purple {
+	color: white;
+	background-color: var(--main-theme);
+}
+
+.white {
+	color: black;
+	background-color: white;
+	outline: 1px solid var(--main-theme);
 }

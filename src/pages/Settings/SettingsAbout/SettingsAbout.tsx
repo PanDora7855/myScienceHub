@@ -7,7 +7,7 @@ import Button from '../../../components/Button/Button';
 const SettingsAbout = ({ info }: ISettingsAbout) => {
 	const handleClick = (e: MouseEvent) => {
 		e.preventDefault();
-		console.log('Все заебись');
+		console.log('Заебись');
 	};
 
 	return (

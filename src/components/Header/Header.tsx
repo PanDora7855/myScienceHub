@@ -8,12 +8,12 @@ const Header = () => {
 				<div className={styles['header-left']}>
 					<BurgerMenu />
 					<div className={styles['logo']}>
-						<img src='./logo.png' alt='Логотип' width={34} height={34} />
+						<img src='/logo.png' alt='Логотип' width={34} height={34} />
 						<p className={styles['logo-name']}>Sciencehub</p>
 					</div>
 				</div>
 
-				<img className={styles['header-right']} src='./avatar.svg' alt='Аватар' width={40} height={40} />
+				<img className={styles['header-right']} src='/avatar.svg' alt='Аватар' width={40} height={40} />
 			</header>
 			<div className={styles['line']}></div>
 		</div>

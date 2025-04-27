@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import styles from './BurgerMenu.module.scss';
 import cn from 'classnames';
+import { NavLink } from 'react-router';
 
 const BurgerMenu = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -47,14 +48,16 @@ const BurgerMenu = () => {
 					[styles['open']]: isOpen
 				})}
 			>
-				<img className={styles['close-btn']} src='./burger/close.svg' alt='Закрыть' onClick={toggleMenu} />
+				<img className={styles['close-btn']} src='/burger/close.svg' alt='Закрыть' onClick={toggleMenu} />
 
 				{/* TODO добавить иконки, сейчас было в падлу :) */}
-				<a href='#'>Профиль</a>
 				<a href='#'>Главная</a>
-				<a href='#'>Новости</a>
-				<a href='#'>Мессенджер</a>
-				<a href='#'>Настройки</a>
+				<NavLink to={'profile/overview'}>Профиль</NavLink>
+				<NavLink to={'search/authors'}>Авторы</NavLink>
+				<a href='#'>Подписки</a>
+				<a href='#'>Подписчики</a>
+				<NavLink to={'settings/profile'}>Настройки</NavLink>
+				<a href='#'>Выйти</a>
 			</div>
 		</>
 	);

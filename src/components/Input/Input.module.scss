@@ -31,3 +31,15 @@
 		color: rgba(0, 0, 0, 0.4);
 	}
 }
+
+.fullsize {
+	height: 41px;
+	padding: 12px 20px;
+	font-size: 14px;
+	flex: 1;
+	border: 1px solid var(--main-theme);
+
+	&::placeholder {
+		color: rgba(0, 0, 0, 0.4);
+	}
+}
