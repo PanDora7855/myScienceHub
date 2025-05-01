@@ -1,14 +1,13 @@
 import axios from 'axios';
-
-const baseURL = 'http://localhost:3000';
+import { baseURL } from '../helpers/API';
 
 // Рот ебал я ваш CORS
-export const axiosFetching = axios.create({
+export const apiInstance = axios.create({
 	baseURL: baseURL
 	// withCredentials: true
 });
 
-axiosFetching.interceptors.response.use(
+apiInstance.interceptors.response.use(
 	(response) => response,
 	(error) => {
 		if (error.response && error.response.status === 401) {

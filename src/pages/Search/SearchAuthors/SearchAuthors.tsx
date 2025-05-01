@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Button from '../../../components/Button/Button';
 import Input from '../../../components/Input/Input';
-import { axiosFetching } from '../../../services/api';
+import { apiInstance } from '../../../services/api-instance';
 import styles from './SearchAuthors.module.scss';
 import { IAuthor } from '../../../components/Author/Author.props';
 import Author from '../../../components/Author/Author';
@@ -12,7 +12,7 @@ const SearchAuthors = () => {
 	const [authors, setAuthors] = useState<IAuthor[]>([]);
 
 	async function getAuthors() {
-		await axiosFetching('/authors')
+		await apiInstance('/authors')
 			.then((res) => res.data)
 			.then((res) => setAuthors(res[0]));
 	}

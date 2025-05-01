@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Button from '../../../components/Button/Button';
 import Input from '../../../components/Input/Input';
-import { axiosFetching } from '../../../services/api';
+import { apiInstance } from '../../../services/api-instance';
 import styles from './SearchPublications.module.scss';
 import { IArticles } from '../../../components/Article/Article.props';
 import Article from '../../../components/Article/Article';
@@ -9,14 +9,14 @@ import Article from '../../../components/Article/Article';
 const SearchPublications = () => {
 	const [articles, setArticles] = useState<IArticles[]>([]);
 
-	async function getAuthors() {
-		await axiosFetching('/articles')
+	async function getArticles() {
+		await apiInstance('/articles')
 			.then((res) => res.data)
 			.then((res) => setArticles(res[0]));
 	}
 
 	useEffect(() => {
-		getAuthors();
+		getArticles();
 	}, []);
 	return (
 		<div className={styles['search-articles']}>

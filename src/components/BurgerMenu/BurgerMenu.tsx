@@ -1,12 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
 import styles from './BurgerMenu.module.scss';
 import cn from 'classnames';
-import { NavLink } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
+import Button from '../Button/Button';
 
 const BurgerMenu = () => {
+	const navigate = useNavigate();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const menuRef = useRef<HTMLDivElement | null>(null);
 	const burgerRef = useRef<HTMLDivElement | null>(null);
+	const logout = () => {
+		localStorage.removeItem('jwt');
+		navigate('/auth/login');
+	};
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -57,7 +63,9 @@ const BurgerMenu = () => {
 				<a href='#'>Подписки</a>
 				<a href='#'>Подписчики</a>
 				<NavLink to={'settings/profile'}>Настройки</NavLink>
-				<a href='#'>Выйти</a>
+
+				{/* //TODO реализовать функцию выхода нормально  */}
+				<Button onClick={logout}>Выйти</Button>
 			</div>
 		</>
 	);

@@ -14,6 +14,7 @@ import SearchAuthors from './pages/Search/SearchAuthors/SearchAuthors.tsx';
 import SearchPublications from './pages/Search/SearchPublications/SearchPublications.tsx';
 import ProfileOverview from './pages/Profile/ProfileOverview/ProfileOverview.tsx';
 import ProfilePublications from './pages/Profile/ProfilePublications/ProfilePublications.tsx';
+import RequireAuth from './helpers/RequireAuth.tsx';
 
 const profileInfo = [
 	{ title: 'Фамилия', value: 'Иванов' },
@@ -30,7 +31,11 @@ const profileInfo = [
 const router = createBrowserRouter([
 	{
 		path: '/',
-		element: <MainLayout />,
+		element: (
+			<RequireAuth>
+				<MainLayout />
+			</RequireAuth>
+		),
 		children: [
 			{
 				index: true,

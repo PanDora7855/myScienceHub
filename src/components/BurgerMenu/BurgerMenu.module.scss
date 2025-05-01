@@ -16,9 +16,11 @@
 
 /* Сайдбар */
 .side-menu {
+	display: flex;
+	flex-direction: column;
 	height: 100vh;
 	width: 250px;
-	padding: 80px 20px 20px;
+	padding: 80px 20px 40px;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -44,6 +46,17 @@
 		&:hover {
 			background-color: rgba(88, 130, 193, 0.3);
 		}
+
+		&[aria-current='page'] {
+			color: var(--main-theme);
+		}
+	}
+
+	button {
+		font-size: 20px;
+		font-weight: normal;
+		margin-top: auto;
+		background-color: rgba(88, 130, 193, 0.5);
 	}
 }
 
