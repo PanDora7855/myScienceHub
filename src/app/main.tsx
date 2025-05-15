@@ -8,7 +8,7 @@ import { store } from '../shared/store.ts';
 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { queryClient } from '../shared/api/query-clietn.ts';
+import { queryClient } from '../shared/api/query-client.ts';
 import { router } from './routes';
 
 createRoot(document.getElementById('root')!).render(

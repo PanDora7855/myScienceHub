@@ -1,31 +1,19 @@
-import { useEffect, useState } from 'react';
-import { jsonApiInstance } from '../../../shared/api/api-instance';
 import styles from './ProfileOverview.module.scss';
-import { IArticles, IProfiles } from '../../../components/Article/Article.props';
+import { useProfile } from '../../../features/profile/useProfile';
+import { useProfilePublications } from '../../../features/profile/useProfilePublications';
 import Article from '../../../components/Article/Article';
 
 const ProfileOverview = () => {
-	const [articles, setArticles] = useState<IArticles[]>([]);
-	const [user, setUser] = useState<IProfiles>();
+	const { profile, isLoading: profileLoading } = useProfile();
+	const { publications, isLoading: publicationsLoading } = useProfilePublications();
 
-	async function getArticles() {
-		await jsonApiInstance
-			.get('/getUserData')
-			.then((res) => res.data.Publications)
-			.then((res) => setArticles(res));
-		// .then((res) => console.log(res));
+	if (profileLoading || publicationsLoading) {
+		return <div>Загрузка...</div>;
 	}
 
-	async function getUser() {
-		await jsonApiInstance('/getUserData')
-			.then((res) => res.data)
-			// .then((res) => console.log(res));
-			.then((res) => setUser(res));
+	if (!profile) {
+		return <div>Пользователь не найден</div>;
 	}
-	useEffect(() => {
-		getArticles();
-		getUser();
-	}, []);
 
 	return (
 		<div className={styles['container']}>
@@ -35,34 +23,34 @@ const ProfileOverview = () => {
 				</div>
 				<div className={styles['name']}>
 					<h2>
-						{user?.last_name} {user?.first_name} {user?.middle_name}
+						{profile.last_name} {profile.first_name} {profile.middle_name}
 					</h2>
 				</div>
 				<div className={styles['id']}>
-					<p>ID: {user?.id}</p>
+					<p>ID: {profile.id}</p>
 				</div>
 				<div className={styles['status']}>
-					<p>Учёная степень: {user?.academic_degree}</p>
+					<p>Учёная степень: {profile.academic_degree}</p>
 				</div>
 				<div className={styles['vac']}>
-					<p>VAC: {user?.vac}</p>
+					<p>VAC: {profile.vac}</p>
 				</div>
 				<div className={styles['id']}>
-					<p>Должность: {user?.appointment}</p>
+					<p>Должность: {profile.appointment}</p>
 				</div>
 				<div className={styles['id']}>
-					<p>Страна: {user?.country}</p>
+					<p>Страна: {profile.country}</p>
 				</div>
 				<div className={styles['follows']}>
-					<div className={styles['follow']}>0 подпискок</div>
-					<div className={styles['following']}>0 подписчиков</div>
+					<div className={styles['follow']}>{profile.MySubscribesList?.length || 0} подписок</div>
+					<div className={styles['following']}>{profile.SubscribersList?.length || 0} подписчиков</div>
 				</div>
 			</div>
 			<div className={styles['right-side']}>
 				<h2>Последние публикации</h2>
 				<div className={styles['publications']}>
-					{articles.length ? (
-						articles.map((article) => (
+					{publications && publications.length > 0 ? (
+						publications.map((article) => (
 							<div className={styles['publication']} key={article.id}>
 								<Article props={article} />
 							</div>
@@ -75,4 +63,5 @@ const ProfileOverview = () => {
 		</div>
 	);
 };
+
 export default ProfileOverview;

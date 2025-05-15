@@ -1,43 +1,57 @@
-import { useEffect, useState } from 'react';
+// pages/Search/SearchAuthors/SearchAuthors.tsx
+import { useState } from 'react';
 import Button from '../../../components/Button/Button';
 import Input from '../../../components/Input/Input';
-import { jsonApiInstance } from '../../../shared/api/api-instance';
 import styles from './SearchAuthors.module.scss';
-import { IAuthor } from '../../../components/Author/Author.props';
 import Author from '../../../components/Author/Author';
-
-//TODO тут надо сделать пагинацию и прикрутить react-query
+import { useAuthors } from '../../../features/search/useAuthors';
 
 const SearchAuthors = () => {
-	const [authors, setAuthors] = useState<IAuthor[]>([]);
+	const [searchTerm, setSearchTerm] = useState('');
+	const [currentSearch, setCurrentSearch] = useState('');
 
-	async function getAuthors() {
-		await jsonApiInstance
-			.post('/get-authors-paginator', {
-				count: 2,
-				first_id: 0,
-				stroke: ''
-			})
-			.then((res) => res.data)
-			.then((res) => setAuthors(res));
-	}
+	const { authors, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useAuthors(currentSearch);
 
-	useEffect(() => {
-		getAuthors();
-	}, []);
+	const handleSearch = () => {
+		setCurrentSearch(searchTerm);
+	};
 
 	return (
 		<div className={styles['search-authors']}>
 			<div className={styles['serach-bar']}>
-				<Input className='fullsize' placeholder='Поиск по ID или ФИО' />
-				<Button className='green'>Поиск</Button>
+				<Input
+					className='fullsize'
+					placeholder='Поиск по ID или ФИО'
+					value={searchTerm}
+					onChange={(e) => setSearchTerm(e.target.value)}
+					onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+				/>
+				<Button className='green' onClick={handleSearch}>
+					Поиск
+				</Button>
 			</div>
-			<div className={styles['authors']}>
-				{authors.map((author, index) => (
-					<Author key={index} props={author} />
-				))}
-			</div>
+
+			{isLoading && authors.length === 0 ? (
+				<div>Загрузка...</div>
+			) : (
+				<div className={styles['authors']}>
+					{authors.length > 0 ? (
+						authors.map((author) => <Author key={author.id} props={author} />)
+					) : (
+						<p>Авторы не найдены</p>
+					)}
+				</div>
+			)}
+
+			{hasNextPage && (
+				<div className={styles['load-more']}>
+					<Button className='white' onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+						{isFetchingNextPage ? 'Загрузка...' : 'Загрузить еще'}
+					</Button>
+				</div>
+			)}
 		</div>
 	);
 };
+
 export default SearchAuthors;

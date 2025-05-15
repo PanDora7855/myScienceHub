@@ -2,36 +2,20 @@ import { useNavigate } from 'react-router';
 import Input from '../../../../components/Input/Input';
 import styles from './Login.module.scss';
 import { FormEvent, useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { jsonApiInstance } from '../../../../shared/api/api-instance';
-import { AxiosError } from 'axios';
+import { useAuth } from '../../useAuth';
 
 const Login = () => {
 	const navigate = useNavigate();
-	const [error, setError] = useState<string | null>(null);
 	const [login, setLogin] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
-
-	const { mutate, isPending } = useMutation({
-		mutationFn: async () => {
-			await jsonApiInstance.post('/login', `login=${login}&password=${password}`);
-
-			// return response.data;
-		},
-
-		onSuccess: () => {
-			setError(null);
-			navigate('/');
-		},
-
-		onError: (error: AxiosError<{ message?: string }>) => {
-			setError(error.response?.data.message || 'Произошла ошибка при входе');
-		}
-	});
+	const { login: loginAction, loginError } = useAuth();
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		mutate();
+		const success = await loginAction(login, password);
+		if (success) {
+			navigate('/');
+		}
 	};
 
 	return (
@@ -41,7 +25,7 @@ const Login = () => {
 				<div className={styles['right-side__top']}>
 					<h1>Вход</h1>
 					<p>How to i get started lorem ipsum dolor at?</p>
-					{error && <div className={styles['error']}>{error}</div>}
+					{loginError && <div className={styles['error']}>{loginError}</div>}
 				</div>
 				<form className={styles['sign-in__form']} onSubmit={handleSubmit}>
 					<div className={styles['form-input']}>
@@ -67,7 +51,7 @@ const Login = () => {
 							required
 						/>
 					</div>
-					<button disabled={isPending} className={styles['form-button']} type='submit'>
+					<button className={styles['form-button']} type='submit'>
 						Войти
 					</button>
 				</form>
@@ -96,4 +80,5 @@ const Login = () => {
 		</div>
 	);
 };
+
 export default Login;

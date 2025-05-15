@@ -1,36 +1,53 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Button from '../../../components/Button/Button';
 import Input from '../../../components/Input/Input';
-import { jsonApiInstance } from '../../../shared/api/api-instance';
 import styles from './SearchPublications.module.scss';
-import { IArticles } from '../../../components/Article/Article.props';
 import Article from '../../../components/Article/Article';
+import { useArticles } from '../../../features/article/useArticles';
+import { useSearchArticles } from '../../../features/article/useSearchArticles';
 
 const SearchPublications = () => {
-	const [articles, setArticles] = useState<IArticles[]>([]);
+	const [searchTerm, setSearchTerm] = useState('');
+	const [activeSearch, setActiveSearch] = useState('');
 
-	async function getArticles() {
-		await jsonApiInstance('/articles')
-			.then((res) => res.data)
-			.then((res) => setArticles(res[0]));
-	}
+	// Используем один из двух хуков в зависимости от состояния поиска
+	const { articles: allArticles, isLoading: allLoading } = useArticles();
+	const { articles: searchResults, isLoading: searchLoading } = useSearchArticles(activeSearch);
 
-	useEffect(() => {
-		getArticles();
-	}, []);
+	const isLoading = activeSearch ? searchLoading : allLoading;
+	const articles = activeSearch ? searchResults : allArticles;
+
+	const handleSearch = () => {
+		setActiveSearch(searchTerm);
+	};
+
 	return (
 		<div className={styles['search-articles']}>
 			<div className={styles['search-bar']}>
-				<Input className='fullsize' placeholder='Поиск публикаций' />
+				<Input
+					className='fullsize'
+					placeholder='Поиск публикаций'
+					value={searchTerm}
+					onChange={(e) => setSearchTerm(e.target.value)}
+				/>
 				<Button className='white'>Сортировать</Button>
-				<Button className='green'>Поиск</Button>
+				<Button className='green' onClick={handleSearch}>
+					Поиск
+				</Button>
 			</div>
-			<div className={styles['articles']}>
-				{articles.map((item) => (
-					<Article key={item.id} props={item} />
-				))}
-			</div>
+			{isLoading ? (
+				<div>Загрузка...</div>
+			) : (
+				<div className={styles['articles']}>
+					{articles && articles.length > 0 ? (
+						articles.map((item) => <Article key={item.id} props={item} />)
+					) : (
+						<p>Статьи не найдены</p>
+					)}
+				</div>
+			)}
 		</div>
 	);
 };
+
 export default SearchPublications;

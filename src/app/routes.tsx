@@ -9,7 +9,7 @@ import AuthLayout from '../layout/Auth/AuthLayout';
 import MainLayout from '../layout/Main/MainLayout';
 import Login from '../features/auth/components/Login/Login';
 import Register from '../pages/Register/Register';
-// import RequireAuth from '../helpers/RequireAuth';
+import RequireAuth from '../helpers/RequireAuth';
 
 const profileInfo = [
 	{ title: 'Фамилия', value: 'Иванов' },
@@ -27,9 +27,9 @@ export const router = createBrowserRouter([
 	{
 		path: '/',
 		element: (
-			// <RequireAuth>
-			<MainLayout />
-			// </RequireAuth>
+			<RequireAuth>
+				<MainLayout />
+			</RequireAuth>
 		),
 		children: [
 			{

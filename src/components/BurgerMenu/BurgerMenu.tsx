@@ -2,9 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './BurgerMenu.module.scss';
 import cn from 'classnames';
 import { NavLink } from 'react-router';
-// import Button from '../Button/Button';
+import Button from '../Button/Button';
+import { useAuth } from '../../features/auth/useAuth';
 
 const BurgerMenu = () => {
+	const { logout } = useAuth();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const menuRef = useRef<HTMLDivElement | null>(null);
 	const burgerRef = useRef<HTMLDivElement | null>(null);
@@ -59,9 +61,7 @@ const BurgerMenu = () => {
 				<NavLink to={'settings/profile'}>Настройки</NavLink>
 
 				{/* //TODO реализовать функцию выхода нормально  */}
-				<NavLink to={'auth/login'} replace>
-					Выйти
-				</NavLink>
+				<Button onClick={logout}>Выйти</Button>
 			</div>
 		</>
 	);
