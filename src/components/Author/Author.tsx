@@ -3,17 +3,28 @@ import styles from './Author.module.scss';
 import { NavLink } from 'react-router';
 
 const Author = ({ props }: { props: IAuthor }) => {
-	const { name, academic_degree, country, followers, id, position, publications, vac } = props;
+	const {
+		first_name,
+		last_name,
+		middle_name,
+		academic_degree,
+		country,
+		followers,
+		id,
+		appointment,
+		publications,
+		vac
+	} = props;
 	return (
 		<div className={styles['author-container']}>
-			<h2>{name}</h2>
+			<h2>{`${first_name} ${last_name} ${middle_name}`}</h2>
 			<p>
 				<strong>ID: </strong>
 				{id}
 			</p>
 			<p>
 				<strong>Ученая степень: </strong>
-				{academic_degree}
+				{academic_degree ? academic_degree : 'Не указана'}
 			</p>
 			<p>
 				<strong>ВАК: </strong>
@@ -21,7 +32,7 @@ const Author = ({ props }: { props: IAuthor }) => {
 			</p>
 			<p>
 				<strong>Должность: </strong>
-				{position}
+				{appointment}
 			</p>
 			<p>
 				<strong>Страна: </strong>

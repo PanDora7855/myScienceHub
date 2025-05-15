@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Button from '../../../components/Button/Button';
 import Input from '../../../components/Input/Input';
-import { apiInstance } from '../../../services/api-instance';
+import { jsonApiInstance } from '../../../shared/api/api-instance';
 import styles from './SearchAuthors.module.scss';
 import { IAuthor } from '../../../components/Author/Author.props';
 import Author from '../../../components/Author/Author';
@@ -12,9 +12,14 @@ const SearchAuthors = () => {
 	const [authors, setAuthors] = useState<IAuthor[]>([]);
 
 	async function getAuthors() {
-		await apiInstance('/authors')
+		await jsonApiInstance
+			.post('/get-authors-paginator', {
+				count: 2,
+				first_id: 0,
+				stroke: ''
+			})
 			.then((res) => res.data)
-			.then((res) => setAuthors(res[0]));
+			.then((res) => setAuthors(res));
 	}
 
 	useEffect(() => {

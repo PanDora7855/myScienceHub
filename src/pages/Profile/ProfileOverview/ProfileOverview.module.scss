@@ -1,0 +1,34 @@
+.container {
+	display: flex;
+	gap: 20px;
+}
+
+.left-side {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	text-wrap: nowrap;
+}
+
+.name {
+	margin-top: 10px;
+}
+
+.follows {
+	display: flex;
+	gap: 10px;
+}
+
+.right-side {
+	width: 100%;
+	& > h2 {
+		margin-left: 10px;
+		margin-bottom: 30px;
+	}
+}
+
+.publications {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}

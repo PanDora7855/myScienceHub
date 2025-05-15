@@ -3,11 +3,13 @@ import Input from '../../../components/Input/Input';
 import styles from './SettingsAbout.module.scss';
 import { ISettingsAbout } from './SettingsAbout.props';
 import Button from '../../../components/Button/Button';
+import { jsonApiInstance } from '../../../shared/api/api-instance';
 
 const SettingsAbout = ({ info }: ISettingsAbout) => {
 	const handleClick = (e: MouseEvent) => {
 		e.preventDefault();
 		console.log('Заебись');
+		jsonApiInstance('/tags').then((res) => console.log(res));
 	};
 
 	return (

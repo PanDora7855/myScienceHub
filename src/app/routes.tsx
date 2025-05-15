@@ -1,20 +1,15 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
-import './index.css';
-import AuthLayout from './layout/Auth/AuthLayout.tsx';
-import MainLayout from './layout/Main/MainLayout.tsx';
-import Login from './pages/Login/Login.tsx';
-import Register from './pages/Register/Register.tsx';
-import { store } from './store/store';
-import SettingsAbout from './pages/Settings/SettingsAbout/SettingsAbout.tsx';
-import SettingsSecurity from './pages/Settings/SettingsSecurity/SettingsSecurity.tsx';
-import SearchAuthors from './pages/Search/SearchAuthors/SearchAuthors.tsx';
-import SearchPublications from './pages/Search/SearchPublications/SearchPublications.tsx';
-import ProfileOverview from './pages/Profile/ProfileOverview/ProfileOverview.tsx';
-import ProfilePublications from './pages/Profile/ProfilePublications/ProfilePublications.tsx';
-import RequireAuth from './helpers/RequireAuth.tsx';
+import SettingsAbout from '../pages/Settings/SettingsAbout/SettingsAbout';
+import SettingsSecurity from '../pages/Settings/SettingsSecurity/SettingsSecurity';
+import SearchAuthors from '../pages/Search/SearchAuthors/SearchAuthors';
+import SearchPublications from '../pages/Search/SearchPublications/SearchPublications';
+import ProfileOverview from '../pages/Profile/ProfileOverview/ProfileOverview';
+import ProfilePublications from '../pages/Profile/ProfilePublications/ProfilePublications';
+import { createBrowserRouter, Navigate } from 'react-router';
+import AuthLayout from '../layout/Auth/AuthLayout';
+import MainLayout from '../layout/Main/MainLayout';
+import Login from '../features/auth/components/Login/Login';
+import Register from '../pages/Register/Register';
+// import RequireAuth from '../helpers/RequireAuth';
 
 const profileInfo = [
 	{ title: 'Фамилия', value: 'Иванов' },
@@ -28,13 +23,13 @@ const profileInfo = [
 	{ title: 'Учёная степень', value: 'Иванович' }
 ];
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
 	{
 		path: '/',
 		element: (
-			<RequireAuth>
-				<MainLayout />
-			</RequireAuth>
+			// <RequireAuth>
+			<MainLayout />
+			// </RequireAuth>
 		),
 		children: [
 			{
@@ -137,11 +132,3 @@ const router = createBrowserRouter([
 		]
 	}
 ]);
-
-createRoot(document.getElementById('root')!).render(
-	<StrictMode>
-		<Provider store={store}>
-			<RouterProvider router={router} />
-		</Provider>
-	</StrictMode>
-);

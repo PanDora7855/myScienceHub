@@ -1,18 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import styles from './BurgerMenu.module.scss';
 import cn from 'classnames';
-import { NavLink, useNavigate } from 'react-router';
-import Button from '../Button/Button';
+import { NavLink } from 'react-router';
+// import Button from '../Button/Button';
 
 const BurgerMenu = () => {
-	const navigate = useNavigate();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const menuRef = useRef<HTMLDivElement | null>(null);
 	const burgerRef = useRef<HTMLDivElement | null>(null);
-	const logout = () => {
-		localStorage.removeItem('jwt');
-		navigate('/auth/login');
-	};
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -32,7 +27,6 @@ const BurgerMenu = () => {
 			document.removeEventListener('mousedown', handleClickOutside);
 		}
 
-		// Очистка слушателя
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside);
 		};
@@ -65,7 +59,9 @@ const BurgerMenu = () => {
 				<NavLink to={'settings/profile'}>Настройки</NavLink>
 
 				{/* //TODO реализовать функцию выхода нормально  */}
-				<Button onClick={logout}>Выйти</Button>
+				<NavLink to={'auth/login'} replace>
+					Выйти
+				</NavLink>
 			</div>
 		</>
 	);
