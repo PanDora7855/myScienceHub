@@ -6,7 +6,7 @@ export const searchApi = {
 
 	getAuthors: (searchTerm: string = '') => {
 		return infiniteQueryOptions({
-			queryKey: [searchApi.baseKey, 'authors', 'infinite', searchTerm],
+			queryKey: [searchApi.baseKey, 'authors', searchTerm],
 			queryFn: ({ pageParam }) =>
 				jsonApiInstance
 					.post('/get-authors-paginator', {

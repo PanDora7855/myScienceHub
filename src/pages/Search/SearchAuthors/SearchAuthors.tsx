@@ -1,4 +1,3 @@
-// pages/Search/SearchAuthors/SearchAuthors.tsx
 import { useState } from 'react';
 import Button from '../../../components/Button/Button';
 import Input from '../../../components/Input/Input';
@@ -24,14 +23,13 @@ const SearchAuthors = () => {
 					placeholder='Поиск по ID или ФИО'
 					value={searchTerm}
 					onChange={(e) => setSearchTerm(e.target.value)}
-					onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
 				/>
 				<Button className='green' onClick={handleSearch}>
 					Поиск
 				</Button>
 			</div>
 
-			{isLoading && authors.length === 0 ? (
+			{isLoading ? (
 				<div>Загрузка...</div>
 			) : (
 				<div className={styles['authors']}>

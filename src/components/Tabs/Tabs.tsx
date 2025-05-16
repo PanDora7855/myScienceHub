@@ -11,6 +11,8 @@ const Tabs = ({ tabs }: ITabs) => {
 	const tabRefs = useRef<(HTMLLIElement | null)[]>([]);
 	const [underlineStyle, setUnderlineStyle] = useState({ left: 0, width: 0 });
 
+	const prevLocation = location.pathname.split('/').slice(0, -1).join('/');
+
 	useEffect(() => {
 		const activeIndex = tabs.findIndex((tab) => location.pathname.includes(tab.linkTo));
 		const activeTab = tabRefs.current[activeIndex];
@@ -35,7 +37,7 @@ const Tabs = ({ tabs }: ITabs) => {
 						className={styles['tab-item']}
 					>
 						<NavLink
-							to={linkTo}
+							to={`${prevLocation}/${linkTo}`}
 							className={({ isActive }) =>
 								cn(styles['item-link'], {
 									[styles['active']]: isActive

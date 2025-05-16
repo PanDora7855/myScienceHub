@@ -23,8 +23,8 @@ export const authApi = {
 		});
 	},
 
-	login: (login: string, password: string) => {
-		return jsonApiInstance.post('/login', `login=${login}&password=${password}`);
+	login: async (login: string, password: string) => {
+		return await jsonApiInstance.post('/login', `login=${login}&password=${password}`);
 	},
 
 	logout: () => {

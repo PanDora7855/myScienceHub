@@ -9,7 +9,7 @@ import AuthLayout from '../layout/Auth/AuthLayout';
 import MainLayout from '../layout/Main/MainLayout';
 import Login from '../features/auth/components/Login/Login';
 import Register from '../pages/Register/Register';
-import RequireAuth from '../helpers/RequireAuth';
+// import RequireAuth from '../helpers/RequireAuth';
 
 const profileInfo = [
 	{ title: 'Фамилия', value: 'Иванов' },
@@ -27,23 +27,22 @@ export const router = createBrowserRouter([
 	{
 		path: '/',
 		element: (
-			<RequireAuth>
-				<MainLayout />
-			</RequireAuth>
+			// <RequireAuth>
+			<MainLayout />
+			// </RequireAuth>
 		),
 		children: [
 			{
 				index: true,
-				// TODO В дальнейшем перенести на главный экран или на поиск статей 'search/articles'
-				element: <Navigate to='/search/authors' replace />
+				element: <Navigate to='/search/articles' replace />
 			},
 			{
 				path: 'settings',
 				handle: {
 					title: 'Настройки',
 					tabs: [
-						{ label: 'О себе', linkTo: 'settings/profile' },
-						{ label: 'Безопасность', linkTo: 'settings/security' }
+						{ label: 'О себе', linkTo: 'profile' },
+						{ label: 'Безопасность', linkTo: 'security' }
 					]
 				},
 				children: [
@@ -68,8 +67,8 @@ export const router = createBrowserRouter([
 				handle: {
 					title: 'Поиск',
 					tabs: [
-						{ label: 'Статьи', linkTo: 'search/articles' },
-						{ label: 'Авторы', linkTo: 'search/authors' }
+						{ label: 'Статьи', linkTo: 'articles' },
+						{ label: 'Авторы', linkTo: 'authors' }
 					]
 				},
 				children: [
@@ -94,20 +93,20 @@ export const router = createBrowserRouter([
 				handle: {
 					title: 'Профиль',
 					tabs: [
-						{ label: 'Обзор', linkTo: 'profile/overview' },
-						{ label: 'Публикации', linkTo: 'profile/publications' }
+						{ label: 'Обзор', linkTo: 'overview' },
+						{ label: 'Публикации', linkTo: 'publications' }
 					]
 				},
 				children: [
 					{
-						path: 'overview',
+						path: ':authorId/overview',
 						element: <ProfileOverview />,
 						handle: {
 							secondTitle: 'Обзор'
 						}
 					},
 					{
-						path: 'publications',
+						path: ':authorId/publications',
 						element: <ProfilePublications />,
 						handle: {
 							secondTitle: 'Публикации'

@@ -12,7 +12,7 @@ export const logoutThunk = (): AppThunk => async (dispatch) => {
 		queryClient.removeQueries({ queryKey: [authApi.baseKey] });
 
 		// Очищаем cookie (можно добавить более конкретный код для удаления jwt-cookie)
-		document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+		document.cookie = 'auth_token=; max-age=0; path=/;';
 
 		return true;
 	} catch (error) {

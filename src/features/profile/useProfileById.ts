@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { profileApi } from './api';
 
-export function useProfile() {
+export function useProfileById(id: string) {
 	const { data, error, isLoading } = useQuery({
-		...profileApi.getUserProfile()
+		...profileApi.getUserProfileById(id)
 	});
 
 	return { data, error, isLoading };

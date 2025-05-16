@@ -3,9 +3,9 @@ import { Navigate } from 'react-router';
 import { useAuth } from '../features/auth/useAuth';
 
 const RequireAuth = ({ children }: { children: ReactNode }) => {
-	const { isAuthenticated } = useAuth();
+	// const { isAuthenticated } = useAuth();
 
-	if (!isAuthenticated) return <Navigate to={'/auth/login'} replace />;
+	// if (!isAuthenticated) return <Navigate to={'/auth/login'} replace />;
 	return children;
 };
 export default RequireAuth;

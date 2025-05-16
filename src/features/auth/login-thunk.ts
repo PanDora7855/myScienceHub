@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+
 import { authApi } from './api';
 import { setLoginError, setUser } from './auth.slice';
 import { queryClient } from '../../shared/api/query-client';

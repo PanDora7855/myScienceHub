@@ -17,7 +17,7 @@ const Author = ({ props }: { props: IAuthor }) => {
 	} = props;
 	return (
 		<div className={styles['author-container']}>
-			<h2>{`${first_name} ${last_name} ${middle_name}`}</h2>
+			<h2>{`${last_name} ${first_name} ${middle_name}`}</h2>
 			<p>
 				<strong>ID: </strong>
 				{id}
@@ -46,7 +46,7 @@ const Author = ({ props }: { props: IAuthor }) => {
 				<strong>Публикации: </strong>
 				{publications}
 			</p>
-			<NavLink to={'/'}>Посмотреть профиль</NavLink>
+			<NavLink to={`/profile/${id}/overview`}>Посмотреть профиль</NavLink>
 		</div>
 	);
 };

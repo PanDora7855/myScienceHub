@@ -76,6 +76,7 @@ const Login = () => {
 						<img src='/auth/vk.svg' alt='' />
 					</a>
 				</div>
+				<p>W2Z2gb9sVIa3</p>
 			</div>
 		</div>
 	);

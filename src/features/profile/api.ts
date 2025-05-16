@@ -26,6 +26,12 @@ export const profileApi = {
 			queryFn: () => jsonApiInstance.get<ProfileDto>('/getUserData').then((response) => response.data)
 		});
 	},
+	getUserProfileById: (id: string) => {
+		return queryOptions({
+			queryKey: [profileApi.baseKey, 'userData', id],
+			queryFn: () => jsonApiInstance.get(`/profiles/id/${id}`).then((response) => response.data.Profile)
+		});
+	},
 
 	getUserPublications: () => {
 		return queryOptions({
@@ -34,8 +40,11 @@ export const profileApi = {
 				jsonApiInstance.get<ProfileDto>('/getUserData').then((response) => response.data.Publications)
 		});
 	},
-
-	updateUserProfile: (profileData: Partial<ProfileDto>) => {
-		return jsonApiInstance.post('/updateUserProfile', profileData);
+	getUserPublicationsById: (id: string) => {
+		return queryOptions({
+			queryKey: [profileApi.baseKey, 'publications', id],
+			queryFn: () =>
+				jsonApiInstance.get(`/profiles/id/${id}`).then((response) => response.data.Profile.Publications)
+		});
 	}
 };
