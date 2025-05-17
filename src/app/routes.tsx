@@ -11,18 +11,6 @@ import Login from '../features/auth/components/Login/Login';
 import Register from '../pages/Register/Register';
 // import RequireAuth from '../helpers/RequireAuth';
 
-const profileInfo = [
-	{ title: 'Фамилия', value: 'Иванов' },
-	{ title: 'Имя', value: 'Иван' },
-	{ title: 'Отчество', value: 'Иванович' },
-	{ title: 'Статус', value: 'Иванович' },
-	{ title: 'Должность', value: 'Иванович' },
-	{ title: 'Страна', value: 'Иванович' },
-	{ title: 'Кафедра', value: 'Иванович' },
-	{ title: 'Ученое звание', value: 'Иванович' },
-	{ title: 'Учёная степень', value: 'Иванович' }
-];
-
 export const router = createBrowserRouter([
 	{
 		path: '/',
@@ -48,7 +36,7 @@ export const router = createBrowserRouter([
 				children: [
 					{
 						path: 'profile',
-						element: <SettingsAbout info={profileInfo} />,
+						element: <SettingsAbout />,
 						handle: {
 							secondTitle: 'О себе'
 						}

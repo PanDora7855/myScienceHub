@@ -1,4 +1,4 @@
-import { infiniteQueryOptions } from '@tanstack/react-query';
+import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query';
 import { jsonApiInstance } from '../../shared/api/api-instance';
 
 export const searchApi = {
@@ -17,6 +17,12 @@ export const searchApi = {
 					.then((response) => response.data),
 			initialPageParam: 0,
 			getNextPageParam: (lastPage) => lastPage.nextId ?? undefined
+		});
+	},
+	getTags: () => {
+		return queryOptions({
+			queryKey: [searchApi.baseKey, 'tags'],
+			queryFn: () => jsonApiInstance.get('/tags').then((response) => response.data)
 		});
 	}
 };

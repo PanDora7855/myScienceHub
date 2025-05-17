@@ -1,40 +1,132 @@
-import { MouseEvent } from 'react';
+import { FormEvent, useState } from 'react';
 import Input from '../../../components/Input/Input';
 import styles from './SettingsAbout.module.scss';
-import { ISettingsAbout } from './SettingsAbout.props';
 import Button from '../../../components/Button/Button';
-import { jsonApiInstance } from '../../../shared/api/api-instance';
+import { useProfile } from '../../../features/profile/useProfile';
+import { useUpdateUserProfile } from '../../../features/profile/useUpdateUserProfile';
+import { IOmitData } from './SettingsAbout.props';
 
-const SettingsAbout = ({ info }: ISettingsAbout) => {
-	const handleClick = (e: MouseEvent) => {
-		e.preventDefault();
-		console.log('Заебись');
-		jsonApiInstance('/tags').then((res) => console.log(res));
+const SettingsAbout = () => {
+	const { data, error, isLoading } = useProfile();
+	const { updateUser } = useUpdateUserProfile();
+
+	const omitData: IOmitData = {
+		last_name: data?.last_name,
+		first_name: data?.first_name,
+		middle_name: data?.middle_name,
+		academic_degree: data?.academic_degree,
+		country: data?.country,
+		vac: data?.vac,
+		appointment: data?.appointment
 	};
+
+	const [input, setInput] = useState<IOmitData>({
+		last_name: '',
+		first_name: '',
+		middle_name: '',
+		academic_degree: '',
+		country: '',
+		vac: '',
+		appointment: ''
+	});
+
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+
+		const newUserData: IOmitData = {};
+		for (const [key, value] of Object.entries(input)) {
+			if (value !== '' && value !== omitData[key as keyof IOmitData]) {
+				newUserData[key as keyof IOmitData] = value;
+			}
+		}
+
+		// console.log(newUserData);
+		updateUser(newUserData);
+	};
+
+	if (isLoading) return <div>Загрузка...</div>;
+
+	if (error) return <div>Произошла ошибка</div>;
+
+	//TODO Сделать на принятие данных оповещение
 
 	return (
 		<>
-			<div className={styles['settings']}>
-				<div className={styles['top-info']}>
-					<img src='/avatar.svg' alt='аватар' width={113} height={113} />
-					{/* TODO тут надо прокидовать пропсы */}
-					<div className={styles['text-info']}>
-						<h2>Имя пользователя</h2>
+			<form className={styles['settings']} onSubmit={handleSubmit}>
+				<div className={styles['editable-fields']}>
+					<div className={styles['edit-field']}>
+						<p>Фамилия</p>
+						<Input
+							className='darker'
+							name='last_name'
+							value={input.last_name}
+							onChange={(e) => setInput({ ...input, last_name: e.target.value })}
+							placeholder={data?.last_name}
+						/>
+					</div>
+					<div className={styles['edit-field']}>
+						<p>Имя</p>
+						<Input
+							className='darker'
+							name='first_name'
+							value={input.first_name}
+							onChange={(e) => setInput({ ...input, first_name: e.target.value })}
+							placeholder={data?.first_name}
+						/>
+					</div>
+					<div className={styles['edit-field']}>
+						<p>Отчество</p>
+						<Input
+							className='darker'
+							name='middle_name'
+							value={input.middle_name}
+							onChange={(e) => setInput({ ...input, middle_name: e.target.value })}
+							placeholder={data?.middle_name}
+						/>
+					</div>
+					<div className={styles['edit-field']}>
+						<p>Страна</p>
+						<Input
+							className='darker'
+							name='country'
+							value={input.country}
+							onChange={(e) => setInput({ ...input, country: e.target.value })}
+							placeholder={data?.country}
+						/>
+					</div>
+					<div className={styles['edit-field']}>
 						<p>Учёная степень</p>
+						<Input
+							className='darker'
+							name='academic_degree'
+							value={input.academic_degree}
+							onChange={(e) => setInput({ ...input, academic_degree: e.target.value })}
+							placeholder={data?.academic_degree}
+						/>
+					</div>
+					<div className={styles['edit-field']}>
+						<p>ВАК</p>
+						<Input
+							className='darker'
+							name='vac'
+							value={input.vac}
+							onChange={(e) => setInput({ ...input, vac: e.target.value })}
+							placeholder={data?.vac}
+						/>
+					</div>
+					<div className={styles['edit-field']}>
+						<p>Должность</p>
+						<Input
+							className='darker'
+							name='appointment'
+							value={input.appointment}
+							onChange={(e) => setInput({ ...input, appointment: e.target.value })}
+							placeholder={data?.appointment}
+						/>
 					</div>
 				</div>
-				<div className={styles['editable-fields']}>
-					{info.map(({ title, value }, index) => (
-						<div className={styles['edit-field']} key={index}>
-							<p>{title}</p>
-							<Input className='darker' placeholder={value} />
-						</div>
-					))}
-				</div>
-			</div>
-			<Button className='green' onClick={handleClick}>
-				Сохранить
-			</Button>
+				<Button className='green'>Сохранить</Button>
+			</form>
 		</>
 	);
 };

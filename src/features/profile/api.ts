@@ -1,6 +1,8 @@
 import { queryOptions } from '@tanstack/react-query';
 import { jsonApiInstance } from '../../shared/api/api-instance';
 import { IArticles } from '../../components/Article/Article.props';
+import { AxiosError } from 'axios';
+import { IOmitData } from '../../pages/Settings/SettingsAbout/SettingsAbout.props';
 
 export type ProfileDto = {
 	id: number;
@@ -13,38 +15,47 @@ export type ProfileDto = {
 	appointment: string;
 	country: string;
 	Publications: IArticles[];
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	SubscribersList: any[];
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	MySubscribesList: any[];
 };
 
 export const profileApi = {
 	baseKey: 'profile',
 
-	getUserProfile: () => {
+	getUserProfileQueryOptions: () => {
 		return queryOptions({
 			queryKey: [profileApi.baseKey, 'userData'],
 			queryFn: () => jsonApiInstance.get<ProfileDto>('/getUserData').then((response) => response.data)
 		});
 	},
-	getUserProfileById: (id: string) => {
+	getUserProfileByIdQueryOptions: (id: string) => {
 		return queryOptions({
 			queryKey: [profileApi.baseKey, 'userData', id],
 			queryFn: () => jsonApiInstance.get(`/profiles/id/${id}`).then((response) => response.data.Profile)
 		});
 	},
 
-	getUserPublications: () => {
+	getUserPublicationsQueryOptions: () => {
 		return queryOptions({
 			queryKey: [profileApi.baseKey, 'publications'],
 			queryFn: () =>
 				jsonApiInstance.get<ProfileDto>('/getUserData').then((response) => response.data.Publications)
 		});
 	},
-	getUserPublicationsById: (id: string) => {
+	getUserPublicationsByIdQueryOptions: (id: string) => {
 		return queryOptions({
 			queryKey: [profileApi.baseKey, 'publications', id],
 			queryFn: () =>
 				jsonApiInstance.get(`/profiles/id/${id}`).then((response) => response.data.Profile.Publications)
 		});
+	},
+
+	updateUserProfile: async (data: IOmitData) => {
+		return jsonApiInstance
+			.patch('/profiles', data)
+			.then((response) => response.data)
+			.catch((e: AxiosError) => console.log(e.response?.data));
 	}
 };

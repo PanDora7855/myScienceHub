@@ -7,7 +7,7 @@ export function useProfilePublications() {
 		error,
 		isLoading
 	} = useQuery({
-		...profileApi.getUserPublications()
+		...profileApi.getUserPublicationsQueryOptions()
 	});
 
 	return { publications, error, isLoading };

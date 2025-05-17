@@ -3,7 +3,7 @@ import { queryClient } from '../../shared/api/query-client';
 import { AppThunk } from '../../shared/store';
 import { authApi } from './api';
 
-export const logoutThunk = (): AppThunk => async (dispatch) => {
+export const logoutThunk = (): AppThunk<Promise<boolean>> => async (dispatch) => {
 	try {
 		await authApi.logout();
 		dispatch(removeUser());

@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { profileApi } from './api';
+import { searchApi } from './api';
 
-export function useProfile() {
+export function useTags() {
 	const { data, error, isLoading } = useQuery({
-		...profileApi.getUserProfileQueryOptions()
+		...searchApi.getTags()
 	});
 
 	return { data, error, isLoading };

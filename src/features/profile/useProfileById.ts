@@ -3,7 +3,7 @@ import { profileApi } from './api';
 
 export function useProfileById(id: string) {
 	const { data, error, isLoading } = useQuery({
-		...profileApi.getUserProfileById(id)
+		...profileApi.getUserProfileByIdQueryOptions(id)
 	});
 
 	return { data, error, isLoading };
