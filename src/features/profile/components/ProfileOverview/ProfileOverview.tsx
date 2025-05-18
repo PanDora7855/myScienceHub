@@ -1,8 +1,8 @@
 import styles from './ProfileOverview.module.scss';
-import Article from '../../../components/Article/Article';
-import { useProfileById } from '../../../features/profile/useProfileById';
-import { useProfilePublicationsById } from '../../../features/profile/useProfilePublicationsById';
-import { IArticles } from '../../../components/Article/Article.props';
+import Article from '../../../article/components/Article/Article';
+import { useProfileById } from '../../useProfileById';
+import { useProfilePublicationsById } from '../../useProfilePublicationsById';
+import { IArticles } from '../../../article/components/Article/Article.props';
 import { useParams } from 'react-router';
 
 const ProfileOverview = () => {

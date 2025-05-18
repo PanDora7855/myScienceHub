@@ -1,9 +1,9 @@
 import { FormEvent, useState } from 'react';
-import Input from '../../../components/Input/Input';
+import Input from '../../../../components/Input/Input';
 import styles from './SettingsAbout.module.scss';
-import Button from '../../../components/Button/Button';
-import { useProfile } from '../../../features/profile/useProfile';
-import { useUpdateUserProfile } from '../../../features/profile/useUpdateUserProfile';
+import Button from '../../../../components/Button/Button';
+import { useProfile } from '../../useProfile';
+import { useUpdateUserProfile } from '../../useUpdateUserProfile';
 import { IOmitData } from './SettingsAbout.props';
 
 const SettingsAbout = () => {

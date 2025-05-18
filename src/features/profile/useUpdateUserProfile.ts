@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { profileApi } from './api';
-import { IOmitData } from '../../pages/Settings/SettingsAbout/SettingsAbout.props';
+import { IOmitData } from './components/SettingsAbout/SettingsAbout.props';
 
 export function useUpdateUserProfile() {
 	const queryClient = useQueryClient();

@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query';
 import { jsonApiInstance } from '../../shared/api/api-instance';
-import { IArticles } from '../../components/Article/Article.props';
+import { IArticles } from './components/Article/Article.props';
 
 export const articleApi = {
 	baseKey: 'articles',
@@ -24,13 +24,6 @@ export const articleApi = {
 						count: 2
 					})
 					.then((response) => response.data)
-		});
-	},
-
-	getArticleById: (id: number) => {
-		return queryOptions({
-			queryKey: [articleApi.baseKey, 'byId', id],
-			queryFn: () => jsonApiInstance.get<IArticles>(`/articles/${id}`).then((response) => response.data)
 		});
 	}
 };

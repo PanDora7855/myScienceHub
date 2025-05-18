@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import Button from '../../../components/Button/Button';
-import Input from '../../../components/Input/Input';
+import Button from '../../../../components/Button/Button';
+import Input from '../../../../components/Input/Input';
 import styles from './SearchAuthors.module.scss';
-import Author from '../../../components/Author/Author';
-import { useAuthors } from '../../../features/search/useAuthors';
+import Author from '../../../../components/Author/Author';
+import { useAuthors } from '../../useAuthors';
 
 const SearchAuthors = () => {
 	const [searchTerm, setSearchTerm] = useState('');

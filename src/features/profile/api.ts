@@ -1,12 +1,13 @@
 import { queryOptions } from '@tanstack/react-query';
 import { jsonApiInstance } from '../../shared/api/api-instance';
-import { IArticles } from '../../components/Article/Article.props';
+import { IArticles } from '../article/components/Article/Article.props';
 import { AxiosError } from 'axios';
-import { IOmitData } from '../../pages/Settings/SettingsAbout/SettingsAbout.props';
+import { IOmitData } from './components/SettingsAbout/SettingsAbout.props';
 
 export type ProfileDto = {
 	id: number;
 	login: string;
+	password: string;
 	first_name: string;
 	last_name: string;
 	middle_name: string;
@@ -57,5 +58,45 @@ export const profileApi = {
 			.patch('/profiles', data)
 			.then((response) => response.data)
 			.catch((e: AxiosError) => console.log(e.response?.data));
+	},
+
+	sendVerificationCodeForLogin: async (login: string) => {
+		return await jsonApiInstance
+			.post('/send-verification-code-for-change-email', { login })
+			.then((response) => response.data)
+			.catch((e: AxiosError) => {
+				console.log(e.response?.data);
+				throw e;
+			});
+	},
+
+	confirmUserLogin: async (login: string, code: string) => {
+		return await jsonApiInstance
+			.post('/settings/verify-and-change-email', { login, code })
+			.then((response) => response.data)
+			.catch((e: AxiosError) => {
+				console.log(e.response?.data);
+				throw e;
+			});
+	},
+
+	sendVerificationCodeForPassword: async (login: string) => {
+		return await jsonApiInstance
+			.post('/send-verification-code-for-change-password', { login })
+			.then((response) => response.data)
+			.catch((e: AxiosError) => {
+				console.log(e.response?.data);
+				throw e;
+			});
+	},
+
+	confirmUserPassword: async (code: string, password: string) => {
+		return await jsonApiInstance
+			.post('/settings/verify-and-change-password', { code, password })
+			.then((response) => response.data)
+			.catch((e: AxiosError) => {
+				console.log(e.response?.data);
+				throw e;
+			});
 	}
 };

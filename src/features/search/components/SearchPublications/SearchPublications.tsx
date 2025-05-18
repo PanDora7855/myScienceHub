@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import Button from '../../../components/Button/Button';
-import Input from '../../../components/Input/Input';
+import Button from '../../../../components/Button/Button';
+import Input from '../../../../components/Input/Input';
 import styles from './SearchPublications.module.scss';
-import Article from '../../../components/Article/Article';
-import { useArticles } from '../../../features/article/useArticles';
-import { useSearchArticles } from '../../../features/article/useSearchArticles';
+import Article from '../../../article/components/Article/Article';
+import { useArticles } from '../../../article/useArticles';
+import { useSearchArticles } from '../../../article/useSearchArticles';
 
 const SearchPublications = () => {
 	const [searchTerm, setSearchTerm] = useState('');

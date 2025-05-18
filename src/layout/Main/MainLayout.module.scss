@@ -2,7 +2,6 @@
 	font-family: 'Inter';
 	width: 1092px;
 	margin: 90px auto 0;
-	height: 100px;
 }
 
 .main-top {
@@ -14,16 +13,20 @@
 	height: 100px;
 	margin-top: 14px;
 	background-color: var(--main-theme);
-	border-radius: 8px 8px 0 0;
+	border-radius: 12px 12px 0 0;
 	background-image: url('/main/main.svg');
 	background-repeat: no-repeat;
 	background-position-y: center;
 }
 
+.main-content-all {
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
 .main-content {
 	min-height: 200px;
 	width: 100%;
-	border-radius: 0 0 8px 8px;
+	border-radius: 0 0 12px 12px;
 	background-color: #fff;
 	padding: 30px 50px;
 }

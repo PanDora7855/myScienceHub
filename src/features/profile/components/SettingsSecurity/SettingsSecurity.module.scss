@@ -1,0 +1,25 @@
+.security {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+}
+
+.edit-field {
+	p {
+		margin-bottom: 10px;
+		font-size: 14px;
+	}
+
+	button {
+		margin-left: 40px;
+	}
+}
+
+.error-message {
+	background-color: #ffeeee;
+	border: 1px solid #ffcccc;
+	color: #cc0000;
+	padding: 12px;
+	border-radius: 4px;
+	font-size: 14px;
+}

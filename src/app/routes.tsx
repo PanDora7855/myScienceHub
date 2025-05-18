@@ -1,14 +1,14 @@
-import SettingsAbout from '../pages/Settings/SettingsAbout/SettingsAbout';
-import SettingsSecurity from '../pages/Settings/SettingsSecurity/SettingsSecurity';
-import SearchAuthors from '../pages/Search/SearchAuthors/SearchAuthors';
-import SearchPublications from '../pages/Search/SearchPublications/SearchPublications';
-import ProfileOverview from '../pages/Profile/ProfileOverview/ProfileOverview';
-import ProfilePublications from '../pages/Profile/ProfilePublications/ProfilePublications';
+import SettingsAbout from '../features/profile/components/SettingsAbout/SettingsAbout';
+import SettingsSecurity from '../features/profile/components/SettingsSecurity/SettingsSecurity';
+import SearchAuthors from '../features/search/components/SearchAuthors/SearchAuthors';
+import SearchPublications from '../features/search/components/SearchPublications/SearchPublications';
+import ProfileOverview from '../features/profile/components/ProfileOverview/ProfileOverview';
+import ProfilePublications from '../features/profile/components/ProfilePublications/ProfilePublications';
 import { createBrowserRouter, Navigate } from 'react-router';
 import AuthLayout from '../layout/Auth/AuthLayout';
 import MainLayout from '../layout/Main/MainLayout';
 import Login from '../features/auth/components/Login/Login';
-import Register from '../pages/Register/Register';
+import Register from '../features/auth/components/Register/Register';
 // import RequireAuth from '../helpers/RequireAuth';
 
 export const router = createBrowserRouter([
