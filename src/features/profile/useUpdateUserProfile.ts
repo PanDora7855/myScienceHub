@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { profileApi } from './api';
 import { IOmitData } from './components/SettingsAbout/SettingsAbout.props';
+import { AxiosError } from 'axios';
+import { ApiErrorResponse } from './useUpdateUserPassword';
 
 export function useUpdateUserProfile() {
 	const queryClient = useQueryClient();
@@ -13,12 +15,12 @@ export function useUpdateUserProfile() {
 				queryKey: [profileApi.baseKey]
 			});
 
-			const prevUser = queryClient.getQueryData(profileApi.getUserProfileQueryOptions().queryKey);
+			const prevUser = queryClient.getQueryData(profileApi.getUserQueryOptions().queryKey);
 
 			// console.log(prevUser);
 			// console.log(prevUser ? { ...prevUser, ...newUser } : prevUser);
 
-			queryClient.setQueryData(profileApi.getUserProfileQueryOptions().queryKey, (old) =>
+			queryClient.setQueryData(profileApi.getUserQueryOptions().queryKey, (old) =>
 				old ? { ...old, ...newUser } : old
 			);
 
@@ -26,7 +28,7 @@ export function useUpdateUserProfile() {
 		},
 		onError: (_, __, context) => {
 			if (context) {
-				queryClient.setQueryData(profileApi.getUserProfileQueryOptions().queryKey, context.prevUser);
+				queryClient.setQueryData(profileApi.getUserQueryOptions().queryKey, context.prevUser);
 			}
 		},
 
@@ -41,5 +43,9 @@ export function useUpdateUserProfile() {
 		updateUserMutation.mutate(data);
 	};
 
-	return { updateUser };
+	return {
+		updateUser,
+		isSuccess: updateUserMutation.isSuccess,
+		error: updateUserMutation.error as AxiosError<ApiErrorResponse>
+	};
 }

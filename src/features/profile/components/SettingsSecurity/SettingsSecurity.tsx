@@ -10,7 +10,7 @@ import { useUpdateUserLogin } from '../../useUpdateUserLogin';
 
 const SettingsSecurity = () => {
 	const { data, error, isLoading } = useProfile();
-	const { updateUser, isLoading: isLoginUpdateLoading } = useConfirmUpdateLogin();
+	const { updateUser, isLoading: isLoginUpdateLoading, error: loginUpdateError } = useConfirmUpdateLogin();
 	const {
 		sendVerificationPasswordCode,
 		isLoading: isPasswordVerificationLoading,
@@ -58,6 +58,12 @@ const SettingsSecurity = () => {
 
 		if (!loginVerificationCode.trim()) {
 			setLoginError('Введите код подтверждения');
+			return;
+		}
+
+		if (loginUpdateError) {
+			setLoginError('Произошла ошибка при обновлении данных');
+			console.log(loginUpdateError);
 			return;
 		}
 
@@ -114,131 +120,121 @@ const SettingsSecurity = () => {
 	if (error) return <div>Произошла ошибка</div>;
 
 	return (
-		<>
-			<div className={styles['security']}>
-				<h3 className={styles['section-title']}>Изменение адреса электронной почты</h3>
+		<div className={styles['security']}>
+			<h3 className={styles['section-title']}>Изменение адреса электронной почты</h3>
 
-				{(loginError || loginVerificationError) && (
-					<div className={styles['error-message']}>
-						{loginError ?? loginVerificationError?.response?.data.error}
+			{(loginError || loginVerificationError || loginUpdateError) && (
+				<div className={styles['error-message']}>
+					{loginError ??
+						loginVerificationError?.response?.data.error ??
+						loginUpdateError?.response?.data.error}
+				</div>
+			)}
+
+			<div className={styles['edit-field']}>
+				<p>Новая почта</p>
+				<Input
+					className='darker'
+					value={newLogin}
+					placeholder={data?.login ?? ''}
+					onChange={(e) => setNewLogin(e.target.value)}
+				/>
+			</div>
+			{!isLoginVerificationSent ? (
+				<Button className='purple' onClick={handleSendLoginVerification} disabled={isLoginVerificationLoading}>
+					{isLoginVerificationLoading ? 'Отправка...' : 'Получить код'}
+				</Button>
+			) : (
+				<>
+					<div className={styles['edit-field']}>
+						<p>Код подтверждения</p>
+						<Input
+							className='darker'
+							value={loginVerificationCode}
+							placeholder='Введите код подтверждения'
+							onChange={(e) => setLoginVerificationCode(e.target.value)}
+						/>
 					</div>
-				)}
+					<Button className='purple' onClick={handleConfirmEmailChange} disabled={isLoginUpdateLoading}>
+						{isLoginUpdateLoading ? 'Обновление...' : 'Изменить почту'}
+					</Button>
+				</>
+			)}
 
-				<div className={styles['edit-field']}>
-					<p>Новая почта</p>
-					<Input
-						className='darker'
-						value={newLogin}
-						placeholder={data?.login ?? ''}
-						onChange={(e) => setNewLogin(e.target.value)}
-					/>
+			<h3 className={styles['section-title']}>Изменение пароля</h3>
+
+			{(passwordError || passwordVerificationError) && (
+				<div className={styles['error-message']}>
+					{passwordError ?? passwordVerificationError?.response?.data.error}
 				</div>
-				<div>
-					{!isLoginVerificationSent ? (
-						<Button
-							className='purple'
-							onClick={handleSendLoginVerification}
-							disabled={isLoginVerificationLoading}
-						>
-							{isLoginVerificationLoading ? 'Отправка...' : 'Получить код'}
-						</Button>
-					) : (
-						<>
-							<div className={styles['edit-field']}>
-								<p>Код подтверждения</p>
-								<Input
-									className='darker'
-									value={loginVerificationCode}
-									placeholder='Введите код подтверждения'
-									onChange={(e) => setLoginVerificationCode(e.target.value)}
-								/>
-							</div>
-							<Button
-								className='purple'
-								onClick={handleConfirmEmailChange}
-								disabled={isLoginUpdateLoading}
-							>
-								{isLoginUpdateLoading ? 'Обновление...' : 'Изменить почту'}
-							</Button>
-						</>
-					)}
+			)}
+
+			<div className={styles['edit-field']}>
+				<p>Текущий пароль</p>
+				<Input
+					className='darker'
+					type='password'
+					value={passwords.currentPassword ?? ''}
+					placeholder='Введите текущий пароль'
+					onChange={(e) => setPasswords({ ...passwords, currentPassword: e.target.value })}
+				/>
+			</div>
+
+			<div className={styles['edit-field']}>
+				<p>Новый пароль</p>
+				<Input
+					className='darker'
+					type='password'
+					value={passwords.newPassword ?? ''}
+					placeholder='Введите новый пароль'
+					onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })}
+				/>
+			</div>
+
+			<div className={styles['edit-field']}>
+				<p>Подтвердите пароль</p>
+				<Input
+					className='darker'
+					type='password'
+					value={passwords.confirmPassword ?? ''}
+					placeholder='Подтвердите новый пароль'
+					onChange={(e) => setPasswords({ ...passwords, confirmPassword: e.target.value })}
+				/>
+			</div>
+
+			{!isPasswordVerificationSent ? (
+				<div className={styles['button-container']}>
+					<Button
+						className='purple'
+						onClick={handleSendPasswordVerification}
+						disabled={isPasswordVerificationLoading}
+					>
+						{isPasswordVerificationLoading ? 'Отправка...' : 'Получить код'}
+					</Button>
 				</div>
-
-				<h3 className={styles['section-title']}>Изменение пароля</h3>
-
-				{(passwordError || passwordVerificationError) && (
-					<div className={styles['error-message']}>
-						{passwordError ?? passwordVerificationError?.response?.data.error}
+			) : (
+				<>
+					<div className={styles['edit-field']}>
+						<p>Код подтверждения</p>
+						<Input
+							className='darker'
+							value={passwordVerificationCode}
+							placeholder='Введите код подтверждения'
+							onChange={(e) => setPasswordVerificationCode(e.target.value)}
+						/>
 					</div>
-				)}
-
-				<div className={styles['edit-field']}>
-					<p>Текущий пароль</p>
-					<Input
-						className='darker'
-						type='password'
-						value={passwords.currentPassword ?? ''}
-						placeholder='Введите текущий пароль'
-						onChange={(e) => setPasswords({ ...passwords, currentPassword: e.target.value })}
-					/>
-				</div>
-
-				<div className={styles['edit-field']}>
-					<p>Новый пароль</p>
-					<Input
-						className='darker'
-						type='password'
-						value={passwords.newPassword ?? ''}
-						placeholder='Введите новый пароль'
-						onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })}
-					/>
-				</div>
-
-				<div className={styles['edit-field']}>
-					<p>Подтвердите пароль</p>
-					<Input
-						className='darker'
-						type='password'
-						value={passwords.confirmPassword ?? ''}
-						placeholder='Подтвердите новый пароль'
-						onChange={(e) => setPasswords({ ...passwords, confirmPassword: e.target.value })}
-					/>
-				</div>
-
-				{!isPasswordVerificationSent ? (
 					<div className={styles['button-container']}>
 						<Button
 							className='purple'
-							onClick={handleSendPasswordVerification}
-							disabled={isPasswordVerificationLoading}
+							onClick={handleConfirmPasswordChange}
+							disabled={isPasswordUpdateLoading}
 						>
-							{isPasswordVerificationLoading ? 'Отправка...' : 'Получить код'}
+							{isPasswordUpdateLoading ? 'Обновление...' : 'Изменить пароль'}
 						</Button>
 					</div>
-				) : (
-					<>
-						<div className={styles['edit-field']}>
-							<p>Код подтверждения</p>
-							<Input
-								className='darker'
-								value={passwordVerificationCode}
-								placeholder='Введите код подтверждения'
-								onChange={(e) => setPasswordVerificationCode(e.target.value)}
-							/>
-						</div>
-						<div className={styles['button-container']}>
-							<Button
-								className='purple'
-								onClick={handleConfirmPasswordChange}
-								disabled={isPasswordUpdateLoading}
-							>
-								{isPasswordUpdateLoading ? 'Обновление...' : 'Изменить пароль'}
-							</Button>
-						</div>
-					</>
-				)}
-			</div>
-		</>
+				</>
+			)}
+		</div>
 	);
 };
 export default SettingsSecurity;

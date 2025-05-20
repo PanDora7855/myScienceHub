@@ -1,20 +1,18 @@
 import styles from './ProfileOverview.module.scss';
 import Article from '../../../article/components/Article/Article';
 import { useProfileById } from '../../useProfileById';
-import { useProfilePublicationsById } from '../../useProfilePublicationsById';
-import { IArticles } from '../../../article/components/Article/Article.props';
+import { IArticle } from '../../../article/components/Article/Article.props';
 import { useParams } from 'react-router';
 
 const ProfileOverview = () => {
 	const { authorId } = useParams();
 	const { data, isLoading: profileLoading } = useProfileById(authorId as string);
-	const { publications, isLoading: publicationsLoading } = useProfilePublicationsById(authorId as string);
 
-	if (profileLoading || publicationsLoading) {
+	if (profileLoading) {
 		return <div>Загрузка...</div>;
 	}
 
-	if (!data) {
+	if (!data.Profile) {
 		return <div>Пользователь не найден</div>;
 	}
 
@@ -26,34 +24,34 @@ const ProfileOverview = () => {
 				</div>
 				<div className={styles['name']}>
 					<h2>
-						{data.last_name} {data.first_name} {data.middle_name}
+						{data.Profile.last_name} {data.Profile.first_name} {data.Profile.middle_name}
 					</h2>
 				</div>
 				<div className={styles['id']}>
-					<p>ID: {data.id}</p>
+					<p>ID: {data.Profile.id}</p>
 				</div>
 				<div className={styles['status']}>
-					<p>Учёная степень: {data.academic_degree}</p>
+					<p>Учёная степень: {data.Profile.academic_degree}</p>
 				</div>
 				<div className={styles['vac']}>
-					<p>VAC: {data.vac}</p>
+					<p>VAC: {data.Profile.vac}</p>
 				</div>
 				<div className={styles['id']}>
-					<p>Должность: {data.appointment}</p>
+					<p>Должность: {data.Profile.appointment}</p>
 				</div>
 				<div className={styles['id']}>
-					<p>Страна: {data.country}</p>
+					<p>Страна: {data.Profile.country}</p>
 				</div>
 				<div className={styles['follows']}>
-					<div className={styles['follow']}>{data.MySubscribesList?.length || 0} подписок</div>
-					<div className={styles['following']}>{data.SubscribersList?.length || 0} подписчиков</div>
+					<div className={styles['follow']}>{data.Profile.MySubscribesList?.length || 0} подписок</div>
+					<div className={styles['following']}>{data.Profile.SubscribersList?.length || 0} подписчиков</div>
 				</div>
 			</div>
 			<div className={styles['right-side']}>
 				<h2>Последние публикации</h2>
 				<div className={styles['publications']}>
-					{publications && publications.length > 0 ? (
-						publications.map((article: IArticles) => (
+					{data.Profile.Publications && data.Profile.Publications.length > 0 ? (
+						data.Profile.Publications.map((article: IArticle) => (
 							<div className={styles['publication']} key={article.id}>
 								<Article props={article} />
 							</div>

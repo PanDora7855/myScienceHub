@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { baseURL } from '../../helpers/API';
-import { useNavigate } from 'react-router';
 
 export const jsonApiInstance = axios.create({
 	baseURL: baseURL,
@@ -11,8 +10,7 @@ jsonApiInstance.interceptors.response.use(
 	(response) => response,
 	(error) => {
 		if (error.response && error.response.status === 401) {
-			const navigate = useNavigate();
-			navigate('/login');
+			console.log('401');
 		}
 		return Promise.reject(error);
 	}

@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query';
 import { jsonApiInstance } from '../../shared/api/api-instance';
-import { IArticles } from './components/Article/Article.props';
+import { IArticle } from './components/Article/Article.props';
 
 export const articleApi = {
 	baseKey: 'articles',
@@ -8,20 +8,20 @@ export const articleApi = {
 	getAllArticles: () => {
 		return queryOptions({
 			queryKey: [articleApi.baseKey, 'all'],
-			queryFn: () => jsonApiInstance.get<IArticles[]>('/getPublicationsData').then((response) => response.data)
+			queryFn: () => jsonApiInstance.get<IArticle[]>('/getPublicationsData').then((response) => response.data)
 		});
 	},
 
-	searchArticles: (searchTerm: string) => {
+	searchArticles: (searchTerm: string, tags: number[]) => {
 		return queryOptions({
-			queryKey: [articleApi.baseKey, 'search', searchTerm],
+			queryKey: [articleApi.baseKey, 'search', tags, searchTerm],
 			queryFn: () =>
 				jsonApiInstance
-					.post<IArticles[]>('/get-publications-paginator', {
+					.post<IArticle[]>('/get-publications-paginator', {
 						title: searchTerm,
-						tags: [],
+						tags: tags,
 						first_id: 0,
-						count: 2
+						count: 10
 					})
 					.then((response) => response.data)
 		});

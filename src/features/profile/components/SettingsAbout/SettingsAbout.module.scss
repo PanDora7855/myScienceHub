@@ -40,3 +40,21 @@
 		font-size: 14px;
 	}
 }
+
+.error-message {
+	background-color: #ffeeee;
+	border: 1px solid #ffcccc;
+	color: #cc0000;
+	padding: 12px;
+	border-radius: 4px;
+	font-size: 14px;
+}
+
+.success-message {
+	background-color: #eeffee;
+	border: 1px solid #ccffcc;
+	color: #00cc00;
+	padding: 12px;
+	border-radius: 4px;
+	font-size: 14px;
+}

@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query';
 import { jsonApiInstance } from '../../shared/api/api-instance';
-import { IArticles } from '../article/components/Article/Article.props';
+import { IArticle } from '../article/components/Article/Article.props';
 import { AxiosError } from 'axios';
 import { IOmitData } from './components/SettingsAbout/SettingsAbout.props';
 
@@ -15,7 +15,7 @@ export type ProfileDto = {
 	vac: string;
 	appointment: string;
 	country: string;
-	Publications: IArticles[];
+	Publications: IArticle[];
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	SubscribersList: any[];
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -25,7 +25,7 @@ export type ProfileDto = {
 export const profileApi = {
 	baseKey: 'profile',
 
-	getUserProfileQueryOptions: () => {
+	getUserQueryOptions: () => {
 		return queryOptions({
 			queryKey: [profileApi.baseKey, 'userData'],
 			queryFn: () => jsonApiInstance.get<ProfileDto>('/getUserData').then((response) => response.data)
@@ -34,22 +34,7 @@ export const profileApi = {
 	getUserProfileByIdQueryOptions: (id: string) => {
 		return queryOptions({
 			queryKey: [profileApi.baseKey, 'userData', id],
-			queryFn: () => jsonApiInstance.get(`/profiles/id/${id}`).then((response) => response.data.Profile)
-		});
-	},
-
-	getUserPublicationsQueryOptions: () => {
-		return queryOptions({
-			queryKey: [profileApi.baseKey, 'publications'],
-			queryFn: () =>
-				jsonApiInstance.get<ProfileDto>('/getUserData').then((response) => response.data.Publications)
-		});
-	},
-	getUserPublicationsByIdQueryOptions: (id: string) => {
-		return queryOptions({
-			queryKey: [profileApi.baseKey, 'publications', id],
-			queryFn: () =>
-				jsonApiInstance.get(`/profiles/id/${id}`).then((response) => response.data.Profile.Publications)
+			queryFn: () => jsonApiInstance.get(`/profiles/id/${id}`).then((response) => response.data)
 		});
 	},
 
@@ -57,7 +42,10 @@ export const profileApi = {
 		return jsonApiInstance
 			.patch('/profiles', data)
 			.then((response) => response.data)
-			.catch((e: AxiosError) => console.log(e.response?.data));
+			.catch((e: AxiosError) => {
+				console.log(e.response?.data);
+				throw e;
+			});
 	},
 
 	sendVerificationCodeForLogin: async (login: string) => {
@@ -75,7 +63,7 @@ export const profileApi = {
 			.post('/settings/verify-and-change-email', { login, code })
 			.then((response) => response.data)
 			.catch((e: AxiosError) => {
-				console.log(e.response?.data);
+				console.log(e);
 				throw e;
 			});
 	},

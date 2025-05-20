@@ -1,20 +1,23 @@
-export interface IArticles {
+export interface IArticle {
 	id: number;
 	title: string;
 	abstract: string;
 	created_at: Date;
 	updated_at?: Date | undefined;
-	profiles: IProfiles[];
-	tags: ITags[];
+	profiles: IProfile[] | null;
+	tags: ITag[] | null;
+	file_link: string;
+	owner_id: number;
+	owner: IProfile | null;
 }
 
-export interface ITags {
+export interface ITag {
 	id: number;
 	name: string;
-	publications: number | null;
+	publications: IArticle[];
 }
 
-export interface IProfiles {
+export interface IProfile {
 	id: number;
 	login: string;
 	password: string;
@@ -25,7 +28,7 @@ export interface IProfiles {
 	academic_degree: string;
 	vac: string;
 	appointment: string;
-	Publications: IArticles[] | null;
+	Publications: IArticle[] | null;
 	SubscribersList: null;
 	MySubscribesList: null;
 }

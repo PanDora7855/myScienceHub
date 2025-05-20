@@ -17,7 +17,7 @@ export function useConfirmUpdatePassword() {
 
 			console.log('Password change initiated');
 
-			const prevUserData = queryClient.getQueryData(profileApi.getUserProfileQueryOptions().queryKey);
+			const prevUserData = queryClient.getQueryData(profileApi.getUserQueryOptions().queryKey);
 
 			return { prevUserData };
 		},
@@ -25,7 +25,7 @@ export function useConfirmUpdatePassword() {
 		onError: (_, __, context) => {
 			console.log('Password change error');
 			if (context) {
-				queryClient.setQueryData(profileApi.getUserProfileQueryOptions().queryKey, context.prevUserData);
+				queryClient.setQueryData(profileApi.getUserQueryOptions().queryKey, context.prevUserData);
 			}
 		},
 

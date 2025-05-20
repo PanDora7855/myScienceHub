@@ -16,9 +16,9 @@ export function useConfirmUpdateLogin() {
 
 			console.log('Login change initiated');
 
-			const prevLogin = queryClient.getQueryData(profileApi.getUserProfileQueryOptions().queryKey);
+			const prevLogin = queryClient.getQueryData(profileApi.getUserQueryOptions().queryKey);
 
-			queryClient.setQueryData(profileApi.getUserProfileQueryOptions().queryKey, (old) =>
+			queryClient.setQueryData(profileApi.getUserQueryOptions().queryKey, (old) =>
 				old ? { ...old, login: newLogin.login } : old
 			);
 
@@ -28,7 +28,7 @@ export function useConfirmUpdateLogin() {
 		onError: (_, __, context) => {
 			console.log('Login change error');
 			if (context) {
-				queryClient.setQueryData(profileApi.getUserProfileQueryOptions().queryKey, context.prevLogin);
+				queryClient.setQueryData(profileApi.getUserQueryOptions().queryKey, context.prevLogin);
 			}
 		},
 

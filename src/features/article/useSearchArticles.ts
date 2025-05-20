@@ -1,14 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { articleApi } from './api';
 
-export function useSearchArticles(searchTerm: string) {
+export function useSearchArticles(searchTerm: string = '', tags: number[] = []) {
 	const {
 		data: articles,
 		error,
 		isLoading
 	} = useQuery({
-		...articleApi.searchArticles(searchTerm),
-		enabled: searchTerm.length > 0 // запрос выполняется только если строка поиска не пуста
+		...articleApi.searchArticles(searchTerm, tags)
 	});
 
 	return { articles, error, isLoading };

@@ -8,7 +8,7 @@ import { IOmitData } from './SettingsAbout.props';
 
 const SettingsAbout = () => {
 	const { data, error, isLoading } = useProfile();
-	const { updateUser } = useUpdateUserProfile();
+	const { updateUser, isSuccess, error: updateError } = useUpdateUserProfile();
 
 	const omitData: IOmitData = {
 		last_name: data?.last_name,
@@ -30,9 +30,11 @@ const SettingsAbout = () => {
 		appointment: ''
 	});
 
+	// if (isSuccess) return <div>Данные обновлены</div>;
+
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-
+		e.currentTarget.reset();
 		const newUserData: IOmitData = {};
 		for (const [key, value] of Object.entries(input)) {
 			if (value !== '' && value !== omitData[key as keyof IOmitData]) {
@@ -52,6 +54,8 @@ const SettingsAbout = () => {
 
 	return (
 		<>
+			{updateError && <div className={styles['error-message']}>{updateError?.response?.data.error}</div>}
+			{isSuccess && <div className={styles['success-message']}>Профиль успешно обновлен</div>}
 			<form className={styles['settings']} onSubmit={handleSubmit}>
 				<div className={styles['editable-fields']}>
 					<div className={styles['edit-field']}>
