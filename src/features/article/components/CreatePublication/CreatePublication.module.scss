@@ -1,0 +1,155 @@
+.editable-fields {
+	margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.edit-field {
+	> p {
+		margin-bottom: 10px;
+		font-size: 14px;
+	}
+
+	input {
+		width: 100%;
+	}
+
+	textarea {
+		font-family: 'Inter', sans-serif;
+		font-size: 15px;
+		font-style: normal;
+		font-weight: normal;
+
+		min-height: 100px;
+		max-height: 200px;
+		width: 100% !important;
+
+		border: none;
+		border-radius: 8px;
+		background: rgba(255, 255, 255, 80%);
+
+		background-color: #f9f9f9;
+		padding: 16px 20px;
+
+		&::placeholder {
+			color: rgba(0, 0, 0, 0.4);
+		}
+	}
+
+	.textarea {
+		position: relative;
+
+		p {
+			position: absolute;
+			bottom: -30px;
+			right: 0px;
+			color: rgba(0, 0, 0, 0.4);
+			user-select: none;
+		}
+	}
+}
+
+.star {
+	color: red;
+}
+
+.not-required {
+	color: rgba(0, 0, 0, 0.4);
+}
+
+.buttons {
+	display: flex;
+	gap: 20px;
+}
+
+// Новые стили для файлов
+.file-info {
+	font-size: 14px;
+	color: #059669;
+	margin-top: 8px;
+	font-weight: 500;
+}
+
+// Стили для тегов и соавторов
+.tags-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-bottom: 15px;
+	margin-top: 5px;
+}
+
+.tag {
+	display: inline-flex;
+	align-items: center;
+	background-color: #f9f9f9;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+	padding: 6px 12px;
+	font-size: 14px;
+	font-family: 'Inter', sans-serif;
+	gap: 8px;
+	transition: all 0.2s ease;
+
+	p {
+		color: rgba(0, 0, 0, 0.8);
+		user-select: none;
+	}
+
+	&:hover {
+		background-color: #f0f0f0;
+	}
+}
+
+.remove-tag {
+	background: none;
+	border: none;
+	color: rgba(0, 0, 0, 0.4);
+	cursor: pointer;
+	font-size: 16px;
+	padding: 0;
+	margin: 0;
+	width: 17px;
+	height: 17px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	transition: all 0.2s ease;
+	font-weight: bold;
+}
+
+.input-container {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding: 16px;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+	background-color: #f9f9f9;
+	margin-top: 10px;
+
+	input {
+		background-color: rgba(255, 255, 255, 80%);
+		border: none;
+		border-radius: 8px;
+		padding: 12px 16px;
+		font-family: 'Inter', sans-serif;
+		font-size: 15px;
+
+		&::placeholder {
+			color: rgba(0, 0, 0, 0.4);
+		}
+
+		&:focus {
+			outline: none;
+			box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+		}
+	}
+}
+
+.input-actions {
+	display: flex;
+	gap: 10px;
+}

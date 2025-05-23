@@ -25,5 +25,9 @@ export const articleApi = {
 					})
 					.then((response) => response.data)
 		});
+	},
+
+	createPublication: (formData: FormData) => {
+		return jsonApiInstance.post('/create-publication', formData).then((response) => response.data);
 	}
 };

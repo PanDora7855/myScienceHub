@@ -9,6 +9,7 @@ import AuthLayout from '../layout/Auth/AuthLayout';
 import MainLayout from '../layout/Main/MainLayout';
 import Login from '../features/auth/components/Login/Login';
 import Register from '../features/auth/components/Register/Register';
+import CreatePublication from '../features/article/components/CreatePublication/CreatePublication';
 // import RequireAuth from '../helpers/RequireAuth';
 
 export const router = createBrowserRouter([
@@ -101,6 +102,10 @@ export const router = createBrowserRouter([
 						}
 					}
 				]
+			},
+			{
+				path: 'create-publication',
+				element: <CreatePublication />
 			}
 		]
 	},

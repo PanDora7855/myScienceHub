@@ -5,25 +5,25 @@ import styles from './ProfilePublications.module.scss';
 import Article from '../../../article/components/Article/Article';
 import { useSearchArticles } from '../../../article/useSearchArticles';
 import { useProfile } from '../../useProfile';
-import Filter from '../../../../components/FIlter/Filter';
+import Filter from '../../../../components/Filter/Filter';
 import { ITag } from '../../../article/components/Article/Article.props';
+import { NavLink } from 'react-router';
 
 const ProfilePublications = () => {
 	const [searchTerm, setSearchTerm] = useState('');
-	const [activeSearch, setActiveSearch] = useState('');
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [selectedTagsId, setSelectedTagsId] = useState<number[]>([]);
 
 	// Используем один из двух хуков в зависимости от состояния поиска
 	const { data: allArticles, isLoading: allLoading } = useProfile();
-	const { articles: searchResults, isLoading: searchLoading } = useSearchArticles(activeSearch);
+	const { articles: searchResults, isLoading: searchLoading } = useSearchArticles(searchTerm, selectedTagsId);
 
-	const isLoading = activeSearch ? searchLoading : allLoading;
-	const articles = activeSearch ? searchResults : allArticles?.Publications;
+	const isLoading = searchTerm ? searchLoading : allLoading;
+	const articles = searchTerm || selectedTagsId ? searchResults : allArticles?.Publications;
 
-	const handleSearch = () => {
-		setActiveSearch(searchTerm);
-	};
+	const tags = allArticles?.Publications.flatMap((item) => item.tags as ITag[]).filter(
+		(tag, index, self) => index === self.findIndex((t) => t.id === tag.id)
+	) as ITag[];
 
 	const handleApplyTags = (tags: number[]) => {
 		setSelectedTagsId(tags);
@@ -34,10 +34,10 @@ const ProfilePublications = () => {
 		<div className={styles['search-articles']}>
 			{isModalOpen && (
 				<Filter
-					tags={allArticles?.Publications[0].tags as ITag[]}
+					tags={tags as ITag[]}
 					onClick={() => setIsModalOpen(false)}
 					onApplyTags={handleApplyTags}
-					selectedTags={selectedTagsId}
+					selectedIds={selectedTagsId}
 				/>
 			)}
 			<div className={styles['search-bar']}>
@@ -47,11 +47,13 @@ const ProfilePublications = () => {
 					value={searchTerm}
 					onChange={(e) => setSearchTerm(e.target.value)}
 				/>
+				{/* TODO сделать сортировку */}
+				<Button className='purple'>Сортировать</Button>
 				<Button className='white' onClick={() => setIsModalOpen(true)}>
-					Сортировать
+					Фильтры
 				</Button>
-				<Button className='green' onClick={handleSearch}>
-					Поиск
+				<Button className='green'>
+					<NavLink to={'/create-publication'}>Создать публикацию</NavLink>
 				</Button>
 			</div>
 			{isLoading ? (

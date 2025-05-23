@@ -7,13 +7,8 @@ import { useAuthors } from '../../useAuthors';
 
 const SearchAuthors = () => {
 	const [searchTerm, setSearchTerm] = useState('');
-	const [currentSearch, setCurrentSearch] = useState('');
 
-	const { authors, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useAuthors(currentSearch);
-
-	const handleSearch = () => {
-		setCurrentSearch(searchTerm);
-	};
+	const { authors, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useAuthors(searchTerm);
 
 	return (
 		<div className={styles['search-authors']}>
@@ -24,9 +19,6 @@ const SearchAuthors = () => {
 					value={searchTerm}
 					onChange={(e) => setSearchTerm(e.target.value)}
 				/>
-				<Button className='green' onClick={handleSearch}>
-					Поиск
-				</Button>
 			</div>
 
 			{isLoading ? (

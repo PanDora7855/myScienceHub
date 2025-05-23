@@ -30,8 +30,6 @@ const SettingsAbout = () => {
 		appointment: ''
 	});
 
-	// if (isSuccess) return <div>Данные обновлены</div>;
-
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		e.currentTarget.reset();
@@ -49,8 +47,6 @@ const SettingsAbout = () => {
 	if (isLoading) return <div>Загрузка...</div>;
 
 	if (error) return <div>Произошла ошибка</div>;
-
-	//TODO Сделать на принятие данных оповещение
 
 	return (
 		<>
