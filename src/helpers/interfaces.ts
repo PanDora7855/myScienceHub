@@ -1,3 +1,16 @@
+// для данных с пагинацией
+export interface DataDto<T> {
+	data: T[];
+	maxPage: number;
+}
+
+// для просмотра чужих профилей
+export type IAnotherProfile = {
+	IsSubscribed: boolean;
+	Isubscribed: boolean;
+	Profile: IProfile[];
+};
+
 export interface IArticle {
 	id: number;
 	title: string;
@@ -29,6 +42,19 @@ export interface IProfile {
 	vac: string;
 	appointment: string;
 	Publications: IArticle[] | null;
-	SubscribersList: null;
-	MySubscribesList: null;
+	SubscribersList: IProfile[] | null;
+	MySubscribesList: IProfile[] | null;
+}
+
+export interface IAuthor {
+	first_name: string;
+	last_name: string;
+	middle_name: string;
+	id: number;
+	academic_degree: string;
+	vac: string;
+	appointment: string;
+	country: string;
+	followers: number;
+	Publications: number;
 }

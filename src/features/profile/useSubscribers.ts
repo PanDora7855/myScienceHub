@@ -1,20 +1,17 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { searchApi } from './api';
+import { profileApi } from './api';
 
-export function useAuthors(searchTerm = '', page = 1, count = 10, sort = 0) {
+export function useSubscribers(searchTerm: string = '') {
 	const { data, error, isLoading } = useQuery({
-		...searchApi.getAuthors(searchTerm, page, count, sort),
+		...profileApi.getSubscribers(searchTerm),
 		placeholderData: keepPreviousData
 	});
 
 	// Преобразуем pages в плоский массив для удобства использования
-	const authors = data?.data || [];
-
-	console.log(data);
-	console.log(authors);
+	const subscribers = data?.data.flat() || [];
 
 	return {
-		authors,
+		subscribers,
 		error,
 		isLoading
 	};

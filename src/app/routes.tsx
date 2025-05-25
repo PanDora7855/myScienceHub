@@ -10,6 +10,9 @@ import MainLayout from '../layout/Main/MainLayout';
 import Login from '../features/auth/components/Login/Login';
 import Register from '../features/auth/components/Register/Register';
 import CreatePublication from '../features/article/components/CreatePublication/CreatePublication';
+import EditPublication from '../features/article/components/EditPublication/EditPublication';
+import Subscribers from '../features/profile/components/Subscribers/Subscribers';
+import Subscribes from '../features/profile/components/Subscribes/Subscribes';
 // import RequireAuth from '../helpers/RequireAuth';
 
 export const router = createBrowserRouter([
@@ -104,8 +107,28 @@ export const router = createBrowserRouter([
 				]
 			},
 			{
+				path: 'subscribes',
+				element: <Subscribes />,
+				handle: {
+					title: 'Подписки',
+					secondTitle: 'Мои подписки'
+				}
+			},
+			{
+				path: 'subscribers',
+				element: <Subscribers />,
+				handle: {
+					title: 'Подписчики',
+					secondTitle: 'Мои подписчики'
+				}
+			},
+			{
 				path: 'create-publication',
 				element: <CreatePublication />
+			},
+			{
+				path: 'edit-publication/:articleId',
+				element: <EditPublication />
 			}
 		]
 	},

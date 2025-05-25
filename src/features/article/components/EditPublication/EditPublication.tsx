@@ -1,12 +1,14 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import Input from '../../../../components/Input/Input';
-import styles from './CreatePublication.module.scss';
+import styles from './EditPublication.module.scss';
 import Button from '../../../../components/Button/Button';
 import Filter from '../../../../components/Filter/Filter';
 import { useTags } from '../../../search/useTags';
 import { useAuthors } from '../../../search/useAuthors';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { articleApi } from '../../api';
+import { useQuery } from '@tanstack/react-query';
+import { useProfile } from '../../../profile/useProfile';
 import { ITag, IAuthor } from '../../../../helpers/interfaces';
 
 interface PublicationInput {
@@ -15,25 +17,54 @@ interface PublicationInput {
 	file: File | null;
 	tags: number[];
 	coauthors: number[];
+	fileLink: string;
 }
 
-const CreatePublication = () => {
+// TODO Сделать мутации для удаления, редактирования и создания
+
+const EditPublication = () => {
 	const navigate = useNavigate();
+	const { articleId } = useParams();
 	const { data: allTags } = useTags();
 	const { authors } = useAuthors();
+	const { data: userData } = useProfile();
+
+	// Получаем данные статьи для редактирования
+	const { data: articleData, isLoading } = useQuery({
+		...articleApi.getArticleById(articleId as string),
+		enabled: !!articleId
+	});
 
 	const [selectedTagsId, setSelectedTagsId] = useState<number[]>([]);
 	const [selectedCoauthorsId, setSelectedCoauthorsId] = useState<number[]>([]);
 	const [showTagModal, setShowTagModal] = useState<boolean>(false);
 	const [showCoauthorsModal, setShowCoauthorsModal] = useState<boolean>(false);
+	const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
 
 	const [input, setInput] = useState<PublicationInput>({
 		title: '',
 		abstract: '',
 		file: null,
 		tags: [],
-		coauthors: []
+		coauthors: [],
+		fileLink: ''
 	});
+
+	// Заполняем форму данными статьи при загрузке
+	useEffect(() => {
+		if (articleData) {
+			setInput({
+				title: articleData.title,
+				abstract: articleData.abstract,
+				file: null,
+				tags: articleData.tags?.map((tag) => tag.id) || [],
+				coauthors: articleData.profiles?.map((profile) => profile.id) || [],
+				fileLink: articleData.file_link
+			});
+			setSelectedTagsId(articleData.tags?.map((tag) => tag.id) || []);
+			setSelectedCoauthorsId(articleData.profiles?.map((profile) => profile.id) || []);
+		}
+	}, [articleData]);
 
 	const handleNavigate = () => {
 		navigate(-1);
@@ -51,19 +82,50 @@ const CreatePublication = () => {
 		setShowCoauthorsModal(false);
 	};
 
-	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+
 		const formData = new FormData();
 
+		// Добавляем ID публикации
+		formData.append('publication_id', articleId as string);
+
+		// Добавляем остальные поля
 		formData.append('title', input.title);
 		formData.append('abstract', input.abstract);
-		formData.append('file', input.file as File);
+		formData.append('owner_id', userData?.id.toString() || '');
+		formData.append('fileLink', input.fileLink);
 
-		selectedTagsId.forEach((id) => formData.append('tags[]', id.toString()));
-		selectedCoauthorsId.forEach((id) => formData.append('coauthors[]', id.toString()));
+		// Добавляем файл, если он есть
+		if (input.file) {
+			formData.append('file', input.file);
+		}
 
-		articleApi.createPublication(formData);
-		navigate(-1);
+		// Добавляем соавторов
+		input.coauthors.forEach((id) => {
+			formData.append('coauthors[]', id.toString());
+		});
+
+		// Добавляем теги
+		input.tags.forEach((id) => {
+			formData.append('tags[]', id.toString());
+		});
+
+		try {
+			await articleApi.updatePublication(formData);
+			navigate(-1);
+		} catch (error) {
+			console.error('Ошибка при обновлении публикации:', error);
+		}
+	};
+
+	const handleDelete = async () => {
+		try {
+			await articleApi.deletePublication(Number(articleId));
+			navigate('/search/articles');
+		} catch (error) {
+			console.error('Ошибка при удалении публикации:', error);
+		}
 	};
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,9 +139,13 @@ const CreatePublication = () => {
 	};
 
 	const removeCoauthor = (authorId: number) => {
-		setInput({ ...input, tags: input.coauthors.filter((id) => id !== authorId) });
+		setInput({ ...input, coauthors: input.coauthors.filter((id) => id !== authorId) });
 		setSelectedCoauthorsId((prev) => prev.filter((id) => id !== authorId));
 	};
+
+	if (isLoading) {
+		return <div>Загрузка...</div>;
+	}
 
 	// Получаем выбранные теги и авторов для отображения
 	const selectedTags = allTags?.filter((tag: ITag) => selectedTagsId.includes(tag.id)) || [];
@@ -103,7 +169,23 @@ const CreatePublication = () => {
 					selectedIds={selectedCoauthorsId}
 				/>
 			)}
-			<h2>Создать новую публикацию</h2>
+			{showDeleteConfirm && (
+				<div className={styles['delete-modal']}>
+					<div className={styles['delete-content']}>
+						<h3>Удаление публикации</h3>
+						<p>Вы уверены, что хотите удалить эту публикацию? Это действие необратимо.</p>
+						<div className={styles['delete-buttons']}>
+							<Button className='red' onClick={handleDelete}>
+								Удалить
+							</Button>
+							<Button className='white' onClick={() => setShowDeleteConfirm(false)}>
+								Отмена
+							</Button>
+						</div>
+					</div>
+				</div>
+			)}
+			<h2>Редактировать публикацию</h2>
 			<form className={styles['editable-fields']} onSubmit={handleSubmit}>
 				<div className={styles['edit-field']}>
 					<p>
@@ -138,17 +220,16 @@ const CreatePublication = () => {
 
 				<div className={styles['edit-field']}>
 					<p>
-						Файл статьи (PDF) <span className={styles['star']}>*</span>
+						Текущий файл:{' '}
+						<a href={input.fileLink} target='_blank' rel='noopener noreferrer'>
+							Скачать
+						</a>
 					</p>
-					<Input
-						className='darker'
-						name='file'
-						type='file'
-						accept='.pdf'
-						onChange={handleFileChange}
-						required
-					/>
-					{input.file && <p className={styles['file-info']}>Выбран файл: {input.file.name}</p>}
+					<p>
+						Новый файл статьи (PDF) <span className={styles['not-required']}>- Необязательно</span>
+					</p>
+					<Input className='darker' name='file' type='file' accept='.pdf' onChange={handleFileChange} />
+					{input.file && <p className={styles['file-info']}>Выбран новый файл: {input.file.name}</p>}
 				</div>
 
 				<div className={styles['edit-field']}>
@@ -209,9 +290,12 @@ const CreatePublication = () => {
 
 				<div className={styles['buttons']}>
 					<Button className='green' type='submit'>
-						Опубликовать
+						Сохранить изменения
 					</Button>
-					<Button className='red' type='button' onClick={handleNavigate}>
+					<Button className='red' type='button' onClick={() => setShowDeleteConfirm(true)}>
+						Удалить статью
+					</Button>
+					<Button className='white' type='button' onClick={handleNavigate}>
 						Отменить
 					</Button>
 				</div>
@@ -220,4 +304,4 @@ const CreatePublication = () => {
 	);
 };
 
-export default CreatePublication;
+export default EditPublication;

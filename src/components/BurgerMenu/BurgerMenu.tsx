@@ -61,11 +61,11 @@ const BurgerMenu = () => {
 				<img className={styles['close-btn']} src='/burger/close.svg' alt='Закрыть' onClick={toggleMenu} />
 
 				{/* TODO добавить иконки, сейчас было в падлу :) */}
-				<a href='#'>Главная</a>
+				<NavLink to={'/'}>Главная</NavLink>
 				<NavLink to={`profile/${data?.id}/overview`}>Мой профиль</NavLink>
 				<NavLink to={'search/articles'}>Поиск</NavLink>
-				<a href='#'>Подписки</a>
-				<a href='#'>Подписчики</a>
+				<NavLink to={'subscribes'}>Подписки</NavLink>
+				<NavLink to={'subscribers'}>Подписчики</NavLink>
 				<NavLink to={'settings/profile'}>Настройки</NavLink>
 
 				{/* //TODO реализовать функцию выхода нормально  */}

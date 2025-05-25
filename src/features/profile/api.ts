@@ -1,26 +1,8 @@
 import { queryOptions } from '@tanstack/react-query';
 import { jsonApiInstance } from '../../shared/api/api-instance';
-import { IArticle } from '../article/components/Article/Article.props';
 import { AxiosError } from 'axios';
 import { IOmitData } from './components/SettingsAbout/SettingsAbout.props';
-
-export type ProfileDto = {
-	id: number;
-	login: string;
-	password: string;
-	first_name: string;
-	last_name: string;
-	middle_name: string;
-	academic_degree: string;
-	vac: string;
-	appointment: string;
-	country: string;
-	Publications: IArticle[];
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	SubscribersList: any[];
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	MySubscribesList: any[];
-};
+import { DataDto, IAnotherProfile, IProfile } from '../../helpers/interfaces';
 
 export const profileApi = {
 	baseKey: 'profile',
@@ -28,13 +10,41 @@ export const profileApi = {
 	getUserQueryOptions: () => {
 		return queryOptions({
 			queryKey: [profileApi.baseKey, 'userData'],
-			queryFn: () => jsonApiInstance.get<ProfileDto>('/getUserData').then((response) => response.data)
+			queryFn: () => jsonApiInstance.get<IProfile>('/getUserData').then((response) => response.data)
 		});
 	},
 	getUserProfileByIdQueryOptions: (id: string) => {
 		return queryOptions({
 			queryKey: [profileApi.baseKey, 'userData', id],
-			queryFn: () => jsonApiInstance.get(`/profiles/id/${id}`).then((response) => response.data)
+			queryFn: () => jsonApiInstance.get<IAnotherProfile>(`/profiles/id/${id}`).then((response) => response.data)
+		});
+	},
+
+	getSubscribes: (searchTerm: string = '', page: number = 1, count: number = 10) => {
+		return queryOptions({
+			queryKey: [profileApi.baseKey, 'subscribes', searchTerm],
+			queryFn: () =>
+				jsonApiInstance
+					.post<DataDto<IProfile>>('/get-subscribes-paginator', {
+						count: count,
+						page: page,
+						stroke: searchTerm
+					})
+					.then((response) => response.data)
+		});
+	},
+
+	getSubscribers: (searchTerm: string = '', page: number = 1, count: number = 10) => {
+		return queryOptions({
+			queryKey: [profileApi.baseKey, 'subscribers', searchTerm],
+			queryFn: () =>
+				jsonApiInstance
+					.post<DataDto<IProfile>>('/get-subscribers-paginator', {
+						count: count,
+						page: page,
+						stroke: searchTerm
+					})
+					.then((response) => response.data)
 		});
 	},
 

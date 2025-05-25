@@ -19,6 +19,27 @@
 	gap: 10px;
 }
 
+.follow-link {
+	text-decoration: none;
+	color: inherit;
+	transition: color 0.2s ease;
+
+	&:hover {
+		color: var(--main-theme);
+
+		.follow,
+		.following {
+			color: var(--main-theme);
+		}
+	}
+}
+
+.follow,
+.following {
+	cursor: pointer;
+	transition: color 0.2s ease;
+}
+
 .right-side {
 	width: 100%;
 	& > h2 {

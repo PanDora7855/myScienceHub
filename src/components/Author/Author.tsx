@@ -1,18 +1,18 @@
-import { IAuthor } from './Author.props';
+import { IProfile } from '../../helpers/interfaces';
 import styles from './Author.module.scss';
 import { NavLink } from 'react-router';
 
-const Author = ({ props }: { props: IAuthor }) => {
+const Author = ({ props }: { props: IProfile }) => {
 	const {
 		first_name,
 		last_name,
 		middle_name,
 		academic_degree,
 		country,
-		followers,
+		MySubscribesList,
 		id,
 		appointment,
-		publications,
+		Publications,
 		vac
 	} = props;
 	return (
@@ -40,11 +40,11 @@ const Author = ({ props }: { props: IAuthor }) => {
 			</p>
 			<p>
 				<strong>Подписчики: </strong>
-				{followers}
+				{MySubscribesList?.length}
 			</p>
 			<p>
 				<strong>Публикации: </strong>
-				{publications}
+				{Publications?.length}
 			</p>
 			<NavLink to={`/profile/${id}/overview`}>Посмотреть профиль</NavLink>
 		</div>

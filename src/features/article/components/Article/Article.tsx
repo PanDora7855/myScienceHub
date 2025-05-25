@@ -1,9 +1,14 @@
-import { IArticle } from './Article.props';
 import styles from './Article.module.scss';
 import { NavLink } from 'react-router';
+import { useProfile } from '../../../profile/useProfile';
+import { IArticle } from '../../../../helpers/interfaces';
 
 const Article = ({ props }: { props: IArticle }) => {
-	const { abstract, profiles, created_at, tags, title, updated_at } = props;
+	const { id, abstract, profiles, created_at, tags, title, updated_at, owner_id } = props;
+	const { data: currentUserData } = useProfile();
+
+	const isOwnProfile = currentUserData?.id === owner_id;
+
 	return (
 		<div className={styles['article-container']}>
 			<h2>{title}</h2>
@@ -31,7 +36,16 @@ const Article = ({ props }: { props: IArticle }) => {
 				{tags?.map(({ name }) => name).join(', ')}
 			</p>
 			{/* TODO Тут у дани происходит скачка, если успею надо как то сделать просмотр на другой странице */}
-			<NavLink to={'/'}>Посмотреть статью</NavLink>
+			<div className={styles['buttons']}>
+				<NavLink className={styles['watch']} to={'/'}>
+					📄 Посмотреть статью
+				</NavLink>
+				{isOwnProfile && (
+					<NavLink className={styles['edit']} to={`/edit-publication/${id}`}>
+						✏️ Редактировать
+					</NavLink>
+				)}
+			</div>
 		</div>
 	);
 };

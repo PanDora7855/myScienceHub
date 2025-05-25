@@ -1,22 +1,22 @@
-import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query';
+import { queryOptions } from '@tanstack/react-query';
 import { jsonApiInstance } from '../../shared/api/api-instance';
+import { DataDto, IProfile } from '../../helpers/interfaces';
 
 export const searchApi = {
 	baseKey: 'search',
 
-	getAuthors: (searchTerm: string = '') => {
-		return infiniteQueryOptions({
+	getAuthors: (searchTerm: string = '', page: number = 1, count: number = 10, sort: number = 0) => {
+		return queryOptions({
 			queryKey: [searchApi.baseKey, 'authors', searchTerm],
-			queryFn: ({ pageParam }) =>
+			queryFn: () =>
 				jsonApiInstance
-					.post('/get-authors-paginator', {
-						count: 10,
-						first_id: pageParam * 10,
-						stroke: searchTerm
+					.post<DataDto<IProfile>>('/get-authors-paginator', {
+						count: count,
+						page: page,
+						stroke: searchTerm,
+						sort: sort
 					})
-					.then((response) => response.data),
-			initialPageParam: 0,
-			getNextPageParam: (lastPage) => lastPage.nextId ?? undefined
+					.then((response) => response.data)
 		});
 	},
 	getTags: () => {

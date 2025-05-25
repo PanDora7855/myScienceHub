@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Button from '../../../../components/Button/Button';
+// import Button from '../../../../components/Button/Button';
 import Input from '../../../../components/Input/Input';
 import styles from './SearchAuthors.module.scss';
 import Author from '../../../../components/Author/Author';
@@ -8,7 +8,7 @@ import { useAuthors } from '../../useAuthors';
 const SearchAuthors = () => {
 	const [searchTerm, setSearchTerm] = useState('');
 
-	const { authors, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useAuthors(searchTerm);
+	const { authors, isLoading } = useAuthors(searchTerm, 1, 10, 0);
 
 	return (
 		<div className={styles['search-authors']}>
@@ -30,14 +30,6 @@ const SearchAuthors = () => {
 					) : (
 						<p>Авторы не найдены</p>
 					)}
-				</div>
-			)}
-
-			{hasNextPage && (
-				<div className={styles['load-more']}>
-					<Button className='white' onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
-						{isFetchingNextPage ? 'Загрузка...' : 'Загрузить еще'}
-					</Button>
 				</div>
 			)}
 		</div>

@@ -1,0 +1,194 @@
+.editable-fields {
+	margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.edit-field {
+	> p {
+		margin-bottom: 10px;
+		font-size: 14px;
+	}
+
+	input {
+		width: 100%;
+	}
+
+	textarea {
+		font-family: 'Inter', sans-serif;
+		font-size: 15px;
+		font-style: normal;
+		font-weight: normal;
+
+		min-height: 100px;
+		max-height: 200px;
+		width: 100% !important;
+
+		border: none;
+		border-radius: 8px;
+		background: rgba(255, 255, 255, 80%);
+
+		background-color: #f9f9f9;
+		padding: 16px 20px;
+
+		&::placeholder {
+			color: rgba(0, 0, 0, 0.4);
+		}
+	}
+
+	.textarea {
+		position: relative;
+
+		p {
+			position: absolute;
+			bottom: -30px;
+			right: 0px;
+			color: rgba(0, 0, 0, 0.4);
+			user-select: none;
+		}
+	}
+
+	a {
+		color: var(--main-theme);
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+
+.star {
+	color: red;
+}
+
+.not-required {
+	color: rgba(0, 0, 0, 0.4);
+}
+
+.buttons {
+	display: flex;
+	gap: 20px;
+}
+
+// Стили для файлов
+.file-info {
+	font-size: 14px;
+	color: #059669;
+	margin-top: 8px;
+	font-weight: 500;
+}
+
+// Стили для тегов и соавторов
+.tags-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-bottom: 15px;
+	margin-top: 5px;
+}
+
+.tag {
+	display: inline-flex;
+	align-items: center;
+	background-color: #f9f9f9;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+	padding: 6px 12px;
+	font-size: 14px;
+	font-family: 'Inter', sans-serif;
+	gap: 8px;
+	transition: all 0.2s ease;
+
+	p {
+		color: rgba(0, 0, 0, 0.8);
+		user-select: none;
+	}
+
+	&:hover {
+		background-color: #f0f0f0;
+	}
+}
+
+.remove-tag {
+	background: none;
+	border: none;
+	color: rgba(0, 0, 0, 0.4);
+	cursor: pointer;
+	font-size: 16px;
+	padding: 0;
+	margin: 0;
+	width: 17px;
+	height: 17px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	transition: all 0.2s ease;
+	font-weight: bold;
+}
+
+// Модальное окно для подтверждения удаления
+.delete-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.6);
+	backdrop-filter: blur(2px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;
+	animation: fadeIn 0.2s ease-in-out;
+}
+
+.delete-content {
+	background-color: white;
+	border-radius: 8px;
+	padding: 30px;
+	max-width: 400px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+	animation: slideIn 0.3s ease-out;
+
+	h3 {
+		font-size: 20px;
+		font-weight: bold;
+		margin-bottom: 15px;
+		color: #e74c3c;
+	}
+
+	p {
+		font-size: 16px;
+		margin-bottom: 20px;
+		color: #333;
+	}
+}
+
+.delete-buttons {
+	display: flex;
+	gap: 10px;
+	justify-content: flex-end;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes slideIn {
+	from {
+		transform: translateY(-20px);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
