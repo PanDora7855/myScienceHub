@@ -1,13 +1,13 @@
 import { queryOptions } from '@tanstack/react-query';
 import { jsonApiInstance } from '../../shared/api/api-instance';
-import { DataDto, IProfile } from '../../helpers/interfaces';
+import { DataDto, IProfile, ITag } from '../../helpers/interfaces';
 
 export const searchApi = {
 	baseKey: 'search',
 
 	getAuthors: (searchTerm: string = '', page: number = 1, count: number = 10, sort: number = 0) => {
 		return queryOptions({
-			queryKey: [searchApi.baseKey, 'authors', searchTerm],
+			queryKey: [searchApi.baseKey, 'authors', searchTerm, page, count, sort],
 			queryFn: () =>
 				jsonApiInstance
 					.post<DataDto<IProfile>>('/get-authors-paginator', {
@@ -22,7 +22,7 @@ export const searchApi = {
 	getTags: () => {
 		return queryOptions({
 			queryKey: [searchApi.baseKey, 'tags'],
-			queryFn: () => jsonApiInstance.get('/tags').then((response) => response.data)
+			queryFn: () => jsonApiInstance.get<ITag[]>('/tags').then((response) => response.data)
 		});
 	}
 };

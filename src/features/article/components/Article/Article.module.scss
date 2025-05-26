@@ -7,19 +7,23 @@
 	p {
 		display: block;
 		margin: 5px 0;
-		font-size: 14px;
-	}
-
-	> a {
-		display: block;
-		font-size: 14px;
-		color: var(--main-theme);
-		text-decoration: none;
+		font-size: 16px;
 	}
 }
 
 .authors {
 	margin: 10px 0 !important;
+	display: flex;
+	align-items: center;
+
+	> strong {
+		margin-right: 10px;
+	}
+}
+
+.profiles {
+	display: flex;
+	gap: 10px;
 }
 
 .buttons {

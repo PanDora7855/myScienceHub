@@ -1,0 +1,157 @@
+.register-page {
+	min-height: 100vh;
+	background-color: #f9f9f9;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: 'Inter', sans-serif;
+	padding: 20px 0;
+}
+
+.left-side {
+	display: inline-block;
+}
+
+.right-side {
+	height: fit-content;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: rgba(88, 130, 193, 15%);
+	border-radius: 8px;
+	padding: 40px 25px;
+	margin-left: 140px;
+	gap: 20px;
+	max-width: 450px;
+	width: 100%;
+}
+
+.right-side__top {
+	text-align: center;
+	width: 100%;
+
+	h1 {
+		display: inline-block;
+		font-size: 24px;
+		font-weight: bold;
+		text-transform: uppercase;
+		margin: 0 0 11px;
+	}
+
+	p {
+		color: #525252;
+		font-size: 14px;
+		margin-bottom: 15px;
+	}
+}
+
+.register-form {
+	display: flex;
+	flex-direction: column;
+	width: 364px;
+	gap: 12px;
+
+	.form-input {
+		position: relative;
+		img {
+			top: 14px;
+			left: 18px;
+			position: absolute;
+			z-index: 1;
+		}
+	}
+
+	.form-button {
+		background-color: var(--main-theme);
+		color: white;
+		padding: 16px 0 17px;
+		font-family: 'Inter', sans-serif;
+		font-size: 15px;
+		border-radius: 8px;
+		border: none;
+		cursor: pointer;
+		margin-top: 10px;
+		transition: opacity 0.2s ease;
+
+		&:disabled {
+			opacity: 0.6;
+			cursor: not-allowed;
+		}
+
+		&:hover:not(:disabled) {
+			opacity: 0.9;
+		}
+	}
+}
+
+.verification-button {
+	background-color: #059669;
+	color: white;
+	padding: 12px 20px;
+	font-family: 'Inter', sans-serif;
+	font-size: 14px;
+	border-radius: 6px;
+	border: none;
+	cursor: pointer;
+	margin-bottom: 5px;
+	transition: all 0.2s ease;
+	width: fit-content;
+	align-self: flex-start;
+
+	&:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+
+	&:hover:not(:disabled) {
+		background-color: #047857;
+	}
+}
+
+.field-error {
+	color: #dc2626;
+	font-size: 12px;
+	margin-top: -8px;
+	margin-bottom: 4px;
+	text-align: left;
+	width: 100%;
+}
+
+.error {
+	background: #fee2e2;
+	border: 1px solid #fecaca;
+	color: #dc2626;
+	padding: 12px;
+	border-radius: 6px;
+	font-size: 14px;
+	width: 100%;
+	text-align: center;
+}
+
+.success {
+	background: #dcfce7;
+	border: 1px solid #bbf7d0;
+	color: #166534;
+	padding: 12px;
+	border-radius: 6px;
+	font-size: 14px;
+	width: 100%;
+	text-align: center;
+}
+
+.login-link {
+	font-size: 14px;
+	color: #525252;
+	text-align: center;
+	margin-top: 10px;
+
+	a {
+		color: var(--main-theme);
+		text-decoration: none;
+		font-weight: 500;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}

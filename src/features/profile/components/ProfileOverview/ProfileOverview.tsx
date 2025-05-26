@@ -4,11 +4,40 @@ import { useProfileById } from '../../useProfileById';
 import { useParams, NavLink } from 'react-router';
 import { useProfile } from '../../useProfile';
 import { IArticle } from '../../../../helpers/interfaces';
+import Button from '../../../../components/Button/Button';
+import { useState } from 'react';
+import { useSubscribeMutation, useUnsubscribeMutation } from '../../useSubscribeMutation';
+import { profileApi } from '../../api';
+import Input from '../../../../components/Input/Input';
 
 const ProfileOverview = () => {
 	const { authorId } = useParams();
 	const { data, isLoading: profileLoading } = useProfileById(authorId as string);
 	const { data: currentUserData } = useProfile();
+
+	const subscribeMutation = useSubscribeMutation(authorId as string);
+	const unsubscribeMutation = useUnsubscribeMutation(authorId as string);
+
+	const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
+
+	const handleSubscribe = () => {
+		setIsSubscribed(true);
+		subscribeMutation.mutate();
+	};
+
+	const handleUnsubscribe = () => {
+		setIsSubscribed(false);
+		unsubscribeMutation.mutate();
+	};
+
+	const [countPublications, setCountPublications] = useState(10);
+	const [dateStart, setDateStart] = useState('');
+	const [dateEnd, setDateEnd] = useState('');
+	const [fileType, setFileType] = useState(0);
+
+	const handleDownload = () => {
+		profileApi.getLastPublications(countPublications, new Date(dateEnd), new Date(dateStart), fileType);
+	};
 
 	if (profileLoading) {
 		return <div>Загрузка...</div>;
@@ -23,9 +52,6 @@ const ProfileOverview = () => {
 	return (
 		<div className={styles['container']}>
 			<div className={styles['left-side']}>
-				<div className={styles['avatar']}>
-					<img src='/avatar.svg' alt='Аватар' width={113} height={113} />
-				</div>
 				<div className={styles['name']}>
 					<h2>
 						{data.Profile.last_name} {data.Profile.first_name} {data.Profile.middle_name}
@@ -38,7 +64,7 @@ const ProfileOverview = () => {
 					<p>Учёная степень: {data.Profile.academic_degree ?? 'Не указана'}</p>
 				</div>
 				<div className={styles['vac']}>
-					<p>VAC: {data.Profile.vac}</p>
+					<p>ВАК: {data.Profile.vac.length > 0 ? data.Profile.vac : 'Не указан'}</p>
 				</div>
 				<div className={styles['id']}>
 					<p>Должность: {data.Profile.appointment}</p>
@@ -71,8 +97,52 @@ const ProfileOverview = () => {
 						</>
 					)}
 				</div>
+				{!isOwnProfile &&
+					(isSubscribed ? (
+						<Button className='red' onClick={() => handleUnsubscribe()}>
+							Отписаться
+						</Button>
+					) : (
+						<Button className='purple' onClick={() => handleSubscribe()}>
+							Подписаться
+						</Button>
+					))}
 			</div>
 			<div className={styles['right-side']}>
+				<div className={styles['filters']}>
+					<h3>Фильтры публикаций</h3>
+					<div className={styles['filters__row']}>
+						<div className={styles['filters__field']}>
+							<p>Кол-во публикаций:</p>
+							<Input
+								type='number'
+								min='1'
+								value={countPublications}
+								onChange={(e) => setCountPublications(+e.target.value)}
+							/>
+						</div>
+						<div className={styles['filters__field']}>
+							<p>Дата начала:</p>
+							<Input type='date' value={dateStart} onChange={(e) => setDateStart(e.target.value)} />
+						</div>
+						<div className={styles['filters__field']}>
+							<p>Дата окончания:</p>
+							<Input type='date' value={dateEnd} onChange={(e) => setDateEnd(e.target.value)} />
+						</div>
+						<div className={styles['filters__field']}>
+							<p>Тип файла:</p>
+							<select value={fileType} onChange={(e) => setFileType(+e.target.value)}>
+								<option value='0'>Word</option>
+								<option value='1'>Excel</option>
+								<option value='2'>LibraWord</option>
+								<option value='3'>LibraExcel</option>
+							</select>
+						</div>
+					</div>
+					<button className={styles['filters__button']} onClick={handleDownload}>
+						📥 Скачать список публикаций
+					</button>
+				</div>
 				<h2>Последние публикации</h2>
 				<div className={styles['publications']}>
 					{data.Profile.Publications && data.Profile.Publications.length > 0 ? (

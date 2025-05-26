@@ -6,17 +6,17 @@ export function useSearchArticles(
 	tags: number[] = [],
 	page: number = 1,
 	count: number = 10,
-	sort: number = 0
+	sort: number = 1
 ) {
-	const {
-		data: articles,
-		error,
-		isLoading
-	} = useQuery({
+	const { data, error, isLoading } = useQuery({
 		...articleApi.searchArticles(searchTerm, tags, page, count, sort),
-		placeholderData: keepPreviousData,
-		select: (data) => data.data
+		placeholderData: keepPreviousData
 	});
 
-	return { articles, error, isLoading };
+	return {
+		articles: data?.data || [],
+		totalPages: data?.max_pages || 1,
+		error,
+		isLoading
+	};
 }

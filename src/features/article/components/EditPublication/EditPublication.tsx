@@ -9,7 +9,7 @@ import { useNavigate, useParams } from 'react-router';
 import { articleApi } from '../../api';
 import { useQuery } from '@tanstack/react-query';
 import { useProfile } from '../../../profile/useProfile';
-import { ITag, IAuthor } from '../../../../helpers/interfaces';
+import { ITag } from '../../../../helpers/interfaces';
 
 interface PublicationInput {
 	title: string;
@@ -62,9 +62,11 @@ const EditPublication = () => {
 				fileLink: articleData.file_link
 			});
 			setSelectedTagsId(articleData.tags?.map((tag) => tag.id) || []);
-			setSelectedCoauthorsId(articleData.profiles?.map((profile) => profile.id) || []);
+			setSelectedCoauthorsId(
+				articleData.profiles?.map((profile) => profile.id).filter((id) => id !== userData?.id) || []
+			);
 		}
-	}, [articleData]);
+	}, [articleData, userData?.id]);
 
 	const handleNavigate = () => {
 		navigate(-1);
@@ -121,8 +123,8 @@ const EditPublication = () => {
 
 	const handleDelete = async () => {
 		try {
-			await articleApi.deletePublication(Number(articleId));
-			navigate('/search/articles');
+			await articleApi.deletePublication(parseInt(articleId as string), input.fileLink, userData?.id || 0);
+			navigate(`/profile/${userData?.id}/overview`);
 		} catch (error) {
 			console.error('Ошибка при удалении публикации:', error);
 		}
@@ -148,14 +150,16 @@ const EditPublication = () => {
 	}
 
 	// Получаем выбранные теги и авторов для отображения
-	const selectedTags = allTags?.filter((tag: ITag) => selectedTagsId.includes(tag.id)) || [];
-	const selectedCoauthors = authors?.filter((author: IAuthor) => selectedCoauthorsId.includes(author.id)) || [];
+	const selectedTags = allTags?.filter((tag) => selectedTagsId.includes(tag.id)) || [];
+	const selectedCoauthors = authors?.filter((author) => selectedCoauthorsId.includes(author.id)) || [];
+
+	console.log(selectedCoauthors);
 
 	return (
 		<>
 			{showTagModal && (
 				<Filter
-					tags={allTags as ITag[]}
+					tags={allTags}
 					onClick={() => setShowTagModal(false)}
 					onApplyTags={handleApplyTags}
 					selectedIds={selectedTagsId}
@@ -163,7 +167,7 @@ const EditPublication = () => {
 			)}
 			{showCoauthorsModal && (
 				<Filter
-					authors={authors as IAuthor[]}
+					authors={authors}
 					onClick={() => setShowCoauthorsModal(false)}
 					onApplyTags={handleApplyCoauthors}
 					selectedIds={selectedCoauthorsId}
@@ -245,7 +249,7 @@ const EditPublication = () => {
 
 					{selectedCoauthors.length > 0 && (
 						<div className={styles['tags-container']}>
-							{selectedCoauthors.map((author: IAuthor) => (
+							{selectedCoauthors.map((author) => (
 								<div key={author.id} className={styles['tag']}>
 									<p>{`${author.first_name} ${author.last_name} ${author.middle_name}`}</p>
 									<button

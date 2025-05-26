@@ -1,14 +1,26 @@
-import { useState } from 'react';
-// import Button from '../../../../components/Button/Button';
+import { useEffect, useState } from 'react';
 import Input from '../../../../components/Input/Input';
 import styles from './SearchAuthors.module.scss';
 import Author from '../../../../components/Author/Author';
 import { useAuthors } from '../../useAuthors';
+import PaginationButtons from '../../../../components/PaginationButtons/PaginationButtons';
 
 const SearchAuthors = () => {
 	const [searchTerm, setSearchTerm] = useState('');
+	const [currentPage, setCurrentPage] = useState(1);
+	const { authors, isLoading, totalPages } = useAuthors(searchTerm, currentPage, 10, 0);
 
-	const { authors, isLoading } = useAuthors(searchTerm, 1, 10, 0);
+	const handlePageChange = (page: number) => {
+		setCurrentPage(page);
+
+		if (searchTerm) {
+			setCurrentPage(1);
+		}
+	};
+
+	useEffect(() => {
+		setCurrentPage(1);
+	}, [searchTerm]);
 
 	return (
 		<div className={styles['search-authors']}>
@@ -32,6 +44,15 @@ const SearchAuthors = () => {
 					)}
 				</div>
 			)}
+			<div className={styles['buttons']}>
+				{totalPages > 1 && (
+					<PaginationButtons
+						currentPage={currentPage}
+						totalPages={totalPages}
+						onPageChange={handlePageChange}
+					/>
+				)}
+			</div>
 		</div>
 	);
 };

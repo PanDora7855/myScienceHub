@@ -22,7 +22,7 @@ export const profileApi = {
 
 	getSubscribes: (searchTerm: string = '', page: number = 1, count: number = 10) => {
 		return queryOptions({
-			queryKey: [profileApi.baseKey, 'subscribes', searchTerm],
+			queryKey: [profileApi.baseKey, 'subscribes', searchTerm, page, count],
 			queryFn: () =>
 				jsonApiInstance
 					.post<DataDto<IProfile>>('/get-subscribes-paginator', {
@@ -36,7 +36,7 @@ export const profileApi = {
 
 	getSubscribers: (searchTerm: string = '', page: number = 1, count: number = 10) => {
 		return queryOptions({
-			queryKey: [profileApi.baseKey, 'subscribers', searchTerm],
+			queryKey: [profileApi.baseKey, 'subscribers', searchTerm, page, count],
 			queryFn: () =>
 				jsonApiInstance
 					.post<DataDto<IProfile>>('/get-subscribers-paginator', {
@@ -70,7 +70,7 @@ export const profileApi = {
 
 	confirmUserLogin: async (login: string, code: string) => {
 		return await jsonApiInstance
-			.post('/settings/verify-and-change-email', { login, code })
+			.post('/settings/verify-and-change-email', { profile: { login: login }, code })
 			.then((response) => response.data)
 			.catch((e: AxiosError) => {
 				console.log(e);
@@ -90,11 +90,54 @@ export const profileApi = {
 
 	confirmUserPassword: async (code: string, password: string) => {
 		return await jsonApiInstance
-			.post('/settings/verify-and-change-password', { code, password })
+			.post('/settings/verify-and-change-password', { code, profile: { password: password } })
 			.then((response) => response.data)
 			.catch((e: AxiosError) => {
 				console.log(e.response?.data);
 				throw e;
+			});
+	},
+
+	subscribeToUser: async (id: string) => {
+		return await jsonApiInstance
+			.post(`/subscribe/${id}`)
+			.then((response) => response.data)
+			.catch((e: AxiosError) => {
+				console.log(e.response?.data);
+				throw e;
+			});
+	},
+
+	unsubscribeFromUser: async (id: string) => {
+		return await jsonApiInstance
+			.delete(`/unsubscribe/${id}`)
+			.then((response) => response.data)
+			.catch((e: AxiosError) => {
+				console.log(e.response?.data);
+				throw e;
+			});
+	},
+
+	getLastPublications: (CountPublications: number, DateEnd: Date | null, DateStart: Date | null, Type: number) => {
+		return jsonApiInstance
+			.post(
+				'/get-file-with-publication-list',
+				{
+					CountPublications,
+					DateEnd,
+					DateStart,
+					Type
+				},
+				{ responseType: 'blob' }
+			)
+			.then((response) => response.data)
+			.then((blob) => {
+				const url = window.URL.createObjectURL(blob);
+				const a = document.createElement('a');
+				a.href = url;
+				a.download = 'publications_list';
+				a.click();
+				window.URL.revokeObjectURL(url);
 			});
 	}
 };

@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
 import Input from '../../../../components/Input/Input';
 import styles from './Login.module.scss';
 import { FormEvent, useState } from 'react';
@@ -54,6 +54,9 @@ const Login = () => {
 					<button className={styles['form-button']} type='submit'>
 						Войти
 					</button>
+					<p className={styles['register-link']}>
+						Нет аккаунта? <NavLink to='/auth/register'>Зарегистрироваться</NavLink>
+					</p>
 				</form>
 				<p className={styles['hr-line']}>Войти другим способом</p>
 				<div className={styles['another-way']}>

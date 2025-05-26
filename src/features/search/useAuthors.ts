@@ -7,14 +7,12 @@ export function useAuthors(searchTerm = '', page = 1, count = 10, sort = 0) {
 		placeholderData: keepPreviousData
 	});
 
-	// Преобразуем pages в плоский массив для удобства использования
 	const authors = data?.data || [];
-
-	console.log(data);
-	console.log(authors);
+	const totalPages = data?.max_pages || 1;
 
 	return {
 		authors,
+		totalPages,
 		error,
 		isLoading
 	};

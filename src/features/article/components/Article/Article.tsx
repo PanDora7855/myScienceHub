@@ -1,13 +1,19 @@
 import styles from './Article.module.scss';
-import { NavLink } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
 import { useProfile } from '../../../profile/useProfile';
 import { IArticle } from '../../../../helpers/interfaces';
+import Button from '../../../../components/Button/Button';
 
 const Article = ({ props }: { props: IArticle }) => {
-	const { id, abstract, profiles, created_at, tags, title, updated_at, owner_id } = props;
+	const navigate = useNavigate();
+	const { id, abstract, profiles, created_at, tags, title, updated_at, owner_id, file_link } = props;
 	const { data: currentUserData } = useProfile();
 
 	const isOwnProfile = currentUserData?.id === owner_id;
+
+	const navigateToUserProfile = (id: number) => {
+		navigate(`/profile/${id}/overview`);
+	};
 
 	return (
 		<div className={styles['article-container']}>
@@ -26,10 +32,20 @@ const Article = ({ props }: { props: IArticle }) => {
 					{new Date(updated_at).toLocaleDateString()}
 				</p>
 			)}
-			<p className={styles['authors']}>
-				<strong>Авторы: </strong>
-				{profiles?.map(({ first_name, last_name }) => `${first_name} ${last_name}`).join(', ')}
-			</p>
+			{(profiles?.length as number) > 0 && (
+				<div className={styles['authors']}>
+					<strong>Совторы: </strong>
+					<div className={styles['profiles']}>
+						{profiles?.map(({ first_name, last_name, id }) => (
+							<Button
+								key={id}
+								className='purple'
+								onClick={() => navigateToUserProfile(id)}
+							>{`${first_name} ${last_name}`}</Button>
+						))}
+					</div>
+				</div>
+			)}
 			<p>
 				{/* TODO Тут надо будет сделать поиск по тегу при нажатии */}
 				<strong>Теги: </strong>
@@ -37,9 +53,9 @@ const Article = ({ props }: { props: IArticle }) => {
 			</p>
 			{/* TODO Тут у дани происходит скачка, если успею надо как то сделать просмотр на другой странице */}
 			<div className={styles['buttons']}>
-				<NavLink className={styles['watch']} to={'/'}>
+				<a href={file_link} target='_blank' rel='noopener noreferrer' className={styles['watch']}>
 					📄 Посмотреть статью
-				</NavLink>
+				</a>
 				{isOwnProfile && (
 					<NavLink className={styles['edit']} to={`/edit-publication/${id}`}>
 						✏️ Редактировать

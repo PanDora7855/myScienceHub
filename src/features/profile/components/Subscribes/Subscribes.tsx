@@ -29,6 +29,7 @@ const Subscribes = () => {
 					{subscribes?.length > 0 ? (
 						subscribes?.map((author) => <Author key={author.id} props={author} />)
 					) : (
+						// <p>{subscribes.map((author) => author.id)}</p>
 						<p>У вас пока нет подписок</p>
 					)}
 				</div>

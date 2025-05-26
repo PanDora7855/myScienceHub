@@ -12,10 +12,9 @@ export const articleApi = {
 		});
 	},
 
-	// TODO Попросил даню возвращать hasNextPage
-	searchArticles: (searchTerm: string, tags: number[], page: number = 1, count: number = 10, sort: number = 0) => {
+	searchArticles: (searchTerm: string, tags: number[], page: number = 1, count: number = 10, sort: number = 1) => {
 		return queryOptions({
-			queryKey: [articleApi.baseKey, 'search', tags, searchTerm],
+			queryKey: [articleApi.baseKey, 'search', tags, searchTerm, page, count, sort],
 			// TODO тут я попросил даню добавить id автора
 			queryFn: () =>
 				jsonApiInstance
@@ -45,7 +44,15 @@ export const articleApi = {
 		return jsonApiInstance.patch('/update-publication', formData).then((response) => response.data);
 	},
 
-	deletePublication: (id: number) => {
-		return jsonApiInstance.delete(`/delete-publication/${id}`).then((response) => response.data);
+	deletePublication: (id: number, fileLink: string, owner_id: number) => {
+		return jsonApiInstance
+			.delete('/delete-publication', {
+				data: {
+					id,
+					fileLink,
+					owner_id
+				}
+			})
+			.then((response) => response.data);
 	}
 };

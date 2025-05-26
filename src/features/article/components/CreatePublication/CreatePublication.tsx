@@ -7,7 +7,6 @@ import { useTags } from '../../../search/useTags';
 import { useAuthors } from '../../../search/useAuthors';
 import { useNavigate } from 'react-router';
 import { articleApi } from '../../api';
-import { ITag, IAuthor } from '../../../../helpers/interfaces';
 
 interface PublicationInput {
 	title: string;
@@ -82,14 +81,14 @@ const CreatePublication = () => {
 	};
 
 	// Получаем выбранные теги и авторов для отображения
-	const selectedTags = allTags?.filter((tag: ITag) => selectedTagsId.includes(tag.id)) || [];
-	const selectedCoauthors = authors?.filter((author: IAuthor) => selectedCoauthorsId.includes(author.id)) || [];
+	const selectedTags = allTags?.filter((tag) => selectedTagsId.includes(tag.id)) || [];
+	const selectedCoauthors = authors?.filter((author) => selectedCoauthorsId.includes(author.id)) || [];
 
 	return (
 		<>
 			{showTagModal && (
 				<Filter
-					tags={allTags as ITag[]}
+					tags={allTags}
 					onClick={() => setShowTagModal(false)}
 					onApplyTags={handleApplyTags}
 					selectedIds={selectedTagsId}
@@ -97,7 +96,7 @@ const CreatePublication = () => {
 			)}
 			{showCoauthorsModal && (
 				<Filter
-					authors={authors as IAuthor[]}
+					authors={authors}
 					onClick={() => setShowCoauthorsModal(false)}
 					onApplyTags={handleApplyCoauthors}
 					selectedIds={selectedCoauthorsId}
@@ -164,7 +163,7 @@ const CreatePublication = () => {
 
 					{selectedCoauthors.length > 0 && (
 						<div className={styles['tags-container']}>
-							{selectedCoauthors.map((author: IAuthor) => (
+							{selectedCoauthors.map((author) => (
 								<div key={author.id} className={styles['tag']}>
 									<p>{`${author.first_name} ${author.last_name} ${author.middle_name}`}</p>
 									<button
@@ -191,7 +190,7 @@ const CreatePublication = () => {
 
 					{selectedTags.length > 0 && (
 						<div className={styles['tags-container']}>
-							{selectedTags.map((tag: ITag) => (
+							{selectedTags.map((tag) => (
 								<div key={tag.id} className={styles['tag']}>
 									<p>{tag.name}</p>
 									<button

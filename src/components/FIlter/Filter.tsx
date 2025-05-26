@@ -1,11 +1,10 @@
 import { createPortal } from 'react-dom';
 import styles from './Filter.module.scss';
-import { ITag } from '../../features/article/components/Article/Article.props';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
 import { useEffect, useState } from 'react';
 import cn from 'classnames';
-import { IAuthor } from '../Author/Author.props';
+import { ITag, IProfile } from '../../helpers/interfaces';
 
 const Filter = ({
 	tags,
@@ -15,7 +14,7 @@ const Filter = ({
 	selectedIds
 }: {
 	tags?: ITag[] | null;
-	authors?: IAuthor[] | null;
+	authors?: IProfile[] | null;
 	onClick: () => void;
 	onApplyTags: (tags: number[]) => void;
 	selectedIds: number[];
@@ -124,7 +123,7 @@ const Filter = ({
 						Применить
 					</Button>
 					<Button className='red' onClick={handleReset}>
-						Сбросить фильтры
+						Сбросить
 					</Button>
 				</div>
 			</div>
