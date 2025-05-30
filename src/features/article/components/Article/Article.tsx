@@ -41,16 +41,20 @@ const Article = ({ props }: { props: IArticle }) => {
 								key={id}
 								className='purple'
 								onClick={() => navigateToUserProfile(id)}
-							>{`${first_name} ${last_name}`}</Button>
+							>{`${last_name} ${first_name}`}</Button>
 						))}
 					</div>
 				</div>
 			)}
-			<p>
+			<div className={styles['tags']}>
 				{/* TODO Тут надо будет сделать поиск по тегу при нажатии */}
 				<strong>Теги: </strong>
-				{tags?.map(({ name }) => name).join(', ')}
-			</p>
+				{tags?.map(({ name, id }) => (
+					<span className={styles['tag-btn']} key={id}>
+						{name}
+					</span>
+				))}
+			</div>
 			{/* TODO Тут у дани происходит скачка, если успею надо как то сделать просмотр на другой странице */}
 			<div className={styles['buttons']}>
 				<a href={file_link} target='_blank' rel='noopener noreferrer' className={styles['watch']}>

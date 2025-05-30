@@ -120,6 +120,15 @@
 	font-weight: bold;
 }
 
+.error-message {
+	background-color: #ffeeee;
+	border: 1px solid #ffcccc;
+	color: #cc0000;
+	padding: 12px;
+	border-radius: 4px;
+	font-size: 14px;
+}
+
 .input-container {
 	display: flex;
 	flex-direction: column;

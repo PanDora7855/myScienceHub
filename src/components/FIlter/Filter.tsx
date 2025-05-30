@@ -114,7 +114,7 @@ const Filter = ({
 								key={author.id}
 								onClick={() => handleAuthorClick(author.id)}
 							>
-								{`${author.first_name} ${author.last_name} ${author.middle_name}`}
+								{`${author.last_name} ${author.first_name} ${author.middle_name}`}
 							</button>
 						))}
 				</div>

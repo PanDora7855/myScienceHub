@@ -15,6 +15,7 @@ const SettingsAbout = () => {
 		first_name: data?.first_name,
 		middle_name: data?.middle_name,
 		academic_degree: data?.academic_degree,
+		gender: data?.gender,
 		country: data?.country,
 		vac: data?.vac,
 		appointment: data?.appointment
@@ -25,6 +26,7 @@ const SettingsAbout = () => {
 		first_name: '',
 		middle_name: '',
 		academic_degree: '',
+		gender: 2,
 		country: '',
 		vac: '',
 		appointment: ''
@@ -123,6 +125,14 @@ const SettingsAbout = () => {
 							onChange={(e) => setInput({ ...input, appointment: e.target.value })}
 							placeholder={data?.appointment}
 						/>
+					</div>
+					<div className={styles['edit-field']}>
+						<p>Пол</p>
+						<select value={data?.gender} onChange={(e) => setInput({ ...input, gender: +e.target.value })}>
+							<option value={0}>Женский</option>
+							<option value={1}>Мужской</option>
+							<option value={2}>Не указан</option>
+						</select>
 					</div>
 				</div>
 				<Button className='green'>Сохранить</Button>

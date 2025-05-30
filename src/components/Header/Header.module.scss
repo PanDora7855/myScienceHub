@@ -30,6 +30,7 @@
 	align-items: center;
 	margin-left: 25px;
 }
+
 .logo-name {
 	margin-left: 15px;
 	font-family: 'IMBM Plex Mono';
@@ -41,4 +42,46 @@
 	height: 1px;
 	width: 100%;
 	background-color: var(--main-theme);
+}
+
+/* Адаптивные стили */
+@media (max-width: 768px) {
+	.header {
+		padding: 10px 20px;
+	}
+
+	.logo {
+		margin-left: 15px;
+	}
+
+	.logo-name {
+		font-size: 24px;
+		margin-left: 10px;
+	}
+}
+
+@media (max-width: 480px) {
+	.header {
+		padding: 8px 15px;
+		height: 50px;
+	}
+
+	.logo {
+		margin-left: 10px;
+	}
+
+	.logo-name {
+		font-size: 18px;
+		margin-left: 8px;
+	}
+
+	.logo img {
+		width: 28px !important;
+		height: 28px !important;
+	}
+
+	.header-right img {
+		width: 32px !important;
+		height: 32px !important;
+	}
 }

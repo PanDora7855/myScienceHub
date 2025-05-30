@@ -5,6 +5,7 @@
 	align-items: center;
 	justify-content: center;
 	font-family: 'Inter', sans-serif;
+	padding: 20px;
 }
 
 .left-side {
@@ -21,6 +22,8 @@
 	padding: 49px 25px;
 	margin-left: 140px;
 	gap: 20px;
+	max-width: 450px;
+	width: 100%;
 }
 
 .right-side__top {
@@ -44,6 +47,7 @@
 	display: flex;
 	flex-direction: column;
 	width: 364px;
+	max-width: 100%;
 	gap: 15px;
 
 	.form-input {
@@ -52,6 +56,7 @@
 			top: 14px;
 			left: 18px;
 			position: absolute;
+			z-index: 1;
 		}
 	}
 
@@ -137,6 +142,111 @@
 
 		&:hover {
 			text-decoration: underline;
+		}
+	}
+}
+
+/* Адаптивные стили */
+@media (max-width: 1024px) {
+	.login-page {
+		flex-direction: column;
+		padding: 20px;
+	}
+
+	.left-side {
+		margin-bottom: 20px;
+
+		img {
+			max-width: 400px;
+			height: auto;
+		}
+	}
+
+	.right-side {
+		margin-left: 0;
+		width: 100%;
+		max-width: 500px;
+	}
+}
+
+@media (max-width: 768px) {
+	.login-page {
+		padding: 15px;
+	}
+
+	.left-side img {
+		max-width: 300px;
+	}
+
+	.right-side {
+		padding: 35px 20px;
+		max-width: 400px;
+	}
+
+	.sign-in__form {
+		width: 100%;
+	}
+
+	.hr-line {
+		padding: 0 60px;
+
+		&:before,
+		&:after {
+			width: 60px;
+		}
+	}
+
+	.another-way {
+		grid-template-columns: repeat(2, 1fr);
+
+		a {
+			padding: 8px 20px;
+		}
+	}
+}
+
+@media (max-width: 480px) {
+	.login-page {
+		padding: 10px;
+	}
+
+	.left-side {
+		display: none;
+	}
+
+	.right-side {
+		padding: 25px 15px;
+		margin: 0;
+		width: 100%;
+		max-width: none;
+	}
+
+	.right-side__top h1 {
+		font-size: 20px;
+	}
+
+	.sign-in__form {
+		gap: 12px;
+	}
+
+	.hr-line {
+		padding: 0 40px;
+		font-size: 14px;
+
+		&:before,
+		&:after {
+			width: 40px;
+		}
+	}
+
+	.another-way {
+		grid-template-columns: 1fr;
+		gap: 8px;
+
+		a {
+			display: flex;
+			align-items: center;
+			justify-content: center;
 		}
 	}
 }

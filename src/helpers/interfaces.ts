@@ -41,6 +41,7 @@ export interface IProfile {
 	academic_degree: string;
 	vac: string;
 	appointment: string;
+	gender: number;
 	Publications: IArticle[] | null;
 	SubscribersList: IProfile[] | null;
 	MySubscribesList: IProfile[] | null;

@@ -1,3 +1,4 @@
+.subscribers-container,
 .subscribes-container {
 	margin: 0 auto;
 	display: flex;
@@ -11,6 +12,7 @@
 	margin-bottom: 20px;
 }
 
+.subscribers-list,
 .subscribes-list {
 	display: flex;
 	flex-direction: column;
@@ -21,4 +23,41 @@
 	margin-top: 20px;
 	display: flex;
 	justify-content: center;
+}
+
+/* Адаптивные стили для подписок */
+@media (max-width: 768px) {
+	.search-bar {
+		margin-bottom: 15px;
+		gap: 8px;
+	}
+
+	.subscribers-list,
+	.subscribes-list {
+		gap: 12px;
+	}
+
+	.load-more {
+		margin-top: 15px;
+	}
+}
+
+@media (max-width: 480px) {
+	.search-bar {
+		margin-bottom: 12px;
+		gap: 6px;
+	}
+
+	.subscribers-list,
+	.subscribes-list {
+		gap: 10px;
+	}
+
+	.load-more {
+		margin-top: 12px;
+
+		button {
+			width: 100%;
+		}
+	}
 }

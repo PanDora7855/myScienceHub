@@ -8,6 +8,7 @@
 .search-bar {
 	display: flex;
 	gap: 10px;
+	flex-wrap: wrap;
 }
 
 .articles {
@@ -44,5 +45,49 @@
 		&:hover {
 			background-color: #f4f7fa;
 		}
+	}
+}
+
+/* Адаптивные стили */
+@media (max-width: 768px) {
+	.search-bar {
+		gap: 8px;
+		flex-direction: column;
+	}
+
+	.sort {
+		width: 100%;
+		align-items: stretch;
+	}
+
+	.options {
+		position: static;
+		margin-top: 5px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+		> p {
+			padding: 10px;
+			font-size: 15px;
+		}
+	}
+
+	.articles {
+		margin-top: 12px;
+		gap: 12px;
+	}
+}
+
+@media (max-width: 480px) {
+	.search-bar {
+		gap: 6px;
+	}
+
+	.options > p {
+		padding: 8px;
+		font-size: 14px;
+	}
+
+	.articles {
+		gap: 10px;
 	}
 }

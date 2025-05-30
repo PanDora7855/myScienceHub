@@ -6,12 +6,14 @@
 	cursor: pointer;
 	justify-content: space-between;
 	height: 22px;
+	z-index: 1001;
 }
 
 .burger-line {
 	height: 2px;
 	width: 100%;
 	background-color: var(--main-theme);
+	transition: all 0.3s ease;
 }
 
 /* Сайдбар */
@@ -19,7 +21,7 @@
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
-	width: 250px;
+	width: 280px;
 	padding: 80px 20px 40px;
 	position: fixed;
 	top: 0;
@@ -77,5 +79,74 @@
 	&:hover {
 		fill: orange;
 		color: orange;
+	}
+}
+
+/* Адаптивные стили */
+@media (max-width: 768px) {
+	.burger {
+		width: 28px;
+		height: 20px;
+	}
+
+	.side-menu {
+		width: 100vw;
+		padding: 70px 20px 40px;
+		border-radius: 0;
+		border-right: none;
+
+		a {
+			font-size: 18px;
+			padding: 15px 25px;
+			margin: 8px 0;
+		}
+
+		button {
+			font-size: 18px;
+			padding: 15px;
+		}
+	}
+}
+
+@media (max-width: 480px) {
+	.burger {
+		width: 25px;
+		height: 18px;
+	}
+
+	.side-menu {
+		padding: 60px 15px 30px;
+
+		a {
+			font-size: 16px;
+			padding: 12px 20px;
+		}
+
+		button {
+			font-size: 16px;
+			padding: 12px;
+		}
+	}
+
+	.close-btn {
+		top: 15px;
+		right: 15px;
+		width: 20px;
+		height: 20px;
+		padding: 6px;
+	}
+}
+
+/* Overlay для мобильных устройств */
+@media (max-width: 768px) {
+	.side-menu::before {
+		content: '';
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		background-color: rgba(0, 0, 0, 0.5);
+		z-index: -1;
 	}
 }

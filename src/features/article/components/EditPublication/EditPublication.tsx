@@ -16,6 +16,7 @@ interface PublicationInput {
 	abstract: string;
 	file: File | null;
 	tags: number[];
+	created_at: string;
 	coauthors: number[];
 	fileLink: string;
 }
@@ -41,11 +42,13 @@ const EditPublication = () => {
 	const [showTagModal, setShowTagModal] = useState<boolean>(false);
 	const [showCoauthorsModal, setShowCoauthorsModal] = useState<boolean>(false);
 	const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
+	const [errors, setErrors] = useState<number>(0);
 
 	const [input, setInput] = useState<PublicationInput>({
 		title: '',
 		abstract: '',
 		file: null,
+		created_at: '',
 		tags: [],
 		coauthors: [],
 		fileLink: ''
@@ -58,6 +61,7 @@ const EditPublication = () => {
 				title: articleData.title,
 				abstract: articleData.abstract,
 				file: null,
+				created_at: articleData.created_at.toString().split('T')[0],
 				tags: articleData.tags?.map((tag) => tag.id) || [],
 				coauthors: articleData.profiles?.map((profile) => profile.id) || [],
 				fileLink: articleData.file_link
@@ -68,6 +72,16 @@ const EditPublication = () => {
 			);
 		}
 	}, [articleData, userData?.id]);
+
+	const checkFields = () => {
+		if (input.title === '' || input.tags.length === 0 || input.created_at === '') {
+			setErrors(1);
+			return false;
+		} else {
+			setErrors(0);
+			return true;
+		}
+	};
 
 	const handleNavigate = () => {
 		navigate(-1);
@@ -88,38 +102,38 @@ const EditPublication = () => {
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		const formData = new FormData();
+		if (checkFields()) {
+			const formData = new FormData();
 
-		// Добавляем ID публикации
-		formData.append('publication_id', articleId as string);
+			// Добавляем ID публикации
+			formData.append('publication_id', articleId as string);
 
-		// Добавляем остальные поля
-		formData.append('title', input.title);
-		formData.append('abstract', input.abstract);
-		formData.append('owner_id', userData?.id.toString() || '');
-		formData.append('fileLink', input.fileLink);
+			// Добавляем остальные поля
+			formData.append('title', input.title);
+			formData.append('abstract', input.abstract);
+			formData.append('owner_id', userData?.id.toString() || '');
+			formData.append('fileLink', input.fileLink);
+			formData.append('created_date', new Date(input.created_at).toISOString());
 
-		// Добавляем файл, если он есть
-		if (input.file) {
-			formData.append('file', input.file);
-		}
+			if (input.file) {
+				formData.append('file', input.file);
+			}
 
-		// Добавляем соавторов
-		input.coauthors.forEach((id) => {
-			formData.append('coauthors[]', id.toString());
-		});
+			input.coauthors.forEach((id) => {
+				formData.append('coauthors[]', id.toString());
+			});
 
-		// Добавляем теги
-		input.tags.forEach((id) => {
-			formData.append('tags[]', id.toString());
-		});
+			input.tags.forEach((id) => {
+				formData.append('tags[]', id.toString());
+			});
 
-		try {
-			await articleApi.updatePublication(formData);
-			queryClient.invalidateQueries({ queryKey: ['profile', 'userData', userData?.id] });
-			navigate(-1);
-		} catch (error) {
-			console.error('Ошибка при обновлении публикации:', error);
+			try {
+				await articleApi.updatePublication(formData);
+				queryClient.invalidateQueries({ queryKey: ['profile', 'userData', userData?.id] });
+				navigate(-1);
+			} catch (error) {
+				console.error('Ошибка при обновлении публикации:', error);
+			}
 		}
 	};
 
@@ -158,6 +172,7 @@ const EditPublication = () => {
 
 	return (
 		<>
+			{errors === 1 && <div className={styles['error-message']}>Заполните пожалуйста все поля</div>}
 			{showTagModal && (
 				<Filter
 					tags={allTags}
@@ -201,26 +216,37 @@ const EditPublication = () => {
 						name='title'
 						value={input.title}
 						onChange={(e) => setInput({ ...input, title: e.target.value })}
-						placeholder='Название статьи'
-						required
+						placeholder={articleData?.title}
 					/>
 				</div>
 
 				<div className={styles['edit-field']}>
 					<p>
-						Краткое описание <span className={styles['star']}>*</span>
+						Краткое описание <span className={styles['not-required']}>- Необязательно</span>
 					</p>
 					<div className={styles['textarea']}>
 						<textarea
 							name='abstract'
 							value={input.abstract}
 							onChange={(e) => setInput({ ...input, abstract: e.target.value })}
-							placeholder='Описание статьи'
+							placeholder={articleData?.abstract}
 							maxLength={1000}
-							required
 						/>
 						<p>{input.abstract.length}/1000</p>
 					</div>
+				</div>
+
+				<div className={styles['edit-field']}>
+					<p>
+						Дата издания <span className={styles['star']}>*</span>
+					</p>
+					<Input
+						name='abstract'
+						className='darker'
+						value={input.created_at}
+						onChange={(e) => setInput({ ...input, created_at: e.target.value })}
+						type='date'
+					/>
 				</div>
 
 				<div className={styles['edit-field']}>
@@ -252,7 +278,7 @@ const EditPublication = () => {
 						<div className={styles['tags-container']}>
 							{selectedCoauthors.map((author) => (
 								<div key={author.id} className={styles['tag']}>
-									<p>{`${author.first_name} ${author.last_name} ${author.middle_name}`}</p>
+									<p>{`${author.last_name} ${author.first_name} ${author.middle_name}`}</p>
 									<button
 										type='button'
 										onClick={() => removeCoauthor(author.id)}
@@ -268,7 +294,7 @@ const EditPublication = () => {
 
 				<div className={styles['edit-field']}>
 					<p>
-						Теги <span className={styles['not-required']}>- Необязательно</span>
+						Теги <span className={styles['star']}>*</span>
 					</p>
 
 					<Button type='button' className='blue' onClick={() => setShowTagModal(true)}>

@@ -23,3 +23,75 @@
 	border-radius: 4px;
 	font-size: 14px;
 }
+
+.section-title {
+	font-size: 18px;
+	font-weight: 600;
+	margin-bottom: 15px;
+	color: var(--text-primary);
+}
+
+.button-container {
+	display: flex;
+	justify-content: flex-start;
+}
+
+/* Адаптивные стили для Security */
+@media (max-width: 768px) {
+	.security {
+		gap: 25px;
+	}
+
+	.edit-field {
+		p {
+			font-size: 13px;
+			margin-bottom: 8px;
+		}
+
+		button {
+			margin-left: 0;
+			margin-top: 10px;
+			width: 100%;
+		}
+	}
+
+	.section-title {
+		font-size: 16px;
+	}
+
+	.button-container {
+		justify-content: stretch;
+
+		button {
+			width: 100%;
+		}
+	}
+
+	.error-message {
+		padding: 10px;
+		font-size: 13px;
+	}
+}
+
+@media (max-width: 480px) {
+	.security {
+		gap: 20px;
+	}
+
+	.edit-field {
+		p {
+			font-size: 12px;
+			margin-bottom: 6px;
+		}
+	}
+
+	.section-title {
+		font-size: 15px;
+		margin-bottom: 12px;
+	}
+
+	.error-message {
+		padding: 8px;
+		font-size: 12px;
+	}
+}

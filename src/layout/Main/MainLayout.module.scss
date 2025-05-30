@@ -1,11 +1,14 @@
 .main {
 	font-family: 'Inter';
-	width: 1092px;
+	width: var(--content-width);
+	max-width: 1092px;
 	margin: 90px auto 0;
+	padding: 0 var(--container-padding);
 }
 
 .main-top {
 	margin-left: 9px;
+	margin-right: 9px;
 }
 
 .main-header {
@@ -16,7 +19,8 @@
 	border-radius: 12px 12px 0 0;
 	background-image: url('/main/main.svg');
 	background-repeat: no-repeat;
-	background-position-y: center;
+	background-position: center;
+	background-size: cover;
 }
 
 .main-content-all {
@@ -29,4 +33,54 @@
 	border-radius: 0 0 12px 12px;
 	background-color: #fff;
 	padding: 30px 50px;
+}
+
+/* Адаптивные стили */
+@media (max-width: 1200px) {
+	.main {
+		margin: 80px auto 0;
+	}
+
+	.main-content {
+		padding: 25px 40px;
+	}
+}
+
+@media (max-width: 768px) {
+	.main {
+		margin: 70px auto 0;
+		padding: 0 15px;
+	}
+
+	.main-top {
+		margin-left: 0;
+	}
+
+	.main-header {
+		height: 80px;
+		margin-top: 10px;
+		border-radius: 8px 8px 0 0;
+	}
+
+	.main-content {
+		padding: 20px 25px;
+		border-radius: 0 0 8px 8px;
+	}
+}
+
+@media (max-width: 480px) {
+	.main {
+		margin: 60px auto 0;
+		padding: 0 10px;
+	}
+
+	.main-header {
+		height: 60px;
+		border-radius: 6px 6px 0 0;
+	}
+
+	.main-content {
+		padding: 15px 20px;
+		border-radius: 0 0 6px 6px;
+	}
 }

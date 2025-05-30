@@ -14,6 +14,7 @@ import { profileApi } from '../../../profile/api';
 interface PublicationInput {
 	title: string;
 	abstract: string;
+	created_at: string;
 	file: File | null;
 	tags: number[];
 	coauthors: number[];
@@ -25,16 +26,17 @@ const CreatePublication = () => {
 	const { data: allTags } = useTags();
 	const { authors } = useAuthors();
 	const { data: userData } = useProfile();
-	console.log(userData);
 
 	const [selectedTagsId, setSelectedTagsId] = useState<number[]>([]);
 	const [selectedCoauthorsId, setSelectedCoauthorsId] = useState<number[]>([]);
 	const [showTagModal, setShowTagModal] = useState<boolean>(false);
 	const [showCoauthorsModal, setShowCoauthorsModal] = useState<boolean>(false);
+	const [errors, setErrors] = useState<number>(0);
 
 	const [input, setInput] = useState<PublicationInput>({
 		title: '',
 		abstract: '',
+		created_at: '',
 		file: null,
 		tags: [],
 		coauthors: []
@@ -42,6 +44,16 @@ const CreatePublication = () => {
 
 	const handleNavigate = () => {
 		navigate(-1);
+	};
+
+	const checkFields = () => {
+		if (input.title === '' || input.file === null || input.tags.length === 0 || input.created_at === '') {
+			setErrors(1);
+			return false;
+		} else {
+			setErrors(0);
+			return true;
+		}
 	};
 
 	const handleApplyTags = (tags: number[]) => {
@@ -58,18 +70,21 @@ const CreatePublication = () => {
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const formData = new FormData();
 
-		formData.append('title', input.title);
-		formData.append('abstract', input.abstract);
-		formData.append('file', input.file as File);
+		if (checkFields()) {
+			const formData = new FormData();
+			formData.append('title', input.title);
+			formData.append('abstract', input.abstract);
+			formData.append('file', input.file as File);
+			formData.append('created_date', new Date(input.created_at).toISOString());
 
-		selectedTagsId.forEach((id) => formData.append('tags[]', id.toString()));
-		selectedCoauthorsId.forEach((id) => formData.append('coauthors[]', id.toString()));
+			selectedTagsId.forEach((id) => formData.append('tags[]', id.toString()));
+			selectedCoauthorsId.forEach((id) => formData.append('coauthors[]', id.toString()));
 
-		articleApi.createPublication(formData);
-		queryClient.invalidateQueries({ queryKey: [profileApi.baseKey, 'userData', userData?.id.toString()] });
-		navigate(-1);
+			articleApi.createPublication(formData);
+			queryClient.invalidateQueries({ queryKey: [profileApi.baseKey, 'userData', userData?.id.toString()] });
+			navigate(-1);
+		}
 	};
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,6 +108,7 @@ const CreatePublication = () => {
 
 	return (
 		<>
+			{errors === 1 && <div className={styles['error-message']}>Заполните пожалуйста все поля</div>}
 			{showTagModal && (
 				<Filter
 					tags={allTags}
@@ -121,13 +137,12 @@ const CreatePublication = () => {
 						value={input.title}
 						onChange={(e) => setInput({ ...input, title: e.target.value })}
 						placeholder='Название статьи'
-						required
 					/>
 				</div>
 
 				<div className={styles['edit-field']}>
 					<p>
-						Краткое описание <span className={styles['star']}>*</span>
+						Краткое описание <span className={styles['not-required']}>- Необязательно</span>
 					</p>
 					<div className={styles['textarea']}>
 						<textarea
@@ -136,24 +151,28 @@ const CreatePublication = () => {
 							onChange={(e) => setInput({ ...input, abstract: e.target.value })}
 							placeholder='Описание статьи'
 							maxLength={1000}
-							required
 						/>
 						<p>{input.abstract.length}/1000</p>
 					</div>
+				</div>
+				<div className={styles['edit-field']}>
+					<p>
+						Дата издания <span className={styles['star']}>*</span>
+					</p>
+					<Input
+						name='abstract'
+						className='darker'
+						value={input.created_at}
+						onChange={(e) => setInput({ ...input, created_at: e.target.value })}
+						type='date'
+					/>
 				</div>
 
 				<div className={styles['edit-field']}>
 					<p>
 						Файл статьи (PDF) <span className={styles['star']}>*</span>
 					</p>
-					<Input
-						className='darker'
-						name='file'
-						type='file'
-						accept='.pdf'
-						onChange={handleFileChange}
-						required
-					/>
+					<Input className='darker' name='file' type='file' accept='.pdf' onChange={handleFileChange} />
 					{input.file && <p className={styles['file-info']}>Выбран файл: {input.file.name}</p>}
 				</div>
 
@@ -172,7 +191,7 @@ const CreatePublication = () => {
 						<div className={styles['tags-container']}>
 							{selectedCoauthors.map((author) => (
 								<div key={author.id} className={styles['tag']}>
-									<p>{`${author.first_name} ${author.last_name} ${author.middle_name}`}</p>
+									<p>{`${author.last_name} ${author.first_name} ${author.middle_name}`}</p>
 									<button
 										type='button'
 										onClick={() => removeCoauthor(author.id)}
@@ -188,7 +207,8 @@ const CreatePublication = () => {
 
 				<div className={styles['edit-field']}>
 					<p>
-						Теги <span className={styles['not-required']}>- Необязательно</span>
+						Теги <span className={styles['star']}>*</span>{' '}
+						<span className={styles['not-required']}>Минимум 1 тег</span>
 					</p>
 
 					<Button type='button' className='blue' onClick={() => setShowTagModal(true)}>

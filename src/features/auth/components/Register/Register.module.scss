@@ -5,7 +5,7 @@
 	align-items: center;
 	justify-content: center;
 	font-family: 'Inter', sans-serif;
-	padding: 20px 0;
+	padding: 20px;
 }
 
 .left-side {
@@ -49,6 +49,7 @@
 	display: flex;
 	flex-direction: column;
 	width: 364px;
+	max-width: 100%;
 	gap: 12px;
 
 	.form-input {
@@ -153,5 +154,88 @@
 		&:hover {
 			text-decoration: underline;
 		}
+	}
+}
+
+/* Адаптивные стили */
+@media (max-width: 1024px) {
+	.register-page {
+		flex-direction: column;
+		padding: 20px;
+	}
+
+	.left-side {
+		margin-bottom: 20px;
+
+		img {
+			max-width: 400px;
+			height: auto;
+		}
+	}
+
+	.right-side {
+		margin-left: 0;
+		width: 100%;
+		max-width: 500px;
+	}
+}
+
+@media (max-width: 768px) {
+	.register-page {
+		padding: 15px;
+	}
+
+	.left-side img {
+		max-width: 300px;
+	}
+
+	.right-side {
+		padding: 30px 20px;
+		max-width: 400px;
+	}
+
+	.register-form {
+		width: 100%;
+		gap: 10px;
+	}
+
+	.verification-button {
+		align-self: stretch;
+		width: 100%;
+	}
+}
+
+@media (max-width: 480px) {
+	.register-page {
+		padding: 10px;
+	}
+
+	.left-side {
+		display: none;
+	}
+
+	.right-side {
+		padding: 25px 15px;
+		margin: 0;
+		width: 100%;
+		max-width: none;
+	}
+
+	.right-side__top h1 {
+		font-size: 20px;
+	}
+
+	.register-form {
+		gap: 8px;
+	}
+
+	.verification-button {
+		font-size: 13px;
+		padding: 10px 16px;
+	}
+
+	.form-button {
+		font-size: 14px;
+		padding: 14px;
 	}
 }

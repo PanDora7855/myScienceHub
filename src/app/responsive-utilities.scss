@@ -1,0 +1,185 @@
+/* Утилиты для скрытия/показа элементов */
+.show-mobile {
+	display: none;
+}
+
+.hide-mobile {
+	display: block;
+}
+
+.show-tablet {
+	display: none;
+}
+
+.hide-tablet {
+	display: block;
+}
+
+/* Flex утилиты */
+.flex-column-mobile {
+	display: flex;
+}
+
+.flex-wrap-mobile {
+	display: flex;
+}
+
+/* Spacing утилиты */
+.p-mobile {
+	padding: var(--container-padding);
+}
+
+.m-mobile {
+	margin: var(--container-padding);
+}
+
+/* Text утилиты */
+.text-small-mobile {
+	font-size: inherit;
+}
+
+.text-center-mobile {
+	text-align: left;
+}
+
+/* Width утилиты */
+.w-full-mobile {
+	width: auto;
+}
+
+/* Медиа-запросы для утилит */
+@media (max-width: 768px) {
+	.show-mobile {
+		display: block !important;
+	}
+
+	.hide-mobile {
+		display: none !important;
+	}
+
+	.flex-column-mobile {
+		flex-direction: column;
+	}
+
+	.flex-wrap-mobile {
+		flex-wrap: wrap;
+	}
+
+	.text-small-mobile {
+		font-size: 14px;
+	}
+
+	.text-center-mobile {
+		text-align: center;
+	}
+
+	.w-full-mobile {
+		width: 100%;
+	}
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+	.show-tablet {
+		display: block !important;
+	}
+
+	.hide-tablet {
+		display: none !important;
+	}
+}
+
+@media (max-width: 480px) {
+	.show-mobile {
+		display: block !important;
+	}
+
+	.hide-mobile {
+		display: none !important;
+	}
+
+	/* Дополнительные утилиты для маленьких экранов */
+	.text-xs-mobile {
+		font-size: 12px;
+	}
+
+	.p-sm-mobile {
+		padding: 8px;
+	}
+
+	.m-sm-mobile {
+		margin: 8px;
+	}
+}
+
+/* Контейнер с адаптивными отступами */
+.container-responsive {
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 var(--container-padding);
+}
+
+/* Сетка с адаптивными колонками */
+.grid-responsive {
+	display: grid;
+	gap: 20px;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+@media (max-width: 768px) {
+	.grid-responsive {
+		grid-template-columns: 1fr;
+		gap: 15px;
+	}
+}
+
+@media (max-width: 480px) {
+	.grid-responsive {
+		gap: 10px;
+	}
+}
+
+/* Адаптивные кнопки */
+.btn-responsive {
+	padding: 12px 24px;
+	font-size: 14px;
+	border-radius: 8px;
+	border: none;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+@media (max-width: 768px) {
+	.btn-responsive {
+		padding: 10px 20px;
+		font-size: 13px;
+	}
+}
+
+@media (max-width: 480px) {
+	.btn-responsive {
+		padding: 8px 16px;
+		font-size: 12px;
+		width: 100%;
+	}
+}
+
+/* Адаптивные карточки */
+.card-responsive {
+	background: white;
+	border-radius: var(--border-radius);
+	padding: 20px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+	.card-responsive {
+		padding: 15px;
+	}
+}
+
+@media (max-width: 480px) {
+	.card-responsive {
+		padding: 12px;
+	}
+}

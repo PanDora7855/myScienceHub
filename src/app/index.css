@@ -1,3 +1,5 @@
+@import url(./responsive-utilities.scss);
+
 :root {
 	--main-theme: #4d38d7; /* Фирменный фиолетовый */
 	--success-color: #1fac42; /* Успешные действия */
@@ -9,6 +11,11 @@
 
 	--font-primary: 'Inter', sans-serif;
 	--font-mono: 'IBM Plex Mono', monospace;
+
+	/* Адаптивные переменные */
+	--container-padding: 25px;
+	--content-width: 1092px;
+	--border-radius: 8px;
 }
 
 * {
@@ -20,6 +27,7 @@
 body {
 	min-height: 100vh;
 	background-color: #f9fafb;
+	overflow-x: hidden;
 }
 
 @font-face {
@@ -30,4 +38,26 @@ body {
 @font-face {
 	font-family: 'IMBM Plex Mono';
 	src: local('IMBM Plex Mono'), url('/fonts/IBM_Plex_Mono/IBMPlexMono-Regular.ttf') format('truetype');
+}
+
+/* Адаптивные медиа-запросы */
+@media (max-width: 1200px) {
+	:root {
+		--content-width: 95%;
+		--container-padding: 20px;
+	}
+}
+
+@media (max-width: 768px) {
+	:root {
+		--container-padding: 15px;
+		--border-radius: 6px;
+	}
+}
+
+@media (max-width: 480px) {
+	:root {
+		--container-padding: 10px;
+		--border-radius: 4px;
+	}
 }
