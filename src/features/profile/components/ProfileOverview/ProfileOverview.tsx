@@ -114,46 +114,52 @@ const ProfileOverview = () => {
 						))}
 				</div>
 				<div className={styles['top-right']}>
-					<div className={styles['filters']}>
-						<h3>Фильтры публикаций</h3>
-						<div className={styles['filters__row']}>
-							<div className={styles['filters__field']}>
-								<p>Кол-во публикаций:</p>
-								<input
-									type='number'
-									min='1'
-									value={countPublications}
-									onChange={(e) => setCountPublications(+e.target.value)}
-								/>
+					{isOwnProfile && (
+						<div className={styles['filters']}>
+							<h3>Фильтры публикаций</h3>
+							<div className={styles['filters__row']}>
+								<div className={styles['filters__field']}>
+									<p>Кол-во публикаций:</p>
+									<input
+										type='number'
+										min='1'
+										value={countPublications}
+										onChange={(e) => setCountPublications(+e.target.value)}
+									/>
+								</div>
+								<div className={styles['filters__field']}>
+									<p>Дата начала:</p>
+									<input
+										type='date'
+										value={dateStart}
+										onChange={(e) => setDateStart(e.target.value)}
+									/>
+								</div>
+								<div className={styles['filters__field']}>
+									<p>Дата окончания:</p>
+									<input type='date' value={dateEnd} onChange={(e) => setDateEnd(e.target.value)} />
+								</div>
+								<div className={styles['filters__field']}>
+									<p>Тип файла:</p>
+									<select value={fileType} onChange={(e) => setFileType(+e.target.value)}>
+										<option value='0'>Word</option>
+										<option value='1'>Excel</option>
+										<option value='2'>LibraWord</option>
+										<option value='3'>LibraExcel</option>
+									</select>
+								</div>
 							</div>
-							<div className={styles['filters__field']}>
-								<p>Дата начала:</p>
-								<input type='date' value={dateStart} onChange={(e) => setDateStart(e.target.value)} />
-							</div>
-							<div className={styles['filters__field']}>
-								<p>Дата окончания:</p>
-								<input type='date' value={dateEnd} onChange={(e) => setDateEnd(e.target.value)} />
-							</div>
-							<div className={styles['filters__field']}>
-								<p>Тип файла:</p>
-								<select value={fileType} onChange={(e) => setFileType(+e.target.value)}>
-									<option value='0'>Word</option>
-									<option value='1'>Excel</option>
-									<option value='2'>LibraWord</option>
-									<option value='3'>LibraExcel</option>
-								</select>
-							</div>
+							{isLoading ? (
+								<button className={styles['filters__button']} disabled>
+									<div className={styles['loading-spinner']}></div>
+								</button>
+							) : (
+								<button className={styles['filters__button']} onClick={handleDownload}>
+									📥 Скачать список публикаций
+								</button>
+							)}
 						</div>
-						{isLoading ? (
-							<button className={styles['filters__button']} disabled>
-								<div className={styles['loading-spinner']}></div>
-							</button>
-						) : (
-							<button className={styles['filters__button']} onClick={handleDownload}>
-								📥 Скачать список публикаций
-							</button>
-						)}
-					</div>
+					)}
 				</div>
 			</div>
 			<div className={styles['bottom']}>

@@ -6,7 +6,7 @@
 	cursor: pointer;
 	justify-content: space-between;
 	height: 22px;
-	z-index: 1001;
+	z-index: 1;
 }
 
 .burger-line {
@@ -29,7 +29,7 @@
 	z-index: 1000;
 	border-right: 2px solid #5882c1;
 	background-color: rgba(88, 130, 193, 0.15);
-	backdrop-filter: blur(5px);
+	backdrop-filter: blur(15px);
 	border-radius: 0 8px 8px 0;
 	transform: translateX(-100%);
 	transition: transform 0.3s ease;
@@ -146,7 +146,7 @@
 		left: 0;
 		width: 100vw;
 		height: 100vh;
-		background-color: rgba(0, 0, 0, 0.5);
+		background-color: rgba(88, 130, 193, 0.15);
 		z-index: -1;
 	}
 }

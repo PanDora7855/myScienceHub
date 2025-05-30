@@ -62,12 +62,24 @@ const BurgerMenu = () => {
 				<img className={styles['close-btn']} src='/burger/close.svg' alt='Закрыть' onClick={toggleMenu} />
 
 				{/* TODO добавить иконки, сейчас было в падлу :) */}
-				<NavLink to={'/'}>Главная</NavLink>
-				<NavLink to={`profile/${data?.id}/overview`}>Мой профиль</NavLink>
-				<NavLink to={'search/articles'}>Поиск</NavLink>
-				<NavLink to={'subscribes'}>Подписки</NavLink>
-				<NavLink to={'subscribers'}>Подписчики</NavLink>
-				<NavLink to={'settings/profile'}>Настройки</NavLink>
+				<NavLink to={'/'} onClick={() => setIsOpen(false)}>
+					Главная
+				</NavLink>
+				<NavLink to={`profile/${data?.id}/overview`} onClick={() => setIsOpen(false)}>
+					Мой профиль
+				</NavLink>
+				<NavLink to={'search/articles'} onClick={() => setIsOpen(false)}>
+					Поиск
+				</NavLink>
+				<NavLink to={'subscribes'} onClick={() => setIsOpen(false)}>
+					Подписки
+				</NavLink>
+				<NavLink to={'subscribers'} onClick={() => setIsOpen(false)}>
+					Подписчики
+				</NavLink>
+				<NavLink to={'settings/profile'} onClick={() => setIsOpen(false)}>
+					Настройки
+				</NavLink>
 
 				{/* //TODO реализовать функцию выхода нормально  */}
 				<Button onClick={() => handleLogout()}>Выйти</Button>
