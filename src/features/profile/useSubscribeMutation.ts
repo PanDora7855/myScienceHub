@@ -7,7 +7,6 @@ export function useSubscribeMutation(profileId: string) {
 	return useMutation({
 		mutationFn: () => profileApi.subscribeToUser(profileId),
 		onSuccess: () => {
-			// Инвалидируем кэш профиля, чтобы он заново запрашивался
 			queryClient.invalidateQueries({
 				queryKey: ['profile', 'userData', profileId]
 			});

@@ -10,6 +10,7 @@ const BurgerMenu = () => {
 	const navigate = useNavigate();
 	const { logout } = useAuth();
 	const { data } = useProfile();
+
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const menuRef = useRef<HTMLDivElement | null>(null);
 	const burgerRef = useRef<HTMLDivElement | null>(null);

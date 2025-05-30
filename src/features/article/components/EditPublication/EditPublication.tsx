@@ -7,7 +7,7 @@ import { useTags } from '../../../search/useTags';
 import { useAuthors } from '../../../search/useAuthors';
 import { useNavigate, useParams } from 'react-router';
 import { articleApi } from '../../api';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useProfile } from '../../../profile/useProfile';
 import { ITag } from '../../../../helpers/interfaces';
 
@@ -24,6 +24,7 @@ interface PublicationInput {
 
 const EditPublication = () => {
 	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 	const { articleId } = useParams();
 	const { data: allTags } = useTags();
 	const { authors } = useAuthors();
@@ -115,6 +116,7 @@ const EditPublication = () => {
 
 		try {
 			await articleApi.updatePublication(formData);
+			queryClient.invalidateQueries({ queryKey: ['profile', 'userData', userData?.id] });
 			navigate(-1);
 		} catch (error) {
 			console.error('Ошибка при обновлении публикации:', error);
@@ -124,7 +126,8 @@ const EditPublication = () => {
 	const handleDelete = async () => {
 		try {
 			await articleApi.deletePublication(parseInt(articleId as string), input.fileLink, userData?.id || 0);
-			navigate(`/profile/${userData?.id}/overview`);
+			queryClient.invalidateQueries({ queryKey: ['profile', 'userData', userData?.id] });
+			navigate(-1);
 		} catch (error) {
 			console.error('Ошибка при удалении публикации:', error);
 		}
@@ -152,8 +155,6 @@ const EditPublication = () => {
 	// Получаем выбранные теги и авторов для отображения
 	const selectedTags = allTags?.filter((tag) => selectedTagsId.includes(tag.id)) || [];
 	const selectedCoauthors = authors?.filter((author) => selectedCoauthorsId.includes(author.id)) || [];
-
-	console.log(selectedCoauthors);
 
 	return (
 		<>

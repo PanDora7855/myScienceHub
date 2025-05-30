@@ -34,7 +34,7 @@ const Article = ({ props }: { props: IArticle }) => {
 			)}
 			{(profiles?.length as number) > 0 && (
 				<div className={styles['authors']}>
-					<strong>Совторы: </strong>
+					<strong>Авторы: </strong>
 					<div className={styles['profiles']}>
 						{profiles?.map(({ first_name, last_name, id }) => (
 							<Button

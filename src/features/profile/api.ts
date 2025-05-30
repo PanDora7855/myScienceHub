@@ -118,8 +118,13 @@ export const profileApi = {
 			});
 	},
 
-	getLastPublications: (CountPublications: number, DateEnd: Date | null, DateStart: Date | null, Type: number) => {
-		return jsonApiInstance
+	getLastPublications: async (
+		CountPublications: number,
+		DateEnd: Date | null,
+		DateStart: Date | null,
+		Type: number
+	) => {
+		return await jsonApiInstance
 			.post(
 				'/get-file-with-publication-list',
 				{
@@ -139,5 +144,10 @@ export const profileApi = {
 				a.click();
 				window.URL.revokeObjectURL(url);
 			});
+		// .then((response) => response)
+		// .catch((e: AxiosError) => {
+		// 	console.log(e.response?.data);
+		// 	throw e;
+		// });
 	}
 };

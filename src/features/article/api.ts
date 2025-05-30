@@ -36,16 +36,16 @@ export const articleApi = {
 		});
 	},
 
-	createPublication: (formData: FormData) => {
-		return jsonApiInstance.post('/create-publication', formData).then((response) => response.data);
+	createPublication: async (formData: FormData) => {
+		return await jsonApiInstance.post('/create-publication', formData).then((response) => response.data);
 	},
 
-	updatePublication: (formData: FormData) => {
-		return jsonApiInstance.patch('/update-publication', formData).then((response) => response.data);
+	updatePublication: async (formData: FormData) => {
+		return await jsonApiInstance.patch('/update-publication', formData).then((response) => response.data);
 	},
 
-	deletePublication: (id: number, fileLink: string, owner_id: number) => {
-		return jsonApiInstance
+	deletePublication: async (id: number, fileLink: string, owner_id: number) => {
+		return await jsonApiInstance
 			.delete('/delete-publication', {
 				data: {
 					id,

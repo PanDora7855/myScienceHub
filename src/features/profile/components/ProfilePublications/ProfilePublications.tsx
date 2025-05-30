@@ -3,7 +3,6 @@ import Button from '../../../../components/Button/Button';
 import Input from '../../../../components/Input/Input';
 import styles from './ProfilePublications.module.scss';
 import Article from '../../../article/components/Article/Article';
-import { useSearchArticles } from '../../../article/useSearchArticles';
 import Filter from '../../../../components/Filter/Filter';
 import { NavLink, useParams } from 'react-router';
 import { useProfileById } from '../../useProfileById';
@@ -23,20 +22,26 @@ const ProfilePublications = () => {
 	// Используем один из двух хуков в зависимости от состояния поиска
 	const { data } = useProfile();
 	const { data: allArticles, isLoading: allLoading } = useProfileById(authorId as string);
-	// TODO ПОпросить даню сделать поиск для определенного профиля                                 тут
-	const {
-		articles: searchResults,
-		isLoading: searchLoading,
-		totalPages
-	} = useSearchArticles(searchTerm, selectedTagsId, currentPage, 10, sortType);
 
-	const isLoading = searchTerm ? searchLoading : allLoading;
-	const articles =
-		searchTerm || selectedTagsId.length || sortType ? searchResults : allArticles?.Profile.Publications;
+	const articles = allArticles?.Profile.Publications;
 
-	const tags = allArticles?.Profile.Publications!.flatMap((item) => item.tags as ITag[]).filter(
-		(tag, index, self) => index === self.findIndex((t) => t.id === tag.id)
-	) as ITag[];
+	const filtered = articles?.filter((item) =>
+		item.tags && selectedTagsId.length > 0
+			? item.tags.some((tag) => selectedTagsId.includes(tag.id)) &&
+			  item.title.toLowerCase().includes(searchTerm.toLowerCase())
+			: item.title.toLowerCase().includes(searchTerm.toLowerCase())
+	);
+
+	const totalPages = filtered?.length ? Math.ceil(filtered!.length / 5) : 1;
+
+	const paginatedFiltered = filtered?.slice((currentPage - 1) * 5, currentPage * 5);
+
+	// console.log(filtered);
+	// console.log(allArticles);
+
+	const tags = articles
+		?.flatMap((item) => item.tags as ITag[])
+		.filter((tag, index, self) => index === self.findIndex((t) => t.id === tag.id)) as ITag[];
 
 	const handleApplyTags = (tags: number[]) => {
 		setSelectedTagsId(tags);
@@ -92,12 +97,12 @@ const ProfilePublications = () => {
 					</Button>
 				)}
 			</div>
-			{isLoading ? (
+			{allLoading ? (
 				<div>Загрузка...</div>
 			) : (
 				<div className={styles['articles']}>
-					{articles && articles.length > 0 ? (
-						articles.map((item) => <Article key={item.id} props={item} />)
+					{paginatedFiltered && paginatedFiltered.length > 0 ? (
+						paginatedFiltered.map((item) => <Article key={item.id} props={item} />)
 					) : (
 						<p>Статьи не найдены</p>
 					)}

@@ -7,6 +7,9 @@ import { useTags } from '../../../search/useTags';
 import { useAuthors } from '../../../search/useAuthors';
 import { useNavigate } from 'react-router';
 import { articleApi } from '../../api';
+import { useQueryClient } from '@tanstack/react-query';
+import { useProfile } from '../../../profile/useProfile';
+import { profileApi } from '../../../profile/api';
 
 interface PublicationInput {
 	title: string;
@@ -18,8 +21,11 @@ interface PublicationInput {
 
 const CreatePublication = () => {
 	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 	const { data: allTags } = useTags();
 	const { authors } = useAuthors();
+	const { data: userData } = useProfile();
+	console.log(userData);
 
 	const [selectedTagsId, setSelectedTagsId] = useState<number[]>([]);
 	const [selectedCoauthorsId, setSelectedCoauthorsId] = useState<number[]>([]);
@@ -62,6 +68,7 @@ const CreatePublication = () => {
 		selectedCoauthorsId.forEach((id) => formData.append('coauthors[]', id.toString()));
 
 		articleApi.createPublication(formData);
+		queryClient.invalidateQueries({ queryKey: [profileApi.baseKey, 'userData', userData?.id.toString()] });
 		navigate(-1);
 	};
 

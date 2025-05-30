@@ -1,5 +1,14 @@
 :root {
-	--main-theme: #4d38d7;
+	--main-theme: #4d38d7; /* Фирменный фиолетовый */
+	--success-color: #1fac42; /* Успешные действия */
+	--danger-color: #e74c3c; /* Критические действия */
+	--neutral-light: #f9fafb; /* Фон приложения */
+	--text-primary: #1c1c1c; /* Основной текст */
+	--text-secondary: #555555; /* Вторичный текст */
+	--border-color: #e0e0e0; /* Границы элементов */
+
+	--font-primary: 'Inter', sans-serif;
+	--font-mono: 'IBM Plex Mono', monospace;
 }
 
 * {
@@ -11,4 +20,14 @@
 body {
 	min-height: 100vh;
 	background-color: #f9fafb;
+}
+
+@font-face {
+	font-family: 'Inter';
+	src: local('Inter'), url('/fonts/Inter/static/Inter_18pt-Regular.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'IMBM Plex Mono';
+	src: local('IMBM Plex Mono'), url('/fonts/IBM_Plex_Mono/IBMPlexMono-Regular.ttf') format('truetype');
 }

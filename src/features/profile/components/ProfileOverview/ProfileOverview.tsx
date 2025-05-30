@@ -7,13 +7,15 @@ import { IArticle } from '../../../../helpers/interfaces';
 import Button from '../../../../components/Button/Button';
 import { useState } from 'react';
 import { useSubscribeMutation, useUnsubscribeMutation } from '../../useSubscribeMutation';
-import { profileApi } from '../../api';
-import Input from '../../../../components/Input/Input';
+// import { profileApi } from '../../api';
+import { useGetLastPublicationsMutation } from '../../useGetLastPublicationsMutation';
 
 const ProfileOverview = () => {
 	const { authorId } = useParams();
 	const { data, isLoading: profileLoading } = useProfileById(authorId as string);
 	const { data: currentUserData } = useProfile();
+	const { downloadFile, isLoading } = useGetLastPublicationsMutation();
+	const newDataPublications = data?.Profile.Publications?.slice(0, 2);
 
 	const subscribeMutation = useSubscribeMutation(authorId as string);
 	const unsubscribeMutation = useUnsubscribeMutation(authorId as string);
@@ -36,7 +38,8 @@ const ProfileOverview = () => {
 	const [fileType, setFileType] = useState(0);
 
 	const handleDownload = () => {
-		profileApi.getLastPublications(countPublications, new Date(dateEnd), new Date(dateStart), fileType);
+		// profileApi.getLastPublications(countPublications, new Date(dateEnd), new Date(dateStart), fileType);
+		downloadFile(countPublications, new Date(dateEnd), new Date(dateStart), fileType);
 	};
 
 	if (profileLoading) {
@@ -114,7 +117,7 @@ const ProfileOverview = () => {
 					<div className={styles['filters__row']}>
 						<div className={styles['filters__field']}>
 							<p>Кол-во публикаций:</p>
-							<Input
+							<input
 								type='number'
 								min='1'
 								value={countPublications}
@@ -123,11 +126,11 @@ const ProfileOverview = () => {
 						</div>
 						<div className={styles['filters__field']}>
 							<p>Дата начала:</p>
-							<Input type='date' value={dateStart} onChange={(e) => setDateStart(e.target.value)} />
+							<input type='date' value={dateStart} onChange={(e) => setDateStart(e.target.value)} />
 						</div>
 						<div className={styles['filters__field']}>
 							<p>Дата окончания:</p>
-							<Input type='date' value={dateEnd} onChange={(e) => setDateEnd(e.target.value)} />
+							<input type='date' value={dateEnd} onChange={(e) => setDateEnd(e.target.value)} />
 						</div>
 						<div className={styles['filters__field']}>
 							<p>Тип файла:</p>
@@ -139,14 +142,20 @@ const ProfileOverview = () => {
 							</select>
 						</div>
 					</div>
-					<button className={styles['filters__button']} onClick={handleDownload}>
-						📥 Скачать список публикаций
-					</button>
+					{isLoading ? (
+						<button className={styles['filters__button']} disabled>
+							<div className={styles['loading-spinner']}></div>
+						</button>
+					) : (
+						<button className={styles['filters__button']} onClick={handleDownload}>
+							📥 Скачать список публикаций
+						</button>
+					)}
 				</div>
 				<h2>Последние публикации</h2>
 				<div className={styles['publications']}>
 					{data.Profile.Publications && data.Profile.Publications.length > 0 ? (
-						data.Profile.Publications.map((article: IArticle) => (
+						newDataPublications?.map((article: IArticle) => (
 							<div className={styles['publication']} key={article.id}>
 								<Article props={article} />
 							</div>
