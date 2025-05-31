@@ -1,7 +1,7 @@
 import styles from './ProfileOverview.module.scss';
 import Article from '../../../article/components/Article/Article';
 import { useProfileById } from '../../useProfileById';
-import { useParams, NavLink } from 'react-router';
+import { useParams, NavLink, useNavigate } from 'react-router';
 import { useProfile } from '../../useProfile';
 import { IArticle } from '../../../../helpers/interfaces';
 import Button from '../../../../components/Button/Button';
@@ -11,6 +11,7 @@ import { useGetLastPublicationsMutation } from '../../useGetLastPublicationsMuta
 
 const ProfileOverview = () => {
 	const { authorId } = useParams();
+	const navigate = useNavigate();
 	const { data, isLoading: profileLoading } = useProfileById(authorId as string);
 	const { data: currentUserData } = useProfile();
 	const { downloadFile, isLoading } = useGetLastPublicationsMutation();
@@ -37,6 +38,11 @@ const ProfileOverview = () => {
 	const [fileType, setFileType] = useState(0);
 
 	const handleDownload = () => {
+		if (!hasGender) {
+			alert('Пожалуйста, выберите пол в настройках');
+			navigate('/settings/profile');
+			return;
+		}
 		downloadFile(countPublications, new Date(dateEnd), new Date(dateStart), fileType);
 	};
 
@@ -49,6 +55,7 @@ const ProfileOverview = () => {
 	}
 
 	const isOwnProfile = currentUserData?.id === data.Profile.id;
+	const hasGender = currentUserData?.gender !== 3;
 
 	return (
 		<div className={styles['container']}>
@@ -69,13 +76,13 @@ const ProfileOverview = () => {
 						<p>ВАК: {data.Profile.vac.length > 0 ? data.Profile.vac : 'Не указан'}</p>
 					</div>
 					<div className={styles['id']}>
-						<p>Должность: {data.Profile.appointment}</p>
+						<p>Должность: {data.Profile.appointment ?? 'Не указана'}</p>
 					</div>
 					<div className={styles['id']}>
-						<p>Страна: {data.Profile.country}</p>
+						<p>Страна: {data.Profile.country ?? 'Не указана'}</p>
 					</div>
 					<div className={styles['id']}>
-						<p>Страна: {data.Profile.gender}</p>
+						<p>Пол: {data.Profile.gender === 1 || data.Profile.gender === 2 ? '' : 'Не указан'}</p>
 					</div>
 					<div className={styles['follows']}>
 						{isOwnProfile ? (

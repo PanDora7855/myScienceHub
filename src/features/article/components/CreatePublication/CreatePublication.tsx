@@ -76,7 +76,7 @@ const CreatePublication = () => {
 			formData.append('title', input.title);
 			formData.append('abstract', input.abstract);
 			formData.append('file', input.file as File);
-			formData.append('created_date', new Date(input.created_at).toISOString());
+			formData.append('created_at', new Date(input.created_at).toISOString().split('T')[0]);
 
 			selectedTagsId.forEach((id) => formData.append('tags[]', id.toString()));
 			selectedCoauthorsId.forEach((id) => formData.append('coauthors[]', id.toString()));
@@ -165,6 +165,7 @@ const CreatePublication = () => {
 						value={input.created_at}
 						onChange={(e) => setInput({ ...input, created_at: e.target.value })}
 						type='date'
+						max={new Date().toISOString().split('T')[0]}
 					/>
 				</div>
 

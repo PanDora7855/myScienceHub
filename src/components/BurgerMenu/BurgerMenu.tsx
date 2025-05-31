@@ -17,7 +17,7 @@ const BurgerMenu = () => {
 
 	const handleLogout = () => {
 		logout();
-		navigate('/auth/login');
+		navigate('/auth/login', { replace: true });
 	};
 
 	useEffect(() => {

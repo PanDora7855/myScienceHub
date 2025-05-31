@@ -22,28 +22,26 @@ const SettingsAbout = () => {
 	};
 
 	const [input, setInput] = useState<IOmitData>({
-		last_name: '',
-		first_name: '',
-		middle_name: '',
-		academic_degree: '',
-		gender: 2,
-		country: '',
-		vac: '',
-		appointment: ''
+		last_name: data?.last_name,
+		first_name: data?.first_name,
+		middle_name: data?.middle_name,
+		academic_degree: data?.academic_degree,
+		gender: data?.gender,
+		country: data?.country,
+		vac: data?.vac,
+		appointment: data?.appointment
 	});
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		e.currentTarget.reset();
+		// e.currentTarget.reset();
 		const newUserData: IOmitData = {};
 		for (const [key, value] of Object.entries(input)) {
-			if (value !== '' && value !== omitData[key as keyof IOmitData]) {
+			if (value !== '' && value !== undefined && value !== omitData[key as keyof IOmitData]) {
 				newUserData[key as keyof IOmitData] = value;
 			}
 		}
-
-		// console.log(newUserData);
-		updateUser(newUserData);
+		if (Object.keys(newUserData).length > 0) updateUser(newUserData);
 	};
 
 	if (isLoading) return <div>Загрузка...</div>;
@@ -128,10 +126,13 @@ const SettingsAbout = () => {
 					</div>
 					<div className={styles['edit-field']}>
 						<p>Пол</p>
-						<select value={data?.gender} onChange={(e) => setInput({ ...input, gender: +e.target.value })}>
-							<option value={0}>Женский</option>
-							<option value={1}>Мужской</option>
-							<option value={2}>Не указан</option>
+						<select
+							value={input?.gender || data?.gender}
+							onChange={(e) => setInput({ ...input, gender: +e.target.value })}
+						>
+							<option value={3}>Не указан</option>
+							<option value={1}>Женский</option>
+							<option value={2}>Мужской</option>
 						</select>
 					</div>
 				</div>

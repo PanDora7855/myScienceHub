@@ -25,7 +25,10 @@ export const authApi = {
 	},
 
 	login: async (login: string, password: string) => {
-		return await jsonApiInstance.post('/login', `login=${login}&password=${password}`);
+		return await jsonApiInstance
+			.post('/login', `login=${login}&password=${password}`)
+			.then((response) => console.log(response))
+			.catch((e: AxiosError) => console.log(e));
 	},
 
 	logout: () => {

@@ -113,7 +113,7 @@ const EditPublication = () => {
 			formData.append('abstract', input.abstract);
 			formData.append('owner_id', userData?.id.toString() || '');
 			formData.append('fileLink', input.fileLink);
-			formData.append('created_date', new Date(input.created_at).toISOString());
+			formData.append('created_at', new Date(input.created_at).toISOString().split('T')[0]);
 
 			if (input.file) {
 				formData.append('file', input.file);
