@@ -18,16 +18,6 @@ export const useGetLastPublicationsMutation = () => {
 
 		onSuccess: (data) => {
 			console.log(data);
-			// Побочный эффект: скачивание файла
-			// const blob = data;
-			// const url = window.URL.createObjectURL(blob);
-			// const a = document.createElement('a');
-			// a.href = url;
-			// a.download = 'publications_list';
-			// document.body.appendChild(a); // для поддержки Safari
-			// a.click();
-			// a.remove();
-			// window.URL.revokeObjectURL(url);
 		},
 
 		onError: (error) => {

@@ -13,6 +13,7 @@ import CreatePublication from '../features/article/components/CreatePublication/
 import EditPublication from '../features/article/components/EditPublication/EditPublication';
 import Subscribers from '../features/profile/components/Subscribers/Subscribers';
 import Subscribes from '../features/profile/components/Subscribes/Subscribes';
+import ForgotPassword from '../features/auth/components/ForgotPassword/ForgotPassword';
 // import RequireAuth from '../helpers/RequireAuth';
 
 export const router = createBrowserRouter([
@@ -143,6 +144,10 @@ export const router = createBrowserRouter([
 			{
 				path: 'register',
 				element: <Register />
+			},
+			{
+				path: 'forgot-password',
+				element: <ForgotPassword />
 			}
 		]
 	}

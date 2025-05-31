@@ -3,6 +3,7 @@ import Input from '../../../../components/Input/Input';
 import styles from './Login.module.scss';
 import { FormEvent, useState } from 'react';
 import { useAuth } from '../../useAuth';
+import Button from '../../../../components/Button/Button';
 
 const Login = () => {
 	const navigate = useNavigate();
@@ -24,7 +25,6 @@ const Login = () => {
 			<div className={styles['right-side']}>
 				<div className={styles['right-side__top']}>
 					<h1>Вход</h1>
-					<p>How to i get started lorem ipsum dolor at?</p>
 					{loginError && <div className={styles['error']}>{loginError}</div>}
 				</div>
 				<form className={styles['sign-in__form']} onSubmit={handleSubmit}>
@@ -51,12 +51,9 @@ const Login = () => {
 							required
 						/>
 					</div>
-					<button className={styles['form-button']} type='submit'>
+					<Button className='purple' type='submit'>
 						Войти
-					</button>
-					<p className={styles['register-link']}>
-						Нет аккаунта? <NavLink to='/auth/register'>Зарегистрироваться</NavLink>
-					</p>
+					</Button>
 				</form>
 				<p className={styles['hr-line']}>Войти другим способом</p>
 				<div className={styles['another-way']}>
@@ -78,6 +75,10 @@ const Login = () => {
 					<a href='#'>
 						<img src='/auth/vk.svg' alt='' />
 					</a>
+				</div>
+				<div className={styles['links']}>
+					<NavLink to='/auth/forgot-password'>Забыли пароль</NavLink>
+					<NavLink to='/auth/register'>Зарегистрироваться</NavLink>
 				</div>
 				<p>W2Z2gb9sVIa3</p>
 			</div>

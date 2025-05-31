@@ -82,7 +82,7 @@ const ProfileOverview = () => {
 						<p>Страна: {data.Profile.country ?? 'Не указана'}</p>
 					</div>
 					<div className={styles['id']}>
-						<p>Пол: {data.Profile.gender === 1 || data.Profile.gender === 2 ? '' : 'Не указан'}</p>
+						<p>Пол: {data.Profile.gender === 1 || data.Profile.gender === 2 ? (data.Profile.gender === 1 ? 'Мужской' : 'Женский') : 'Не указан'}</p>
 					</div>
 					<div className={styles['follows']}>
 						{isOwnProfile ? (
