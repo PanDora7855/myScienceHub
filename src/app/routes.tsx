@@ -14,7 +14,7 @@ import EditPublication from '../features/article/components/EditPublication/Edit
 import Subscribers from '../features/profile/components/Subscribers/Subscribers';
 import Subscribes from '../features/profile/components/Subscribes/Subscribes';
 import ForgotPassword from '../features/auth/components/ForgotPassword/ForgotPassword';
-// import RequireAuth from '../helpers/RequireAuth';
+import CallbackYa from '../features/auth/components/CallbackYa/CallbackYa';
 
 export const router = createBrowserRouter([
 	{
@@ -150,5 +150,9 @@ export const router = createBrowserRouter([
 				element: <ForgotPassword />
 			}
 		]
+	},
+	{
+		path: '/callback-ya',
+		element: <CallbackYa />
 	}
 ]);

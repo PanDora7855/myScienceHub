@@ -5,6 +5,7 @@ import Button from '../Button/Button';
 import { useEffect, useState } from 'react';
 import cn from 'classnames';
 import { ITag, IProfile } from '../../helpers/interfaces';
+import { useProfile } from '../../features/profile/useProfile';
 
 const Filter = ({
 	tags,
@@ -22,6 +23,8 @@ const Filter = ({
 	const [selectedTagsId, setSelectedTagsId] = useState<number[]>([...selectedIds]);
 	const [selectedAuthorsId, setSelectedAuthorsId] = useState<number[]>([...selectedIds]);
 	const [search, setSearch] = useState<string>('');
+	const { data } = useProfile();
+	const userId = data?.id;
 
 	// Определяем, что показываем - теги или авторов
 	const isTagsMode = !!tags;
@@ -50,15 +53,40 @@ const Filter = ({
 		}
 	};
 
-	// Фильтрация тегов по поиску
-	const filteredTags = tags?.filter((tag) => tag.name.toLowerCase().includes(search.toLowerCase())) || [];
+	// Фильтрация и сортировка тегов по поиску (выбранные теги вперед)
+	const filteredTags =
+		tags
+			?.filter((tag) => tag.name.toLowerCase().includes(search.toLowerCase()))
+			.sort((a, b) => {
+				const aSelected = selectedTagsId.includes(a.id);
+				const bSelected = selectedTagsId.includes(b.id);
 
-	// Фильтрация авторов по поиску
+				// Если один выбран, а другой нет - выбранный идет первым
+				if (aSelected && !bSelected) return -1;
+				if (!aSelected && bSelected) return 1;
+
+				// Если оба выбраны или оба не выбраны - сортируем по алфавиту
+				return a.name.localeCompare(b.name);
+			}) || [];
+
+	// Фильтрация и сортировка авторов по поиску (выбранные авторы вперед)
 	const filteredAuthors =
-		authors?.filter((author) => {
-			const fullName = `${author.first_name} ${author.last_name} ${author.middle_name}`.toLowerCase();
-			return fullName.includes(search.toLowerCase());
-		}) || [];
+		authors
+			?.filter((author) => {
+				const fullName = `${author.first_name} ${author.last_name} ${author.middle_name}`.toLowerCase();
+				return author.id !== userId && fullName.includes(search.toLowerCase());
+			})
+			.sort((a, b) => {
+				const aSelected = selectedAuthorsId.includes(a.id);
+				const bSelected = selectedAuthorsId.includes(b.id);
+
+				// Если один выбран, а другой нет - выбранный идет первым
+				if (aSelected && !bSelected) return -1;
+				if (!aSelected && bSelected) return 1;
+
+				// Если оба выбраны или оба не выбраны - сортируем по фамилии
+				return a.last_name.localeCompare(b.last_name);
+			}) || [];
 
 	const handleApply = () => {
 		if (isTagsMode) {

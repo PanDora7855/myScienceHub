@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from 'react-router';
 import Input from '../../../../components/Input/Input';
 import styles from './Login.module.scss';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useAuth } from '../../useAuth';
 import Button from '../../../../components/Button/Button';
 
@@ -10,6 +10,10 @@ const Login = () => {
 	const [login, setLogin] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
 	const { login: loginAction, loginError } = useAuth();
+	const CLIENT_ID_YA = 'a4f37a21f4594c9d972a8a00169d49d8';
+	const REDIRECT_URI_YA = 'http://localhost:5173/callback-ya';
+
+	useEffect(() => {}, []);
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -18,6 +22,18 @@ const Login = () => {
 			navigate('/');
 		}
 	};
+
+	const handleYandex = async () => {
+		const authUrl = `https://oauth.yandex.com/authorize?response_type=token&client_id=${CLIENT_ID_YA}&redirect_uri=${encodeURIComponent(
+			REDIRECT_URI_YA
+		)}`;
+		window.location.href = authUrl;
+	};
+
+	// const handleVk = () => {
+	// 	window.location.href =
+	// 		'https://id.vk.com/authorize?response_type=code&client_id=53667296&scope=email%20phone&redirect_uri=http://localhost&state=XXXRandomZZZ&code_challenge=K8KAyQ82WSEncryptedVerifierGYUDj8K&code_challenge_method=S256';
+	// };
 
 	return (
 		<div className={styles['login-page']}>
@@ -57,30 +73,18 @@ const Login = () => {
 				</form>
 				<p className={styles['hr-line']}>Войти другим способом</p>
 				<div className={styles['another-way']}>
-					<a href='#'>
-						<img src='/auth/yandex.svg' alt='' />
-					</a>
-					<a href='#'>
-						<img src='/auth/yandex.svg' alt='' />
-					</a>
-					<a href='#'>
-						<img src='/auth/yandex.svg' alt='' />
-					</a>
-					<a href='#'>
-						<img src='/auth/vk.svg' alt='' />
-					</a>
-					<a href='#'>
-						<img src='/auth/vk.svg' alt='' />
-					</a>
-					<a href='#'>
-						<img src='/auth/vk.svg' alt='' />
-					</a>
+					<button className={styles['yandex-btn']} onClick={() => handleYandex()}>
+						<img src='/auth/yandex.svg' alt='yandex' />
+						Войти через Яндекс
+					</button>
+					{/* <div onClick={() => handleVk()} id='VkIdSdkOneTap'>
+						asdasdasd
+					</div> */}
 				</div>
 				<div className={styles['links']}>
 					<NavLink to='/auth/forgot-password'>Забыли пароль</NavLink>
 					<NavLink to='/auth/register'>Зарегистрироваться</NavLink>
 				</div>
-				<p>W2Z2gb9sVIa3</p>
 			</div>
 		</div>
 	);

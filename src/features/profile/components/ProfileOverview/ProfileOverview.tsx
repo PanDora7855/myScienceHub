@@ -15,7 +15,7 @@ const ProfileOverview = () => {
 	const { data, isLoading: profileLoading } = useProfileById(authorId as string);
 	const { data: currentUserData } = useProfile();
 	const { downloadFile, isLoading } = useGetLastPublicationsMutation();
-	const newDataPublications = data?.Profile.Publications?.slice(0, 2);
+	const newDataPublications = data?.Profile.Publications?.slice(-4, 2);
 
 	const subscribeMutation = useSubscribeMutation(authorId as string);
 	const unsubscribeMutation = useUnsubscribeMutation(authorId as string);
@@ -43,6 +43,7 @@ const ProfileOverview = () => {
 			navigate('/settings/profile');
 			return;
 		}
+
 		downloadFile(countPublications, new Date(dateEnd), new Date(dateStart), fileType);
 	};
 
@@ -82,7 +83,14 @@ const ProfileOverview = () => {
 						<p>Страна: {data.Profile.country ?? 'Не указана'}</p>
 					</div>
 					<div className={styles['id']}>
-						<p>Пол: {data.Profile.gender === 1 || data.Profile.gender === 2 ? (data.Profile.gender === 1 ? 'Мужской' : 'Женский') : 'Не указан'}</p>
+						<p>
+							Пол:{' '}
+							{data.Profile.gender === 1 || data.Profile.gender === 2
+								? data.Profile.gender === 1
+									? 'Мужской'
+									: 'Женский'
+								: 'Не указан'}
+						</p>
 					</div>
 					<div className={styles['follows']}>
 						{isOwnProfile ? (

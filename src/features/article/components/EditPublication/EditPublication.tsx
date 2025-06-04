@@ -106,6 +106,8 @@ const EditPublication = () => {
 		e.preventDefault();
 
 		if (checkFields()) {
+			const asd = new Date(input.created_at).toISOString().split('T')[0].split('-');
+			const newDate = asd[2] + '-' + asd[1] + '-' + asd[0];
 			const formData = new FormData();
 
 			// Добавляем ID публикации
@@ -116,7 +118,7 @@ const EditPublication = () => {
 			formData.append('abstract', input.abstract);
 			formData.append('owner_id', userData?.id.toString() || '');
 			formData.append('fileLink', input.fileLink);
-			formData.append('created_at', new Date(input.created_at).toISOString().split('T')[0]);
+			formData.append('created_at', newDate);
 
 			if (input.file) {
 				formData.append('file', input.file);

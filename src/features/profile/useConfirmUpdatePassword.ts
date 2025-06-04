@@ -7,8 +7,17 @@ export function useConfirmUpdatePassword() {
 	const queryClient = useQueryClient();
 
 	const updateMutation = useMutation({
-		mutationFn: ({ code, password }: { code: string; password: string }) =>
-			profileApi.confirmUserPassword(code, password),
+		mutationFn: ({
+			code,
+			password,
+			login,
+			old_password
+		}: {
+			code: string;
+			password: string;
+			login: string;
+			old_password: string;
+		}) => profileApi.confirmUserPassword(code, password, login, old_password),
 
 		onMutate: async () => {
 			await queryClient.cancelQueries({
@@ -37,15 +46,15 @@ export function useConfirmUpdatePassword() {
 		}
 	});
 
-	const updatePassword = (code: string, password: string) => {
-		console.log({ code, password });
-		updateMutation.mutate({ code, password });
+	const updatePassword = (code: string, password: string, login: string, old_password: string) => {
+		updateMutation.mutate({ code, password, login, old_password });
 	};
 
 	return {
 		updatePassword,
 		isLoading: updateMutation.isPending,
 		isSuccess: updateMutation.isSuccess,
+		isError: updateMutation.isError,
 		error: updateMutation.error as AxiosError<ApiErrorResponse>
 	};
 }

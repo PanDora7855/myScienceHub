@@ -24,6 +24,15 @@
 	font-size: 14px;
 }
 
+.success-message {
+	background-color: #eeffee;
+	border: 1px solid #ccffcc;
+	color: #00aa00;
+	padding: 12px;
+	border-radius: 4px;
+	font-size: 14px;
+}
+
 .section-title {
 	font-size: 18px;
 	font-weight: 600;
@@ -34,6 +43,13 @@
 .button-container {
 	display: flex;
 	justify-content: flex-start;
+}
+
+.button-group {
+	display: flex;
+	gap: 12px;
+	justify-content: flex-start;
+	flex-wrap: wrap;
 }
 
 /* Адаптивные стили для Security */
@@ -67,7 +83,17 @@
 		}
 	}
 
-	.error-message {
+	.button-group {
+		flex-direction: column;
+		gap: 8px;
+
+		button {
+			width: 100%;
+		}
+	}
+
+	.error-message,
+	.success-message {
 		padding: 10px;
 		font-size: 13px;
 	}
@@ -90,7 +116,12 @@
 		margin-bottom: 12px;
 	}
 
-	.error-message {
+	.button-group {
+		gap: 6px;
+	}
+
+	.error-message,
+	.success-message {
 		padding: 8px;
 		font-size: 12px;
 	}

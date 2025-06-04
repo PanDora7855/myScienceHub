@@ -74,11 +74,13 @@ const CreatePublication = () => {
 		e.preventDefault();
 
 		if (checkFields()) {
+			const asd = new Date(input.created_at).toISOString().split('T')[0].split('-');
+			const newDate = asd[2] + '-' + asd[1] + '-' + asd[0];
 			const formData = new FormData();
 			formData.append('title', input.title);
 			formData.append('abstract', input.abstract);
 			formData.append('file', input.file as File);
-			formData.append('created_at', new Date(input.created_at).toISOString().split('T')[0]);
+			formData.append('created_at', newDate);
 
 			selectedTagsId.forEach((id) => formData.append('tags[]', id.toString()));
 			selectedCoauthorsId.forEach((id) => formData.append('coauthors[]', id.toString()));

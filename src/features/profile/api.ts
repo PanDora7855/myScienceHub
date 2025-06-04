@@ -88,9 +88,50 @@ export const profileApi = {
 			});
 	},
 
-	confirmUserPassword: async (code: string, password: string) => {
+	confirmUserPassword: async (code: string, password: string, login: string, old_password: string) => {
 		return await jsonApiInstance
-			.post('/settings/verify-and-change-password', { code, profile: { password: password } })
+			.post('/settings/verify-and-change-password', {
+				code,
+				profile: { password: password, login: login },
+				old_password
+			})
+			.then((response) => response.data)
+			.catch((e: AxiosError) => {
+				console.log(e.response?.data);
+				throw e;
+			});
+	},
+
+	forgetPassword: async (code: string, login: string, newPassword: string) => {
+		return await jsonApiInstance
+			.post('/verify-and-change-forget-password', { code, profile: { password: newPassword, login: login } })
+			.then((response) => response.data)
+			.catch((e: AxiosError) => {
+				console.log(e.response?.data);
+				throw e;
+			});
+	},
+
+	// Новые методы для отмены смены почты и пароля
+	cancelEmailChange: async (newEmail: string) => {
+		return await jsonApiInstance
+			.post('/settings/stop-change-email', {
+				code: '',
+				profile: { login: newEmail }
+			})
+			.then((response) => response.data)
+			.catch((e: AxiosError) => {
+				console.log(e.response?.data);
+				throw e;
+			});
+	},
+
+	cancelPasswordChange: async () => {
+		return await jsonApiInstance
+			.post('/settings/stop-change-password', {
+				code: '',
+				profile: {}
+			})
 			.then((response) => response.data)
 			.catch((e: AxiosError) => {
 				console.log(e.response?.data);
@@ -144,10 +185,5 @@ export const profileApi = {
 				a.click();
 				window.URL.revokeObjectURL(url);
 			});
-		// .then((response) => response)
-		// .catch((e: AxiosError) => {
-		// 	console.log(e.response?.data);
-		// 	throw e;
-		// });
 	}
 };
