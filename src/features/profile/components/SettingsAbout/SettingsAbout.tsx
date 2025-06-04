@@ -131,8 +131,8 @@ const SettingsAbout = () => {
 							onChange={(e) => setInput({ ...input, gender: +e.target.value })}
 						>
 							<option value={3}>Не указан</option>
-							<option value={1}>Женский</option>
-							<option value={2}>Мужской</option>
+							<option value={2}>Женский</option>
+							<option value={1}>Мужской</option>
 						</select>
 					</div>
 				</div>

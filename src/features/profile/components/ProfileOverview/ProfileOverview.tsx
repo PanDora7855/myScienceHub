@@ -5,7 +5,7 @@ import { useParams, NavLink, useNavigate } from 'react-router';
 import { useProfile } from '../../useProfile';
 import { IArticle } from '../../../../helpers/interfaces';
 import Button from '../../../../components/Button/Button';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSubscribeMutation, useUnsubscribeMutation } from '../../useSubscribeMutation';
 import { useGetLastPublicationsMutation } from '../../useGetLastPublicationsMutation';
 
@@ -20,7 +20,15 @@ const ProfileOverview = () => {
 	const subscribeMutation = useSubscribeMutation(authorId as string);
 	const unsubscribeMutation = useUnsubscribeMutation(authorId as string);
 
+	// Инициализируем состояние подписки на основе данных из API
 	const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
+
+	// Синхронизируем состояние с данными из API
+	useEffect(() => {
+		if (data) {
+			setIsSubscribed(data.IsSubscribed || data.Isubscribed);
+		}
+	}, [data]);
 
 	const handleSubscribe = () => {
 		setIsSubscribed(true);
@@ -87,7 +95,7 @@ const ProfileOverview = () => {
 							Пол:{' '}
 							{data.Profile.gender === 1 || data.Profile.gender === 2
 								? data.Profile.gender === 1
-									? 'Мужской'
+									? 'Мужской'
 									: 'Женский'
 								: 'Не указан'}
 						</p>

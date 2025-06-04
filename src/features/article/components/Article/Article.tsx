@@ -6,7 +6,7 @@ import Button from '../../../../components/Button/Button';
 
 const Article = ({ props }: { props: IArticle }) => {
 	const navigate = useNavigate();
-	const { id, abstract, profiles, created_at, tags, title, updated_at, owner_id, file_link } = props;
+	const { id, abstract, profiles, created_at, tags, title, updated_at, owner_id, file_link, owner } = props;
 	const { data: currentUserData } = useProfile();
 
 	const isOwnProfile = currentUserData?.id === owner_id;
@@ -14,6 +14,10 @@ const Article = ({ props }: { props: IArticle }) => {
 	const navigateToUserProfile = (id: number) => {
 		navigate(`/profile/${id}/overview`);
 	};
+
+	// Разделяем автора и соавторов
+	const coauthors = profiles?.filter((profile) => profile.id !== owner_id) || [];
+	const mainAuthor = owner || profiles?.find((profile) => profile.id === owner_id);
 
 	return (
 		<div className={styles['article-container']}>
@@ -32,22 +36,33 @@ const Article = ({ props }: { props: IArticle }) => {
 					{new Date(updated_at).toLocaleDateString()}
 				</p>
 			)}
-			{(profiles?.length as number) > 0 && (
+
+			{mainAuthor && (
 				<div className={styles['authors']}>
-					<strong>Авторы: </strong>
+					<strong>Автор: </strong>
 					<div className={styles['profiles']}>
-						{profiles?.map(({ first_name, last_name, id }) => (
-							<Button
-								key={id}
-								className='purple'
-								onClick={() => navigateToUserProfile(id)}
-							>{`${last_name} ${first_name}`}</Button>
+						<Button className='purple' onClick={() => navigateToUserProfile(mainAuthor.id)}>
+							{`${mainAuthor.last_name} ${mainAuthor.first_name}`}
+						</Button>
+					</div>
+				</div>
+			)}
+
+			{/* Соавторы */}
+			{coauthors.length > 0 && (
+				<div className={styles['coauthors']}>
+					<strong>Соавторы: </strong>
+					<div className={styles['profiles']}>
+						{coauthors.map(({ first_name, last_name, id }) => (
+							<Button key={id} className='purple' onClick={() => navigateToUserProfile(id)}>
+								{`${last_name} ${first_name}`}
+							</Button>
 						))}
 					</div>
 				</div>
 			)}
+
 			<div className={styles['tags']}>
-				{/* TODO Тут надо будет сделать поиск по тегу при нажатии */}
 				<strong>Теги: </strong>
 				{tags?.map(({ name, id }) => (
 					<span className={styles['tag-btn']} key={id}>
@@ -55,7 +70,6 @@ const Article = ({ props }: { props: IArticle }) => {
 					</span>
 				))}
 			</div>
-			{/* TODO Тут у дани происходит скачка, если успею надо как то сделать просмотр на другой странице */}
 			<div className={styles['buttons']}>
 				<a href={file_link} target='_blank' rel='noopener noreferrer' className={styles['watch']}>
 					📄 Посмотреть статью

@@ -25,7 +25,30 @@ const ProfilePublications = () => {
 
 	const articles = allArticles?.Profile.Publications;
 
-	const filtered = articles?.filter((item) =>
+	// Функция сортировки статей
+	const sortArticles = (articlesToSort: typeof articles) => {
+		if (!articlesToSort) return [];
+
+		return [...articlesToSort].sort((a, b) => {
+			switch (sortType) {
+				case 0: // Дата (сначала старые)
+					return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+				case 1: // Дата (сначала новые) - по умолчанию
+					return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+				case 3: // Название (А-Я)
+					return a.title.localeCompare(b.title);
+				case 4: // Название (Я-А)
+					return b.title.localeCompare(a.title);
+				default:
+					return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+			}
+		});
+	};
+
+	// Сначала сортируем статьи, затем фильтруем
+	const sortedArticles = sortArticles(articles);
+
+	const filtered = sortedArticles?.filter((item) =>
 		item.tags && selectedTagsId.length > 0
 			? item.tags.some((tag) => selectedTagsId.includes(tag.id)) &&
 			  item.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -35,9 +58,6 @@ const ProfilePublications = () => {
 	const totalPages = filtered?.length ? Math.ceil(filtered!.length / 5) : 1;
 
 	const paginatedFiltered = filtered?.slice((currentPage - 1) * 5, currentPage * 5);
-
-	// console.log(filtered);
-	// console.log(allArticles);
 
 	const tags = articles
 		?.flatMap((item) => item.tags as ITag[])
@@ -74,7 +94,6 @@ const ProfilePublications = () => {
 					value={searchTerm}
 					onChange={(e) => setSearchTerm(e.target.value)}
 				/>
-				{/* TODO сделать сортировку */}
 				<div className={styles['sort']}>
 					<Button className='purple' onClick={() => setIsOptionsOpen(!isOptionsOpen)}>
 						Сортировка
